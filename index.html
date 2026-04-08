@@ -4785,7 +4785,13 @@ percorrer (dadosEsfinge) { itemEsfinge -&gt;
               <div class="er-cell-sol"><button class="er-sol-btn">Solu&#231;&#227;o &#9662;</button></div>
             </div>
             <div class="er-solution-panel"><div class="er-sol-grid">
-              <div><div class="er-sol-section-title">&#128214; O que significa</div><p style="font-size:12px;color:var(--text2);line-height:1.55;">Comum quando a entidade virou <strong>multientidade</strong>. Registros antigos ficam com <code style="font-family:var(--mono);font-size:11px;background:var(--tag-bg);padding:1px 4px;border-radius:3px;">idDado = null</code>. <strong>Verificar a UG correta antes de executar — setar a UG errada perpetua o problema.</strong></p></div>
+              <div><div class="er-sol-section-title">&#128214; O que significa</div><p style="font-size:12px;color:var(--text2);line-height:1.55;">Este erro pode ter <strong>múltiplas causas</strong>. Verifique qual cenário se aplica ao seu caso.</p></div>
+
+<!-- ── CAUSA 1: Multientidade / idDado null ── -->
+<div class="er-sol-full" style="margin-top:16px; padding-top:14px; border-top:1px dashed var(--border);">
+<div class="er-sol-section-title" style="color:var(--accent);font-size:13px;font-weight:700;">Causa 1 — Entidade virou multientidade (idDado null)</div>
+<p style="font-size:12px;color:var(--text2);line-height:1.55;margin-top:6px;">Comum quando a entidade virou <strong>multientidade</strong>. Registros antigos ficam com <code style="font-family:var(--mono);font-size:11px;background:var(--tag-bg);padding:1px 4px;border-radius:3px;">idDado = null</code>. <strong>Verificar a UG correta antes de executar — setar a UG errada perpetua o problema.</strong></p>
+</div>
 <div class="er-sol-full"><div class="er-sol-section-title">&#128295; Como resolver</div><div class="er-steps"><div class="er-sol-step"><div class="er-sol-step-num">1</div><div class="er-sol-step-body"><div class="er-sol-step-title">Preencher idDado com a UG correta em massa (criar parâmetro "competencia")</div><div class="er-sol-step-desc"></div><div class="er-code-label">TypeScript</div><div class="er-code-block"><code><span class="fn">fonteEsfinge</span> = Dados.tributos.v2.esfinge;
 <span class="fn">filtroEsfinge</span> = <span class="str">"(idDado is null or idDado = 0) and idGrupo = '${parametros.competencia.valor.toString().replace('-','')}'"</span>
 <span class="fn">dadosEsfinge</span> = fonteEsfinge.busca(criterio: filtroEsfinge)
@@ -4812,6 +4818,37 @@ percorrer (listaTotal) { itens -&gt;
   esperar 10000
 }</code></div></div></div></div></div>
 <div class="er-confirm-box"><strong>&#9989; Após corrigir:</strong> Reexecutar a validação de lançamentos.</div>
+
+<!-- ── CAUSA 2: Saldo Inicial não gerado por estorno na mesma data ── -->
+<div class="er-sol-full" style="margin-top:20px; padding-top:16px; border-top:1px dashed var(--border);">
+<div class="er-sol-section-title" style="color:var(--accent);font-size:13px;font-weight:700;">Causa 2 — Saldo Inicial não gerado por estorno na mesma data da inscrição</div>
+<p style="font-size:12px;color:var(--text2);line-height:1.55;margin-top:6px;">Os lançamentos listados no erro são referenciados por assuntos posteriores (05 a 12) mas <strong>não possuem registro no assunto 00</strong> (<code style="font-family:var(--mono);font-size:11px;background:var(--tag-bg);padding:1px 4px;border-radius:3px;">saldosIniciaisCreditoTributario</code>). Isso ocorre quando um débito foi inscrito e estornado <strong>na mesma data</strong> — a rotina de encerramento mensal de dezembro não grava o saldo desse débito, pois interpreta o estorno como a "primeira movimentação" e ignora que o crédito existiu.</p>
+</div>
+
+<div class="er-sol-full" style="margin-top:10px;">
+<div class="er-sol-section-title">&#9888; Como identificar este cenário</div>
+<div class="er-steps">
+<div class="er-sol-step"><div class="er-sol-step-num">&#10003;</div><div class="er-sol-step-body"><div class="er-sol-step-desc" style="font-size:12px;color:var(--text2);line-height:1.55;">Os assuntos que referenciam esses lançamentos estão com <code style="font-family:var(--mono);font-size:11px;background:var(--tag-bg);padding:1px 4px;border-radius:3px;">anoLancamento = 0</code></div></div></div>
+<div class="er-sol-step"><div class="er-sol-step-num">&#10003;</div><div class="er-sol-step-body"><div class="er-sol-step-desc" style="font-size:12px;color:var(--text2);line-height:1.55;">Ao consultar no sistema, os débitos foram inscritos e estornados na mesma data</div></div></div>
+<div class="er-sol-step"><div class="er-sol-step-num">&#10003;</div><div class="er-sol-step-body"><div class="er-sol-step-desc" style="font-size:12px;color:var(--text2);line-height:1.55;">Não há registro no assunto 00 (<code style="font-family:var(--mono);font-size:11px;background:var(--tag-bg);padding:1px 4px;border-radius:3px;">saldosIniciaisCreditoTributario</code>) para esses lançamentos</div></div></div>
+<div class="er-sol-step"><div class="er-sol-step-num">&#10003;</div><div class="er-sol-step-body"><div class="er-sol-step-desc" style="font-size:12px;color:var(--text2);line-height:1.55;">O encerramento mensal de dezembro não gravou saldo para eles</div></div></div>
+</div>
+</div>
+
+<div class="er-sol-full" style="margin-top:10px;">
+<div class="er-sol-section-title">&#128295; Como resolver</div>
+<div class="er-steps">
+<div class="er-sol-step"><div class="er-sol-step-num">1</div><div class="er-sol-step-body"><div class="er-sol-step-title">Alterar a data do estorno</div><div class="er-sol-step-desc" style="font-size:12px;color:var(--text2);line-height:1.55;">Alterar a data do estorno para uma data <strong>posterior</strong> à data de inscrição do débito (não precisa ser muito — basta que sejam datas diferentes).</div></div></div>
+<div class="er-sol-step"><div class="er-sol-step-num">2</div><div class="er-sol-step-body"><div class="er-sol-step-title">Reabrir e reencerrar o mês de dezembro</div><div class="er-sol-step-desc" style="font-size:12px;color:var(--text2);line-height:1.55;">Isso forçará a rotina de encerramento a gravar o saldo do débito corretamente na fonte.</div></div></div>
+<div class="er-sol-step"><div class="er-sol-step-num">3</div><div class="er-sol-step-body"><div class="er-sol-step-title">Regerar os dados do e-Sfinge</div><div class="er-sol-step-desc" style="font-size:12px;color:var(--text2);line-height:1.55;">Executar novamente o script de geração de dados para que o assunto 00 inclua o saldo que antes estava ausente.</div></div></div>
+</div>
+</div>
+
+<div style="background:var(--warn-bg);border-left:4px solid var(--warn-border);padding:10px 14px;border-radius:6px;margin:12px 0;font-size:12px;color:var(--warn);line-height:1.55;">
+<strong>&#9888;&#65039; Observação:</strong> Esta causa foi identificada pontualmente e tratada por um desenvolvedor. Ainda não está confirmado se é um caso geral ou isolado. Pode ser um <strong>incidente da rotina de encerramento mensal</strong>, que estaria considerando a movimentação de estorno como a primeira movimentação do débito. Se o cenário se repetir em outros municípios, considerar escalar como incidente geral para a equipe de Produto.
+</div>
+
+<div class="er-confirm-box"><strong>&#9989; Após corrigir:</strong> Regerar os dados e reexecutar as validações. A mensagem de erro não deve mais aparecer para esses lançamentos.</div>
             </div></div>
           </div>
         </div>
