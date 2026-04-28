@@ -1112,7 +1112,7 @@
     <button class="tab-btn" id="sidebar-guias-btn" onclick="switchTab('guias', this)">
       <span class="tab-icon">📖</span>
       <span class="tab-btn-label">Guias de Consulta</span>
-      <span class="tab-sub-count" title="6 guias disponíveis">6</span>
+      <span class="tab-sub-count" title="7 guias disponíveis">7</span>
       <span class="tab-chevron">▸</span>
     </button>
     <div class="sidebar-sub" id="sidebar-sub-guias">
@@ -1133,6 +1133,9 @@
       </a>
       <a class="sidebar-sub-item" data-section="gs-tabela" onclick="showGuiaSection(this)">
         <span class="sidebar-sub-icon">📊</span>Tabela de códigos
+      </a>
+      <a class="sidebar-sub-item" data-section="gs-tabelas-config" onclick="showGuiaSection(this)">
+        <span class="sidebar-sub-icon">⚙️</span>Tabelas de Configuração
       </a>
     </div>
     <button class="tab-btn" onclick="switchTab('assuntos', this)">
@@ -3352,6 +3355,548 @@
     </div>
 
   </div>
+
+<div class="guia-section" id="gs-tabelas-config">
+    <p class="section-label">Tabelas de Configuração · e-Sfinge 2026</p>
+
+<style>
+  /* ── TABELAS DE CONFIGURAÇÃO ── */
+  .tc-intro {
+    background: var(--accent-bg);
+    border: 1px solid var(--accent-border);
+    border-left: 3px solid var(--accent);
+    border-radius: var(--radius-lg);
+    padding: 14px 18px;
+    margin-bottom: 1.5rem;
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.65;
+  }
+  .tc-intro strong { color: var(--text); }
+  .tc-intro a { color: var(--accent); text-decoration: underline; font-weight: 500; }
+
+  .tc-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    margin-bottom: 1.25rem;
+    overflow: hidden;
+  }
+  .tc-section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 18px;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+  }
+  .tc-section-icon {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    background: var(--accent-bg);
+    border: 1px solid var(--accent-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    flex-shrink: 0;
+  }
+  .tc-section-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.3;
+  }
+  .tc-section-sub {
+    font-size: 11.5px;
+    color: var(--text3);
+    margin-top: 2px;
+    line-height: 1.4;
+  }
+  .tc-section-body {
+    padding: 14px 18px;
+    font-size: 12.5px;
+    color: var(--text2);
+    line-height: 1.7;
+  }
+  .tc-path {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 11px;
+    background: var(--tag-bg);
+    color: var(--text);
+    padding: 2px 8px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    margin: 2px 0;
+  }
+  .tc-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0;
+    font-size: 12px;
+  }
+  .tc-table th {
+    text-align: left;
+    background: var(--surface2);
+    padding: 8px 11px;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: .07em;
+    border-bottom: 1px solid var(--border);
+  }
+  .tc-table td {
+    padding: 8px 11px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .tc-table tr:last-child td { border-bottom: none; }
+  .tc-table .tc-field-name {
+    font-weight: 600;
+    color: var(--text);
+  }
+  .tc-table code {
+    font-family: var(--mono);
+    font-size: 11px;
+    background: var(--tag-bg);
+    padding: 1px 6px;
+    border-radius: 3px;
+    color: var(--text);
+  }
+  .tc-tag-tipo {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+  }
+  .tc-tag-tipo.lista { background: #e3eef9; color: #2e5c8a; border: 1px solid #c5dbef; }
+  .tc-tag-tipo.numerico { background: #fef4e6; color: #8a5a1f; border: 1px solid #f0d9a8; }
+  .tc-tag-cod {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 700;
+    background: var(--accent-bg);
+    color: var(--accent);
+    border: 1px solid var(--accent-border);
+    padding: 2px 8px;
+    border-radius: 3px;
+  }
+  .tc-callout {
+    background: var(--warn-bg);
+    border: 1px solid var(--warn-border);
+    border-left: 3px solid var(--warn);
+    border-radius: 6px;
+    padding: 9px 13px;
+    margin: 10px 0;
+    font-size: 12px;
+    color: var(--text2);
+    line-height: 1.6;
+  }
+  .tc-callout-title {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--warn);
+    text-transform: uppercase;
+    letter-spacing: .07em;
+    margin-bottom: 4px;
+  }
+  .tc-callout.danger {
+    background: var(--danger-bg);
+    border-color: var(--danger-border);
+    border-left-color: var(--danger);
+  }
+  .tc-callout.danger .tc-callout-title { color: var(--danger); }
+  .tc-callout.info {
+    background: var(--accent-bg);
+    border-color: var(--accent-border);
+    border-left-color: var(--accent);
+  }
+  .tc-callout.info .tc-callout-title { color: var(--accent); }
+  .tc-list {
+    margin: 8px 0 8px 18px;
+    padding: 0;
+  }
+  .tc-list li {
+    margin-bottom: 4px;
+    line-height: 1.65;
+  }
+  .tc-link-betha {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--accent);
+    text-decoration: none;
+    padding: 6px 12px;
+    border: 1px solid var(--accent-border);
+    border-radius: 5px;
+    background: var(--accent-bg);
+    margin-top: 10px;
+    font-weight: 500;
+    transition: background .12s, border-color .12s;
+  }
+  .tc-link-betha:hover {
+    background: var(--surface);
+    border-color: var(--accent);
+  }
+</style>
+
+<div class="tc-intro">
+  <strong>Configurações iniciais obrigatórias para o e-Sfinge 2026.</strong> Antes de gerar dados pela primeira vez, todas as configurações abaixo precisam estar feitas. Cada bloco mostra <em>onde configurar no sistema</em>, <em>quais campos preencher</em> e <em>os Códigos TCE</em> a usar. Conteúdo baseado na <a href="https://arrecadacao.ajuda.betha.cloud/tributos/prestacaodecontas/esfinge/esfinge2026" target="_blank" rel="noopener">documentação oficial Betha</a>.
+</div>
+
+<!-- 1. CADASTRO CONTRIBUINTE -->
+<div class="tc-section">
+  <div class="tc-section-header">
+    <div class="tc-section-icon">👤</div>
+    <div>
+      <div class="tc-section-title">Cadastro Contribuinte — Representante Legal</div>
+      <div class="tc-section-sub">Necessário para gerar Nome, CPF e Tipo de Representante no Assunto 01</div>
+    </div>
+  </div>
+  <div class="tc-section-body">
+    <div>Onde configurar: <span class="tc-path">Administrando &gt; Pessoas &gt; Contribuintes</span></div>
+
+    <table class="tc-table" style="margin-top:12px">
+      <thead>
+        <tr>
+          <th style="width:200px">Campo</th>
+          <th>Regra</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="tc-field-name">Tipo de representante legal</td>
+          <td>Habilita-se quando <strong>Data de óbito</strong> está preenchida. Para contribuintes falecidos, preencher com <code>1 - Administrador provisório</code> ou <code>2 - Inventariante</code>. <strong>Obrigatório</strong> quando há data de óbito (referência: Tabela 133).</td>
+        </tr>
+        <tr>
+          <td class="tc-field-name">Representante legal</td>
+          <td>Habilita-se quando <strong>Tipo de representante</strong> = 1 ou 2. Listar o contribuinte que será o representante. <strong>Obrigatório</strong> nesse cenário.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="tc-callout">
+      <div class="tc-callout-title">⚠ Cadastros legados</div>
+      Para contribuintes que <strong>já tinham data de óbito</strong> antes da atualização, o campo Tipo de Representante foi preenchido automaticamente com <code>3 - Não identificado</code>. Revisar manualmente quando o tipo correto for conhecido.
+    </div>
+  </div>
+</div>
+
+<!-- 2. CADASTRO IMOBILIÁRIO -->
+<div class="tc-section">
+  <div class="tc-section-header">
+    <div class="tc-section-icon">🏠</div>
+    <div>
+      <div class="tc-section-title">Cadastro Imobiliário — Campos Adicionais</div>
+      <div class="tc-section-sub">Configuração obrigatória para gerar dados do Assunto 02</div>
+    </div>
+  </div>
+  <div class="tc-section-body">
+    <div>Onde configurar: <span class="tc-path">Configurando &gt; Base cadastral &gt; Campos adicionais</span></div>
+
+    <div class="tc-callout danger">
+      <div class="tc-callout-title">🚨 Mudança importante em 2026</div>
+      A partir de 2026 <strong>não serão mais consideradas as tabelas auxiliares</strong> para gerar esses campos. Os <strong>campos adicionais precisam estar configurados corretamente</strong>, ou os registros do Cadastro Imobiliário <strong>não serão gerados</strong>.
+    </div>
+
+    <table class="tc-table">
+      <thead>
+        <tr>
+          <th>Campo adicional a criar</th>
+          <th style="width:130px">Tipo do campo</th>
+          <th style="width:90px;text-align:center">Código TCE</th>
+          <th>Tabela de referência</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="tc-field-name">Tipo de Imóvel</td>
+          <td><span class="tc-tag-tipo lista">Lista de seleção</span></td>
+          <td style="text-align:center"><span class="tc-tag-cod">91</span></td>
+          <td>Tabela 91 — Tipo de Imóvel (Cadastro Imobiliário)</td>
+        </tr>
+        <tr>
+          <td class="tc-field-name">Tipo de Utilização do Imóvel</td>
+          <td><span class="tc-tag-tipo lista">Lista de seleção</span></td>
+          <td style="text-align:center"><span class="tc-tag-cod">90</span></td>
+          <td>Tabela 90 — Tipo de Utilização do Imóvel</td>
+        </tr>
+        <tr>
+          <td class="tc-field-name">Fração Ideal</td>
+          <td><span class="tc-tag-tipo numerico">Numérico</span></td>
+          <td style="text-align:center"><span class="tc-tag-cod">1001</span></td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td class="tc-field-name">Área Territorial Total do Imóvel</td>
+          <td><span class="tc-tag-tipo numerico">Numérico</span></td>
+          <td style="text-align:center"><span class="tc-tag-cod">1002</span></td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td class="tc-field-name">Área Edificada do Imóvel</td>
+          <td><span class="tc-tag-tipo numerico">Numérico</span></td>
+          <td style="text-align:center"><span class="tc-tag-cod">1003</span></td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td class="tc-field-name">Valor Venal do Imóvel</td>
+          <td><span class="tc-tag-tipo numerico">Numérico</span></td>
+          <td style="text-align:center"><span class="tc-tag-cod">1004</span></td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td class="tc-field-name">Frequência de Coleta de Lixo Domiciliar</td>
+          <td><span class="tc-tag-tipo lista">Lista de seleção</span></td>
+          <td style="text-align:center"><span class="tc-tag-cod">1341</span></td>
+          <td>Tabela 134 — Tipo de Frequência de Coleta</td>
+        </tr>
+        <tr>
+          <td class="tc-field-name">Frequência de Coleta de Lixo Seletiva</td>
+          <td><span class="tc-tag-tipo lista">Lista de seleção</span></td>
+          <td style="text-align:center"><span class="tc-tag-cod">1342</span></td>
+          <td>Tabela 134 — Tipo de Frequência de Coleta</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="tc-callout info">
+      <div class="tc-callout-title">💡 Para os campos do tipo Lista de seleção</div>
+      Na <strong>formatação do campo adicional</strong>, é necessário cadastrar <strong>todas as opções</strong> da tabela TCE correspondente (91, 90 ou 134). Sem todas as opções listadas, registros que usem qualquer item ausente travam a geração.
+    </div>
+  </div>
+</div>
+
+<!-- 3. IMÓVEL RURAL / ITBI -->
+<div class="tc-section">
+  <div class="tc-section-header">
+    <div class="tc-section-icon">🌾</div>
+    <div>
+      <div class="tc-section-title">Imóvel Rural — Inscrição INCRA e ITBI Rural</div>
+      <div class="tc-section-sub">Inscrição imobiliária agora obrigatória para Tipos de Crédito 11, 12 e 13</div>
+    </div>
+  </div>
+  <div class="tc-section-body">
+    <div class="tc-callout danger">
+      <div class="tc-callout-title">🚨 Nova obrigatoriedade em 2026</div>
+      O campo <strong>Inscrição Imobiliária</strong> passou a ser obrigatório também para registros de <strong>Lançamento de Créditos Tributários</strong> e <strong>Inscrição em Dívida Ativa</strong> com:
+      <ul class="tc-list">
+        <li><strong>Tipo Crédito 11</strong> — ITBI RURAL</li>
+        <li><strong>Tipo Crédito 12</strong> — ITBI SOBRE PARTILHA</li>
+        <li><strong>Tipo Crédito 13</strong> — IPTU DECORRENTE DE LEILÃO</li>
+      </ul>
+      Até 2025 era obrigatório apenas para Tipos 01 (IPTU), 02 (ITBI Urbano) e 04 (Contribuição de Melhoria).
+    </div>
+
+    <strong>O que precisa ser feito:</strong>
+    <ul class="tc-list">
+      <li>Imóveis do tipo <strong>Rural</strong> precisam ter o campo <strong>Inscrição INCRA</strong> preenchido — fazer um <em>saneamento da base</em> antes da próxima geração para evitar erros.</li>
+      <li>Em <span class="tc-path">Central de Configurações &gt; Transferência de imóveis</span>, marcar a opção <strong>"Cadastrar imóveis rurais"</strong> — a partir de 2026 lançamentos de ITBI Rural exigem o cadastro do imóvel.</li>
+    </ul>
+
+    <div class="tc-callout">
+      <div class="tc-callout-title">⏰ Antes de qualquer lançamento</div>
+      Recomendado realizar esse ajuste <strong>antes de efetuar qualquer lançamento de ITBI Rural com competência a partir de 01/2026</strong>. Lançamentos já feitos sem a configuração precisarão ser corrigidos depois.
+    </div>
+  </div>
+</div>
+
+<!-- 4. CADASTRO PROPRIEDADE IMOBILIÁRIA -->
+<div class="tc-section">
+  <div class="tc-section-header">
+    <div class="tc-section-icon">📜</div>
+    <div>
+      <div class="tc-section-title">Cadastro de Propriedade Imobiliária — Benefícios Fiscais</div>
+      <div class="tc-section-sub">Configura o campo Condição do Imóvel/Proprietário no Assunto 03</div>
+    </div>
+  </div>
+  <div class="tc-section-body">
+    <div>Onde configurar: <span class="tc-path">Administrando &gt; Cadastros auxiliares &gt; Benefícios fiscais</span></div>
+
+    <p style="margin-top:10px">No campo <strong>Código TCE</strong> do quadro <em>Configurações Gerais</em> de cada benefício fiscal vinculado a imóveis, informar o respectivo código da <strong>Tabela 92 — Situação Fiscal</strong>.</p>
+
+    <div class="tc-callout danger">
+      <div class="tc-callout-title">🚨 Atenção — informe o código do ITEM, não da tabela</div>
+      No campo deve ser informado o <strong>código do item</strong> da Tabela 92 (ex: <code>05</code>, <code>06</code>, <code>07</code>) — <strong>não</strong> o número da tabela (92).
+    </div>
+
+    <strong>Mudança importante — opção 02 não é mais válida desde 2025:</strong>
+    <p style="margin-top:6px">A opção <code>02 - Imune (Outras Imunidades)</code> foi <strong>excluída</strong> da Tabela 92. Para benefícios fiscais do tipo <em>Imunidade</em>, usar uma das novas opções:</p>
+
+    <table class="tc-table">
+      <thead>
+        <tr>
+          <th style="width:90px;text-align:center">Código</th>
+          <th>Tipo de imunidade</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="text-align:center"><span class="tc-tag-cod">05</span></td>
+          <td>Imunidade Recíproca <span style="color:var(--text3)">(CF/1988, art. 150, VI, a)</span></td>
+        </tr>
+        <tr>
+          <td style="text-align:center"><span class="tc-tag-cod">06</span></td>
+          <td>Imunidade Religiosa <span style="color:var(--text3)">(CF/1988, art. 150, VI, b)</span></td>
+        </tr>
+        <tr>
+          <td style="text-align:center"><span class="tc-tag-cod">07</span></td>
+          <td>Imunidade de Entidades <span style="color:var(--text3)">(CF/1988, art. 150, VI, c)</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- 5. COBRANÇA DE DÍVIDA ATIVA -->
+<div class="tc-section">
+  <div class="tc-section-header">
+    <div class="tc-section-icon">💼</div>
+    <div>
+      <div class="tc-section-title">Cobrança de Dívida Ativa — Legislação do Parcelamento</div>
+      <div class="tc-section-sub">Necessário para gerar o campo Legislação do Parcelamento no Assunto 05</div>
+    </div>
+  </div>
+  <div class="tc-section-body">
+    <div>Onde configurar: <span class="tc-path">Configurando &gt; Condições de parcelamento &gt; Parcelamento de créditos</span></div>
+
+    <p style="margin-top:10px">Editar cada condição de parcelamento e preencher o campo <strong>Ato/lei</strong>. Esse valor é o que vai ser enviado ao TCE como <em>Legislação do Parcelamento</em>.</p>
+  </div>
+</div>
+
+<!-- 6. VARIÁVEIS DE AMBIENTE -->
+<div class="tc-section">
+  <div class="tc-section-header">
+    <div class="tc-section-icon">🔐</div>
+    <div>
+      <div class="tc-section-title">Variáveis de Ambiente</div>
+      <div class="tc-section-sub">Identificam o responsável e controlam o tamanho dos lotes de envio</div>
+    </div>
+  </div>
+  <div class="tc-section-body">
+    <div>Onde configurar: <span class="tc-path">Gerenciador de Scripts &gt; Configurando &gt; Variáveis de ambiente</span> (botão no canto superior direito)</div>
+
+    <table class="tc-table" style="margin-top:12px">
+      <thead>
+        <tr>
+          <th style="width:280px">Chave</th>
+          <th>Conteúdo / regra</th>
+          <th style="width:100px;text-align:center">Obrigatória?</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>CPF_RESPONSAVEL_SETOR_TRIBUTOS</code></td>
+          <td>CPF válido do responsável pelas operações automatizadas (cálculos em massa, geração automática). Usado nos campos <em>CPF do Responsável pela Operação</em> dos assuntos 04, 09 e 10.</td>
+          <td style="text-align:center"><strong style="color:var(--danger)">Sim</strong></td>
+        </tr>
+        <tr>
+          <td><code>QUANTIDADE_REGISTROS_POR_ENVIO</code></td>
+          <td>Quantidade de registros enviados por lote. Padrão (se não configurada): <code>10000</code> (dez mil registros).</td>
+          <td style="text-align:center" style="color:var(--text3)">Não</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="tc-callout danger">
+      <div class="tc-callout-title">🚨 Atenção</div>
+      A <code>CPF_RESPONSAVEL_SETOR_TRIBUTOS</code> é <strong>extremamente importante</strong> — o campo <em>CPF do Responsável pela Operação</em> é <strong>obrigatório no leiaute 2026</strong>. Sem ela, lançamentos automatizados não conseguem ser gerados/enviados.
+    </div>
+  </div>
+</div>
+
+<!-- 7. CENTRAL DO USUÁRIO -->
+<div class="tc-section">
+  <div class="tc-section-header">
+    <div class="tc-section-icon">🪪</div>
+    <div>
+      <div class="tc-section-title">Central do Usuário — CPF dos usuários</div>
+      <div class="tc-section-sub">Necessário para gerar o CPF do Responsável pela Operação</div>
+    </div>
+  </div>
+  <div class="tc-section-body">
+    <p>Todos os usuários dos sistemas <strong>Tributos</strong>, <strong>Procuradoria</strong> e <strong>Prestação de Contas</strong> precisam acessar a <strong>Central do Usuário</strong> e preencher o campo <strong>CPF</strong> no próprio cadastro.</p>
+
+    <p style="margin-top:10px">Esse CPF é usado nos campos <em>CPF do Responsável pela Operação</em> dos assuntos:</p>
+    <ul class="tc-list">
+      <li><strong>04</strong> — Lançamento de Créditos Tributários / Inscrição em Dívida Ativa</li>
+      <li><strong>09</strong> — Revisão de Valor de Lançamento</li>
+      <li><strong>10</strong> — Baixa dos Créditos Tributários</li>
+    </ul>
+
+    <div class="tc-callout danger">
+      <div class="tc-callout-title">🚨 Importante</div>
+      Configuração de <strong>extrema importância</strong> — campo obrigatório no leiaute 2026. Operações feitas manualmente por usuários sem CPF cadastrado <strong>não geram registros válidos</strong>.
+    </div>
+  </div>
+</div>
+
+<!-- 8. NATUREZA DA RECEITA -->
+<div class="tc-section">
+  <div class="tc-section-header">
+    <div class="tc-section-icon">💰</div>
+    <div>
+      <div class="tc-section-title">Natureza da Receita — Vínculo PCASPSC</div>
+      <div class="tc-section-sub">Configura Natureza da Receita nos assuntos 04 (Lançamento) e 11 (Diário Geral)</div>
+    </div>
+  </div>
+  <div class="tc-section-body">
+    <strong>Onde configurar (ordem de preferência):</strong>
+    <ul class="tc-list">
+      <li><strong>Entidades que usam o sistema Contábil:</strong> <span class="tc-path">Contábil &gt; Executando &gt; Arrecadações &gt; Configurar</span> — informar a Natureza da Receita conforme o <strong>PCASPSC</strong> para cada receita.</li>
+      <li><strong>Entidades que NÃO usam o Contábil:</strong> configurar nos <span class="tc-path">Cadastros Gerais &gt; Tabela Rubricas</span>.</li>
+    </ul>
+
+    <div class="tc-callout info">
+      <div class="tc-callout-title">📐 Compatibilidade obrigatória</div>
+      O relacionamento entre Natureza da Receita e Tipo de Crédito/Arrecadação precisa respeitar dois quadros oficiais do TCE/SC:
+      <ul class="tc-list" style="margin-top:6px">
+        <li><strong>Quadro 7</strong> — Natureza de Receita × Tipo de Crédito</li>
+        <li><strong>Quadro 8</strong> — Tipo da Natureza de Receita × Tipo de Arrecadação</li>
+      </ul>
+    </div>
+
+    <strong>CONs que validam essa compatibilidade:</strong>
+    <table class="tc-table" style="margin-top:8px">
+      <thead>
+        <tr>
+          <th style="width:90px">CON</th>
+          <th>O que valida</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="tc-tag-cod">CON732</span></td>
+          <td>Tipo da Natureza da Receita compatível com o Tipo de Arrecadação no Diário Geral de Arrecadação</td>
+        </tr>
+        <tr>
+          <td><span class="tc-tag-cod">CON733</span></td>
+          <td>Natureza da Receita do Diário Geral compatível com o Tipo de Crédito do Lançamento</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <a href="https://jira-tcesc.atlassian.net/wiki/spaces/SD/pages/1744341072/v6.04+-+Quadro+7+-+Natureza+de+Receita+x+Tipo+de+Cr+dito" target="_blank" rel="noopener" class="tc-link-betha">📐 Quadro 7 oficial — TCE/SC</a>
+    &nbsp;
+    <a href="https://jira-tcesc.atlassian.net/wiki/spaces/SD/pages/1744341087/v6.04+-+Quadro+8+-+Tipo+da+Natureza+de+Receita+x+Tipo+de+Arrecada+o" target="_blank" rel="noopener" class="tc-link-betha">📐 Quadro 8 oficial — TCE/SC</a>
+  </div>
+</div>
+
+<!-- LINK FONTE -->
+<div class="tc-callout info" style="margin-top:1.5rem">
+  <div class="tc-callout-title">📖 Documentação oficial completa</div>
+  Conteúdo desta página foi montado com base na <strong>central de ajuda da Betha</strong>. Para ler a versão integral, com prints das telas: <a href="https://arrecadacao.ajuda.betha.cloud/tributos/prestacaodecontas/esfinge/esfinge2026" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:underline">arrecadacao.ajuda.betha.cloud — e-Sfinge 2026</a>.
+</div>
+
+</div><!-- /gs-tabelas-config -->
+
   </div>
   <!-- fim guias -->
 
@@ -4364,6 +4909,58 @@
   .er-code-block code .kw  { color: #9bd4ff; }
   .er-code-block code .str { color: #b8e8a0; }
   .er-code-block code .cm  { color: #7a756c; }
+  /* Code block dentro dos cards de Scripts Úteis */
+  .sc-code-section-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    margin: 16px 0 6px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .sc-code-section-label .sc-copy-code-btn {
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: none;
+    letter-spacing: 0;
+    color: #b8e8a0;
+    background: #1e1c18;
+    border: 1px solid #2e2a24;
+    border-radius: 4px;
+    padding: 3px 9px;
+    cursor: pointer;
+    transition: background .12s, border-color .12s;
+  }
+  .sc-code-section-label .sc-copy-code-btn:hover {
+    background: #2a2620;
+    border-color: #b8e8a0;
+  }
+  .sc-code-section-label .sc-copy-code-btn.copied {
+    background: #1a5c35;
+    border-color: #a0d9b8;
+    color: #fff;
+  }
+  .sc-code-block {
+    background: #1e1c18;
+    border-radius: var(--radius);
+    padding: 10px 13px;
+    overflow-x: auto;
+    max-height: 400px;
+    overflow-y: auto;
+  }
+  .sc-code-block pre {
+    margin: 0;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: #d4cfc5;
+    line-height: 1.65;
+    white-space: pre;
+  }
 
   .er-confirm-box {
     background: var(--ok-bg);
@@ -6655,87 +7252,2009 @@ percorrer (dadosEsfinge) { itemEsfinge -&gt;
       </div>
       <!-- fim sc-010 -->
 
-      <div class="sc-card" id="sc-010" data-search="arrecadação rubrica valores contabilidade tributos compatibilidade CON 807 809 IPTU ITBI ISS consulta comparação competência diário geral arrecadação assunto 11">
-        <div class="sc-card-header" onclick="scToggle('sc-010')">
-          <div class="sc-card-icon">📊</div>
+
+
+
+
+
+
+
+
+
+
+
+
+      <!-- SC-011 -->
+      <div class="sc-card" id="sc-011" data-search="alterar dados específicos campos dadosenvio fonte esfinge tratamento numerocpf">
+        <div class="sc-card-header" onclick="scToggle('sc-011')">
+          <div class="sc-card-icon">✏️</div>
           <div class="sc-card-meta">
-            <div class="sc-card-title">[Tributos] e-Sfinge Online 2026 — Consultas Gerais — Valores arrecadados por rubrica</div>
-            <div class="sc-card-short">Totaliza arrecadação por rubrica na fonte e-Sfinge e permite confrontar com a contabilidade (CON 807/809)</div>
+            <div class="sc-card-title">Alterar dados específicos na fonte do e-Sfinge</div>
+            <div class="sc-card-short">Modifica campos específicos do JSON dadosEnvio em registros já gerados</div>
             <div class="sc-badge-row">
-              <span class="sc-tag ok">Prestação de Contas</span>
-              <span class="sc-tag assunto">Consulta</span>
-              <span class="sc-tag erro">CON 807 · 809</span>
+              <span class="sc-tag ok">Tributos / PC</span>
+              <span class="sc-tag assunto">Tratamento de dados</span>
+              <span class="sc-tag">dadosEnvio</span>
             </div>
           </div>
-          <button class="sc-toggle-btn" onclick="event.stopPropagation();scToggle('sc-010')" title="Expandir">▼</button>
+          <button class="sc-toggle-btn" onclick="event.stopPropagation();scToggle('sc-011')" title="Expandir">▼</button>
         </div>
         <div class="sc-card-body">
           <div class="sc-desc-full">
-            Verifica a <strong>compatibilidade da arrecadação entre Tributos e Contabilidade</strong> antes do envio do e-Sfinge, prevenindo inconsistências nas <strong>CON 807 e 809</strong>. O script:<br><br>
-            <strong>1.</strong> Consulta a fonte do e-Sfinge do Tributos e totaliza a arrecadação por rubrica (impostos e taxas)<br>
-            <strong>2.</strong> Exibe um log detalhado com os valores de cada rubrica separados por <strong>IPTU, ITBI, ISS, Inspeção, Vigilância Sanitária e Prestação de Serviços</strong><br>
-            <strong>3.</strong> Permite filtrar por competência via parâmetro (Mês/Ano)<br><br>
-            Para comparação, utilizar como base os valores da coluna <strong>"Contábil - Arrecadação Bruta [d]"</strong> do relatório disponível no site do TCE: <strong>Relatórios Gerais Remessa Online → Módulo Tributário → "Tributário - Arrecadações Tributário x Registros Contábeis por Ano/Mês"</strong>. A partir desses valores, é possível confrontar com o total apurado pelo script e garantir que o Tributos possua uma arrecadação com compatibilidade mínima de <strong>95%</strong> em relação à contabilidade.
+            Permite alterar <strong>campos específicos</strong> dentro do <code>dadosEnvio</code> de registros já gerados na fonte do e-Sfinge, sem precisar regerar todos os dados.<br><br>O exemplo do código altera o campo <code>numeroCpfResponsavelOperacao</code> em registros do assunto <strong>04 (Lançamentos)</strong>. Para usar em outro cenário, ajustar o <strong>filtroEsfinge</strong> e o(s) campo(s) de <strong>dadosEnvio</strong> a alterar.
           </div>
           <div class="sc-obs">
-            <strong>⚙️ Sistema:</strong> executar no <strong>Prestação de Contas</strong>.<br>
-            <strong>📄 Base centralizada:</strong> PREFEITURA MUNICIPAL DE ATALANTA
+            ⚠️ A linha de <code>fonteEsfinge.altera()</code> está comentada por segurança — descomentar somente após validar os logs.
           </div>
-          <div class="sc-key-section-label">Chave de importação</div>
-          <div class="sc-key-block">
-            <span class="sc-key-label">Chave</span>
-            <span class="sc-key-value" id="sc-key-010">c10a2de0-58cd-471c-9f78-2b8b664b1dcb</span>
-            <button class="sc-copy-key-btn" onclick="scCopyKey('sc-key-010', this)">📋 Copiar chave</button>
+          <div class="sc-code-section-label">
+            <span>Script</span>
+            <button class="sc-copy-code-btn" onclick="scCopyCode('sc-011-code', this)">📋 Copiar script</button>
           </div>
+          <div class="sc-code-block"><pre id="sc-011-code">fonteEsfinge = Dados.tributos.v2.esfinge;
+
+filtroEsfinge = &quot;idGrupo = &#x27;202505&#x27; and nomeArquivo = &#x27;lancamentosCreditosTributarios&#x27;&quot;
+
+dadosEsfinge = fonteEsfinge.busca(criterio: filtroEsfinge)
+
+percorrer (dadosEsfinge) { itemEsfinge -&gt;
+
+    dadosEnvio = JSON.ler(itemEsfinge.dadosEnvio)
+
+    dadosEnvio.numeroCpfResponsavelOperacao = &quot;12345678900&quot;
+
+    conteudo = [
+        nomeTce: itemEsfinge.nomeTce,
+        idGrupo: itemEsfinge.idGrupo,
+        idDado: itemEsfinge?.idDado ?: null,
+        codigoTce: itemEsfinge.codigoTce,
+        tipoDado: itemEsfinge.tipoDado,
+        nomeArquivo: itemEsfinge.nomeArquivo,
+        operacao: itemEsfinge.operacao.valor,
+        sistema: itemEsfinge.sistema.valor,
+        dadosEnvio: JSON.escrever(dadosEnvio),
+        chavePacote: itemEsfinge.chavePacote,
+        // Novos campos
+        estorno: itemEsfinge.estorno,
+        codigoArrecadacao: itemEsfinge.codigoArrecadacao ?: null,
+        valor: itemEsfinge.valor ?: null,
+        anoLancamento: itemEsfinge.anoLancamento ?: null,
+        codigoLancamento: itemEsfinge.codigoLancamento ?: null,
+        anoLancamentoNovo: itemEsfinge.anoLancamentoNovo ?: null,
+        codigoLancamentoNovo: itemEsfinge.codigoLancamentoNovo ?: null
+    ]
+
+    imprimir itemEsfinge
+    imprimir conteudo
+    //fonteEsfinge.altera(conteudo: conteudo, parametros:[&quot;id&quot;: itemEsfinge.id])
+}</pre></div>
         </div>
       </div>
-      <!-- fim sc-010 -->
+      <!-- fim sc-011 -->
 
-      <div class="sc-card" id="sc-010" data-search="arrecadação rubrica valores contabilidade compatibilidade CON 807 809 IPTU ITBI ISS inspeção vigilância sanitária prestação serviços diário geral assunto 11 consulta">
-        <div class="sc-card-header" onclick="scToggle('sc-010')">
-          <div class="sc-card-icon">📊</div>
+      <!-- SC-012 -->
+      <div class="sc-card" id="sc-012" data-search="alterar tipo crédito tipocredito 02 11 lançamentos sem inscrição imobiliária assunto 04">
+        <div class="sc-card-header" onclick="scToggle('sc-012')">
+          <div class="sc-card-icon">🔧</div>
           <div class="sc-card-meta">
-            <div class="sc-card-title">[Tributos] e-Sfinge Online 2026 — Consultas Gerais — Valores arrecadados por rubrica</div>
-            <div class="sc-card-short">Totaliza arrecadação por rubrica na fonte e-Sfinge e permite confrontar com a contabilidade (CON 807/809)</div>
+            <div class="sc-card-title">Alterar tipo de crédito dos lançamentos</div>
+            <div class="sc-card-short">Ajusta o tipoCredito de 02 para 11 em lançamentos sem inscrição imobiliária</div>
             <div class="sc-badge-row">
-              <span class="sc-tag ok">Prestação de Contas</span>
-              <span class="sc-tag assunto">Consulta</span>
+              <span class="sc-tag ok">Tributos / PC</span>
+              <span class="sc-tag assunto">Assunto 04</span>
+              <span class="sc-tag">tipoCredito</span>
+            </div>
+          </div>
+          <button class="sc-toggle-btn" onclick="event.stopPropagation();scToggle('sc-012')" title="Expandir">▼</button>
+        </div>
+        <div class="sc-card-body">
+          <div class="sc-desc-full">
+            Altera o <strong>tipoCredito</strong> de lançamentos no e-Sfinge. No exemplo, ajusta de <code>02</code> para <code>11</code> quando o lançamento <strong>não possui inscrição imobiliária</strong>.<br><br>Útil para corrigir lançamentos classificados incorretamente como IPTU (02) quando, na verdade, deveriam ser de outro tipo de crédito por não estarem vinculados a um imóvel.
+          </div>
+          <div class="sc-obs">
+            ⚠️ Substituir a lista de IDs (<code>lista = [...]</code>) pelos IDs dos lançamentos a corrigir. A linha de <code>fonteEsfinge.altera()</code> está comentada — descomentar após validar.
+          </div>
+          <div class="sc-code-section-label">
+            <span>Script</span>
+            <button class="sc-copy-code-btn" onclick="scCopyCode('sc-012-code', this)">📋 Copiar script</button>
+          </div>
+          <div class="sc-code-block"><pre id="sc-012-code">fonteEsfinge = Dados.tributos.v2.esfinge;
+
+lista = [/* coloque seus IDs aqui */]
+
+percorrer(lista){
+
+    filtroEsfinge = &quot;idGrupo = &#x27;202507&#x27; and nomeArquivo = &#x27;lancamentosCreditosTributarios&#x27; and codigoTce like &#x27;%$item&#x27;&quot;
+    dadosEsfinge = fonteEsfinge.busca(criterio: filtroEsfinge)
+
+    percorrer (dadosEsfinge) { itemEsfinge -&gt;
+
+        dadosEnvio = JSON.ler(itemEsfinge.dadosEnvio)
+
+        if(dadosEnvio.tipoCredito == &#x27;02&#x27; &amp;&amp; !dadosEnvio.numeroInscricaoImobiliaria){
+
+            dadosEnvio.tipoCredito = &#x27;11&#x27;
+
+            conteudo = [
+                nomeTce: itemEsfinge.nomeTce,
+                idGrupo: itemEsfinge.idGrupo,
+                idDado: itemEsfinge?.idDado ?: null,
+                codigoTce: itemEsfinge.codigoTce,
+                tipoDado: itemEsfinge.tipoDado,
+                nomeArquivo: itemEsfinge.nomeArquivo,
+                operacao: itemEsfinge.operacao.valor,
+                sistema: itemEsfinge.sistema.valor,
+                dadosEnvio: JSON.escrever(dadosEnvio),
+                chavePacote: itemEsfinge.chavePacote,
+                // Novos campos
+                estorno: itemEsfinge.estorno,
+                codigoArrecadacao: itemEsfinge.codigoArrecadacao ?: null,
+                valor: itemEsfinge.valor ?: null,
+                anoLancamento: itemEsfinge.anoLancamento ?: null,
+                codigoLancamento: itemEsfinge.codigoLancamento ?: null,
+                anoLancamentoNovo: itemEsfinge.anoLancamentoNovo ?: null,
+                codigoLancamentoNovo: itemEsfinge.codigoLancamentoNovo ?: null
+            ]
+
+            imprimir itemEsfinge
+            imprimir conteudo
+            //fonteEsfinge.altera(conteudo: conteudo, parametros:[&quot;id&quot;: itemEsfinge.id])
+        }
+    }
+}</pre></div>
+        </div>
+      </div>
+      <!-- fim sc-012 -->
+
+      <!-- SC-013 -->
+      <div class="sc-card" id="sc-013" data-search="alterar tipo crédito prefeitura município nome contribuinte tipocredito 03 14 exclusão">
+        <div class="sc-card-header" onclick="scToggle('sc-013')">
+          <div class="sc-card-icon">🏛️</div>
+          <div class="sc-card-meta">
+            <div class="sc-card-title">Alterar tipo de crédito dos lançamentos gerados no nome do município</div>
+            <div class="sc-card-short">Exclui lançamentos com tipoCredito 01/02/05/08 e altera 03 para 14 quando contribuinte é a prefeitura</div>
+            <div class="sc-badge-row">
+              <span class="sc-tag ok">Tributos / PC</span>
+              <span class="sc-tag assunto">Assunto 04</span>
+              <span class="sc-tag">Prefeitura</span>
+            </div>
+          </div>
+          <button class="sc-toggle-btn" onclick="event.stopPropagation();scToggle('sc-013')" title="Expandir">▼</button>
+        </div>
+        <div class="sc-card-body">
+          <div class="sc-desc-full">
+            Trata os lançamentos gerados em nome da própria <strong>prefeitura</strong> (contribuinte = município).<br><br>O script verifica o <code>tipoCredito</code> do lançamento:<br>• Se for <strong>01, 02, 05 ou 08</strong> → <strong>exclui</strong> o registro da fonte<br>• Se for <strong>03</strong> → altera para <strong>14</strong>
+          </div>
+          <div class="sc-obs">
+            ⚠️ Definir <code>codigoContribuintePrefeitura</code> e <code>competencia</code> antes de executar. As exclusões/alterações ocorrem direto na fonte.
+          </div>
+          <div class="sc-code-section-label">
+            <span>Script</span>
+            <button class="sc-copy-code-btn" onclick="scCopyCode('sc-013-code', this)">📋 Copiar script</button>
+          </div>
+          <div class="sc-code-block"><pre id="sc-013-code">competencia = &quot;202508&quot;
+codigoContribuintePrefeitura = &quot;1220&quot;
+
+fonteEsfinge = Dados.tributos.v2.esfinge;
+filtroEsfinge = &quot;idGrupo = &#x27;$competencia&#x27; and nomeArquivo = &#x27;lancamentosCreditosTributarios&#x27; and dadosEnvio like &#x27;%numeroMatriculaContribuinte\&quot;:$codigoContribuintePrefeitura,%&#x27;&quot;
+dadosEsfinge = fonteEsfinge.busca(criterio: filtroEsfinge, ordenacao: &quot;idGrupo asc&quot;)
+codigoLancamentoCreditoTributario = [];
+
+percorrer (dadosEsfinge) { itemEsfinge -&gt;
+  dado = JSON.ler(itemEsfinge.dadosEnvio);
+  se(dado.tipoCredito in[&#x27;01&#x27;,&#x27;02&#x27;,&#x27;05&#x27;,&#x27;08&#x27;]){
+    dadosEsfinge = fonteEsfinge.excluir(parametros:[&quot;id&quot;:itemEsfinge.id]);
+    imprimir itemEsfinge
+  }senao{
+    se(dado.tipoCredito in[&#x27;03&#x27;]){
+      imprimir itemEsfinge
+      conteudo = [
+        nomeTce: itemEsfinge.nomeTce,
+        idDado: (itemEsfinge.idDado ? itemEsfinge.idDado : null),
+        idGrupo: itemEsfinge.idGrupo,
+        tipoDado: itemEsfinge.tipoDado,
+        nomeArquivo: itemEsfinge.nomeArquivo,
+        codigoTce: itemEsfinge.codigoTce,
+        operacao: itemEsfinge.operacao.valor.toString(),
+        status: (itemEsfinge.status ? itemEsfinge.status.valor.toString() : null),
+        sistema: itemEsfinge.sistema.valor.toString(),
+        dadosEnvio: itemEsfinge.dadosEnvio.replace(&#x27;&quot;tipoCredito&quot;:&quot;03&quot;&#x27;,&#x27;&quot;tipoCredito&quot;:&quot;14&quot;&#x27;),
+        cancelado: itemEsfinge.cancelado,
+        dadosRetorno: null,
+        chavePacote: itemEsfinge.chavePacote ? itemEsfinge.chavePacote : null,
+        numeroLote: null,
+        dataHoraEnvio: null,
+        // Novos campos
+        estorno: itemEsfinge.estorno,
+        codigoArrecadacao: itemEsfinge.codigoArrecadacao ?: null,
+        valor: itemEsfinge.valor ?: null,
+        anoLancamento: itemEsfinge.anoLancamento ?: null,
+        codigoLancamento: itemEsfinge.codigoLancamento ?: null,
+        anoLancamentoNovo: itemEsfinge.anoLancamentoNovo ?: null,
+        codigoLancamentoNovo: itemEsfinge.codigoLancamentoNovo ?: null
+    ];
+    imprimir conteudo
+    fonteEsfinge.altera(parametros:[id:itemEsfinge.id], conteudo: conteudo);
+    }
+  }
+}</pre></div>
+        </div>
+      </div>
+      <!-- fim sc-013 -->
+
+      <!-- SC-014 -->
+      <div class="sc-card" id="sc-014" data-search="atualiza data ano lançamentos retroativos competência atual john marcos multi-assunto baixa arrecadação dívida prescricional">
+        <div class="sc-card-header" onclick="scToggle('sc-014')">
+          <div class="sc-card-icon">📅</div>
+          <div class="sc-card-meta">
+            <div class="sc-card-title">Atualizar data e ano de lançamentos retroativos para a competência atual</div>
+            <div class="sc-card-short">Detecta lançamentos retroativos e ajusta data, ano e referências em todos os assuntos relacionados</div>
+            <div class="sc-badge-row">
+              <span class="sc-tag ok">Tributos / PC</span>
+              <span class="sc-tag assunto">Multi-assunto</span>
+              <span class="sc-tag">Lançamentos retroativos</span>
+            </div>
+          </div>
+          <button class="sc-toggle-btn" onclick="event.stopPropagation();scToggle('sc-014')" title="Expandir">▼</button>
+        </div>
+        <div class="sc-card-body">
+          <div class="sc-desc-full">
+            Script avançado que <strong>detecta lançamentos retroativos</strong> (com data fora da competência atual) e os ajusta para a competência informada.<br><br>O que ele faz:<br><strong>1.</strong> Localiza lançamentos cuja <code>dataLancamento</code> está fora da competência atual<br><strong>2.</strong> Verifica se o lançamento já foi enviado em outra competência — se sim, exclui o registro atual<br><strong>3.</strong> Caso contrário, atualiza <code>dataLancamento</code>, <code>anoLancamentoCreditoTributario</code> e <code>anoMesCompetencia</code><br><strong>4.</strong> Atualiza o ano em <strong>todos os assuntos relacionados</strong> (baixas, arrecadação, dívida ativa, prazo prescricional)<br><br>Desenvolvido por <strong>John Marcos</strong>.
+          </div>
+          <div class="sc-obs">
+            ⚠️ Definir <code>competencia</code> e <code>novaDataLancamento</code> no topo. As linhas <code>fonteEsfinge.altera()</code> e <code>fonteEsfinge.excluir()</code> estão comentadas no método — descomentar para efetuar as alterações.
+          </div>
+          <div class="sc-code-section-label">
+            <span>Script</span>
+            <button class="sc-copy-code-btn" onclick="scCopyCode('sc-014-code', this)">📋 Copiar script</button>
+          </div>
+          <div class="sc-code-block"><pre id="sc-014-code">// Desenvolvido por John Marcos
+competencia = &quot;202512&quot;
+novaDataLancamento = &quot;2025-12-01&quot; // Nova data a ser preenchida - ano-mês-dia (yyyy-MM-dd)
+
+fonteEsfinge = Dados.tributos.v2.esfinge
+filtroEsfinge = &quot;idGrupo = &#x27;$competencia&#x27; and nomeArquivo = &#x27;lancamentosCreditosTributarios&#x27;&quot;
+
+dadosEsfinge = fonteEsfinge.busca(criterio: filtroEsfinge)
+
+percorrer (dadosEsfinge) { itemEsfinge -&gt;
+
+    dadosEnvioLancamento = JSON.ler(itemEsfinge.dadosEnvio)
+
+    if(!dadosEnvioLancamento.dataLancamento.replaceFirst(&quot;-&quot;, &quot;&quot;).startsWith(competencia)){
+
+          imprimir &quot;Lançamento retroativo:&quot;
+          imprimir itemEsfinge
+
+          // Antes de alterar, verifica se já não foi gerado e ajustado nas competências anteriores
+          filtro = &quot;idGrupo != &#x27;$competencia&#x27; and nomeArquivo = &#x27;lancamentosCreditosTributarios&#x27; and codigoTce = &#x27;$itemEsfinge.codigoTce&#x27;&quot;
+          lancamentoEnviado = fonteEsfinge.busca(criterio: filtro, primeiro: true)
+
+          if(lancamentoEnviado){
+            alteraDadosEsfinge(itemEsfinge, dadosEnvioLancamento, &#x27;EXCLUSAO&#x27;)
+        } else {
+
+            dadosEnvioLancamento.dataLancamento = novaDataLancamento
+            dadosEnvioLancamento.anoLancamentoCreditoTributario = novaDataLancamento[0..3].toInteger()
+            dadosEnvioLancamento.anoMesCompetencia = competencia
+
+            alteraDadosEsfinge(itemEsfinge, dadosEnvioLancamento, &#x27;ALTERACAO&#x27;)
+        }
+
+        // Outros assuntos onde esse lançamento está referenciado
+        filtroEsfinge = &quot;idGrupo = &#x27;$competencia&#x27; and dadosEnvio like &#x27;%$dadosEnvioLancamento.codigoLancamentoCreditoTributario%&#x27; and nomeArquivo != &#x27;lancamentosCreditosTributarios&#x27;&quot;
+        movimentosLancamento = fonteEsfinge.busca(criterio: filtroEsfinge)
+
+        imprimir &quot;Movimentos no mês que referenciam esse lançamento:&quot;
+        percorrer(movimentosLancamento){ movimentoEsfinge -&gt;
+
+            dadosEnvioMovimento = JSON.ler(movimentoEsfinge.dadosEnvio)
+
+            // Atualiza o ano do lançamento nos assuntos que referenciam o lançamento
+            // 10 - Baixa | 11 - Arrecadação
+            if(dadosEnvioMovimento.codigoLancamentoCreditoTributario &amp;&amp; dadosEnvioMovimento.codigoLancamentoCreditoTributario == dadosEnvioLancamento.codigoLancamentoCreditoTributario){
+                dadosEnvioMovimento.anoLancamentoCreditoTributario = novaDataLancamento[0..3].toInteger()
+
+            // 10 - Baixa
+            } else if(dadosEnvioMovimento.codigoLancamentoCreditoTributarioDividaAtiva &amp;&amp; dadosEnvioMovimento.codigoLancamentoCreditoTributarioDividaAtiva == dadosEnvioLancamento.codigoLancamentoCreditoTributario){
+                dadosEnvioMovimento.anoLancamentoCreditoTributarioDividaAtiva = novaDataLancamento[0..3].toInteger()
+
+            // Outros
+            } else if(dadosEnvioMovimento.codigoLancamentoCreditoTributarioOuNumeroInscricaoDividaAtiva &amp;&amp; dadosEnvioMovimento.codigoLancamentoCreditoTributarioOuNumeroInscricaoDividaAtiva == dadosEnvioLancamento.codigoLancamentoCreditoTributario){
+
+                if(movimentoEsfinge.nomeArquivo in [&#x27;cobrancaDividaAtiva&#x27;, &#x27;situacaoTipoCobrancaDividaAtiva&#x27;, &#x27;certidaoDividaAtiva&#x27;]){
+                    dadosEnvioMovimento.anoLancamentoCreditoTributarioOuNumeroInscricaoDividaAtiva = novaDataLancamento[0..3].toInteger()
+
+                } else if(movimentoEsfinge.nomeArquivo == &#x27;inicioPrazoPrescricional&#x27;){
+                    dadosEnvioMovimento.anoLancamentoCreditoTributarioOuDividaAtiva = novaDataLancamento[0..3]
+                }
+          }
+
+          alteraDadosEsfinge(movimentoEsfinge, dadosEnvioMovimento, &#x27;ALTERACAO&#x27;)
+        }
+
+        imprimir &quot;-------------------------------------------------------------------------------------------------------------------------------&quot;
+    }
+}
+
+def alteraDadosEsfinge(itemEsfinge, dadosEnvio, tipoAlteracao){
+
+    conteudo = [
+        nomeTce: itemEsfinge.nomeTce,
+        idGrupo: itemEsfinge.idGrupo,
+        idDado: itemEsfinge?.idDado ?: null,
+        codigoTce: itemEsfinge.codigoTce,
+        tipoDado: itemEsfinge.tipoDado,
+        nomeArquivo: itemEsfinge.nomeArquivo,
+        operacao: itemEsfinge.operacao.valor,
+        sistema: itemEsfinge.sistema.valor,
+        dadosEnvio: JSON.escrever(dadosEnvio),
+        chavePacote: itemEsfinge.chavePacote,
+        // Novos campos
+        estorno: itemEsfinge.estorno,
+        codigoArrecadacao: itemEsfinge.codigoArrecadacao ?: null,
+        valor: itemEsfinge.valor ?: null,
+        anoLancamento: itemEsfinge.anoLancamento ?: null,
+        codigoLancamento: itemEsfinge.codigoLancamento ?: null,
+        anoLancamentoNovo: itemEsfinge.anoLancamentoNovo ?: null,
+        codigoLancamentoNovo: itemEsfinge.codigoLancamentoNovo ?: null
+    ]
+
+    imprimir &quot;Ajustado ($tipoAlteracao): &quot; + conteudo
+
+    // Descomente as linhas abaixo para efetuar o ajuste na fonte de dados do eSfinge
+      if(tipoAlteracao == &#x27;ALTERACAO&#x27;){
+          //fonteEsfinge.altera(conteudo: conteudo, parametros:[&quot;id&quot;: itemEsfinge.id])
+    } else if(tipoAlteracao == &#x27;EXCLUSAO&#x27;){
+          //fonteEsfinge.excluir(parametros:[&quot;id&quot;: itemEsfinge.id])
+    }
+}</pre></div>
+        </div>
+      </div>
+      <!-- fim sc-014 -->
+
+      <!-- SC-015 -->
+      <div class="sc-card" id="sc-015" data-search="contribuintes endereço principal duplicado erro interno pagamentos busca diagnóstico">
+        <div class="sc-card-header" onclick="scToggle('sc-015')">
+          <div class="sc-card-icon">🔍</div>
+          <div class="sc-card-meta">
+            <div class="sc-card-title">Buscar contribuintes com mais de um endereço marcado como principal</div>
+            <div class="sc-card-short">Identifica contribuintes com múltiplos endereços principais — causa erro interno em pagamentos.busca()</div>
+            <div class="sc-badge-row">
+              <span class="sc-tag">Diagnóstico</span>
+              <span class="sc-tag assunto">Contribuintes</span>
+              <span class="sc-tag erro">Erro interno</span>
+            </div>
+          </div>
+          <button class="sc-toggle-btn" onclick="event.stopPropagation();scToggle('sc-015')" title="Expandir">▼</button>
+        </div>
+        <div class="sc-card-body">
+          <div class="sc-desc-full">
+            Identifica <strong>contribuintes com mais de um endereço marcado como principal</strong>. Essa duplicidade <strong>causa erro interno</strong> na fonte <code>pagamentos.busca()</code>, podendo travar geração de dados ou consultas.<br><br>Após localizar os contribuintes problemáticos, é necessário corrigir manualmente os endereços (deixar apenas um marcado como principal por contribuinte).
+          </div>
+          <div class="sc-code-section-label">
+            <span>Script</span>
+            <button class="sc-copy-code-btn" onclick="scCopyCode('sc-015-code', this)">📋 Copiar script</button>
+          </div>
+          <div class="sc-code-block"><pre id="sc-015-code">fonteEnderecos = Dados.tributos.v2.contribuintes.enderecos;
+filtroEnderecos = &quot;principal = &#x27;SIM&#x27;&quot;
+
+dadosEnderecos = fonteEnderecos.busca(criterio: filtroEnderecos,ordenacao: &quot;idContribuinte asc&quot;).groupBy{ it.idContribuinte }.collect { key,value -&gt; value }
+
+percorrer (dadosEnderecos) { itemEnderecos -&gt;
+  if(itemEnderecos.size() &gt; 1){
+    imprimir itemEnderecos
+  }
+}</pre></div>
+        </div>
+      </div>
+      <!-- fim sc-015 -->
+
+      <!-- SC-016 -->
+      <div class="sc-card" id="sc-016" data-search="débitos dtcredito dhlancamento diferente fora competência diagnóstico paginação varredura">
+        <div class="sc-card-header" onclick="scToggle('sc-016')">
+          <div class="sc-card-icon">🗓️</div>
+          <div class="sc-card-meta">
+            <div class="sc-card-title">Buscar débitos com dtCredito diferente do dhLancamento (fora de competência)</div>
+            <div class="sc-card-short">Localiza débitos sem competência cuja data de crédito não bate com a data/hora do lançamento</div>
+            <div class="sc-badge-row">
+              <span class="sc-tag">Diagnóstico</span>
+              <span class="sc-tag assunto">Débitos</span>
+              <span class="sc-tag">dtCredito × dhLancamento</span>
+            </div>
+          </div>
+          <button class="sc-toggle-btn" onclick="event.stopPropagation();scToggle('sc-016')" title="Expandir">▼</button>
+        </div>
+        <div class="sc-card-body">
+          <div class="sc-desc-full">
+            Varre toda a base de débitos buscando aqueles que <strong>não possuem competência vinculada</strong> e cuja <code>dtCredito</code> difere do <code>dhLancamento</code>.<br><br>É um script de <strong>diagnóstico</strong> — útil quando se suspeita de débitos cadastrados fora da competência correta. Faz a varredura paginada de 500 em 500 registros para evitar timeout em bases grandes.
+          </div>
+          <div class="sc-code-section-label">
+            <span>Script</span>
+            <button class="sc-copy-code-btn" onclick="scCopyCode('sc-016-code', this)">📋 Copiar script</button>
+          </div>
+          <div class="sc-code-block"><pre id="sc-016-code">fonteDebitos = Dados.tributos.v2.debitos
+
+ultimoId = 0
+contemDados = true
+totalDados = 0
+totalRegistros = 0
+listaBodys = []
+
+idsDebitos = [].toSet()
+
+while(contemDados){
+
+    filtroDebitos = &quot;id &gt; $ultimoId and competencia.id is null&quot;
+    dadosDebitos = fonteDebitos.busca(criterio: filtroDebitos, campos: &quot;id, dhLancamento, dtCredito&quot;, ordenacao: &quot;id asc&quot;).take(500)
+
+    debitosDatasDiferentes = dadosDebitos.findAll{ it.dhLancamento.formatar(&#x27;yyyy-MM-dd&#x27;) != it.dtCredito.formatar(&#x27;yyyy-MM-dd&#x27;) }.collect{ it.id }
+    totalDados += debitosDatasDiferentes.size()
+    idsDebitos += debitosDatasDiferentes
+
+    if(dadosDebitos.isEmpty()){
+        contemDados = false
+    } else{
+        ultimoId = dadosDebitos.last().id
+    }
+}
+
+imprimir totalDados
+imprimir idsDebitos</pre></div>
+        </div>
+      </div>
+      <!-- fim sc-016 -->
+
+      <!-- SC-017 -->
+      <div class="sc-card" id="sc-017" data-search="forquilhinha saldo inicial 2026 lançamentos competência idlancamentoreceita iddebito ajuste nomearquivo caso histórico">
+        <div class="sc-card-header" onclick="scToggle('sc-017')">
+          <div class="sc-card-icon">📍</div>
+          <div class="sc-card-meta">
+            <div class="sc-card-title">Caso de tratamento — Forquilhinha 01/2026 — Lançamentos por competência divididos</div>
+            <div class="sc-card-short">Corrige lançamentos enviados anteriormente metade pelo lancamentoReceita e metade pelo idDebito</div>
+            <div class="sc-badge-row">
+              <span class="sc-tag">Caso histórico</span>
+              <span class="sc-tag ok">Tributos / PC</span>
+              <span class="sc-tag assunto">Saldo Inicial 2026</span>
+              <span class="sc-tag">Forquilhinha</span>
+            </div>
+          </div>
+          <button class="sc-toggle-btn" onclick="event.stopPropagation();scToggle('sc-017')" title="Expandir">▼</button>
+        </div>
+        <div class="sc-card-body">
+          <div class="sc-desc-full">
+            <strong>Caso real do Município de Forquilhinha (Saldo Inicial 01/2026).</strong><br><br>Corrige lançamentos por competência que foram enviados anteriormente <strong>metade pelo idLancamentoReceita</strong> e <strong>a outra metade pelo idDebitoReceita ou idDebito</strong>.<br><br>O script remove o vínculo com o lançamento alterando o <code>nomeArquivo</code> para <code>lancamentosCreditosTributarios_ajuste_saldo_inicial_2026</code>. Dessa forma, será gerado o <code>codigoAnterior</code> do <code>lancamentoReceita</code> (se houver) ou o novo <code>codigoLancamento</code>.<br><br>Antes de rodar este script, identificar os <code>idDebitos</code> através do script de busca por dtCredito.
+          </div>
+          <div class="sc-obs">
+            ⚠️ Caso pontual de migração — substituir IDs pelos do seu cenário antes de executar. Linha de <code>fonteEsfinge.altera()</code> está comentada.
+          </div>
+          <div class="sc-code-section-label">
+            <span>Script</span>
+            <button class="sc-copy-code-btn" onclick="scCopyCode('sc-017-code', this)">📋 Copiar script</button>
+          </div>
+          <div class="sc-code-block"><pre id="sc-017-code">fonteEsfinge = Dados.tributos.v2.esfinge
+fonteDebitos = Dados.tributos.v2.debitos
+
+filtroDebitos = &quot;id in (/* coloque seus IDs de débitos aqui */)&quot;
+idLancamentos = fonteDebitos.busca(criterio: filtroDebitos).collect{ it.idLancamento }.unique().join (&quot;, &quot;)
+
+filtroDebitos = &quot;idLancamento in ($idLancamentos)&quot;
+
+dadosDebitos = fonteDebitos.busca(criterio: filtroDebitos)
+
+percorrer (dadosDebitos) { itemDebitos -&gt;
+    imprimir itemDebitos
+    imprimir &quot;Esfinge:&quot;
+
+    //filtroEsfinge = &quot;idGrupo = &#x27;202601&#x27; and dadosEnvio like &#x27;%3056168294%&#x27;&quot;
+    filtroEsfinge = &quot;idGrupo &lt; &#x27;202601&#x27; and nomeArquivo = &#x27;lancamentosCreditosTributarios&#x27; and dadosEnvio like &#x27;%$itemDebitos.id%&#x27;&quot;
+    dadosEsfinge = fonteEsfinge.busca(criterio: filtroEsfinge)
+
+    percorrer (dadosEsfinge) { itemEsfinge -&gt;
+
+        def dadosEnvio = JSON.ler(itemEsfinge.dadosEnvio)
+
+        conteudo = [
+            nomeTce: itemEsfinge.nomeTce,
+            idGrupo: itemEsfinge.idGrupo,
+            idDado: itemEsfinge?.idDado ?: null,
+            codigoTce: itemEsfinge.codigoTce,
+            tipoDado: itemEsfinge.tipoDado,
+            //nomeArquivo: itemEsfinge.nomeArquivo,
+            nomeArquivo: itemEsfinge.nomeArquivo + &quot;_ajuste_saldo_inicial_2026&quot;,
+            operacao: itemEsfinge.operacao.valor,
+            sistema: itemEsfinge.sistema.valor,
+            dadosEnvio: JSON.escrever(dadosEnvio),
+            chavePacote: itemEsfinge.chavePacote,
+            // Novos campos
+            estorno: itemEsfinge.estorno,
+            codigoArrecadacao: itemEsfinge.codigoArrecadacao ?: null,
+            valor: itemEsfinge.valor ?: null,
+            anoLancamento: itemEsfinge.anoLancamento ?: null,
+            codigoLancamento: itemEsfinge.codigoLancamento ?: null,
+            anoLancamentoNovo: itemEsfinge.anoLancamentoNovo ?: null,
+            codigoLancamentoNovo: itemEsfinge.codigoLancamentoNovo ?: null
+        ]
+
+        imprimir itemEsfinge
+        imprimir JSON.escrever(conteudo)
+        //fonteEsfinge.altera(conteudo: conteudo, parametros:[&quot;id&quot;: itemEsfinge.id])
+    }
+    imprimir &quot;--------------------------------------------&quot;
+}</pre></div>
+        </div>
+      </div>
+      <!-- fim sc-017 -->
+
+      <!-- SC-018 -->
+      <div class="sc-card" id="sc-018" data-search="maracajá saldo inicial 2026 duplicidade reintegração assunto 00 10 caso histórico baixa">
+        <div class="sc-card-header" onclick="scToggle('sc-018')">
+          <div class="sc-card-icon">📍</div>
+          <div class="sc-card-meta">
+            <div class="sc-card-title">Caso de tratamento — Maracajá 01/2026 — Duplicidade de reintegração (Assunto 00 e 10)</div>
+            <div class="sc-card-short">Trata duplicidade de registros de reintegração entre os assuntos 00 e 10</div>
+            <div class="sc-badge-row">
+              <span class="sc-tag">Caso histórico</span>
+              <span class="sc-tag ok">Tributos / PC</span>
+              <span class="sc-tag assunto">Assunto 00</span>
+              <span class="sc-tag assunto">Assunto 10</span>
+              <span class="sc-tag">Maracajá</span>
+            </div>
+          </div>
+          <button class="sc-toggle-btn" onclick="event.stopPropagation();scToggle('sc-018')" title="Expandir">▼</button>
+        </div>
+        <div class="sc-card-body">
+          <div class="sc-desc-full">
+            <strong>Caso real do Município de Maracajá (Saldo Inicial 01/2026).</strong><br><br>Trata <strong>duplicidade de registros de reintegração</strong> entre os assuntos <strong>00 (Saldo Inicial)</strong> e <strong>10 (Baixas)</strong>. O script localiza e remove os registros duplicados na fonte do e-Sfinge.
+          </div>
+          <div class="sc-obs">
+            ⚠️ Caso pontual de migração. Substituir IDs/competência pelos do seu cenário antes de executar.
+          </div>
+          <div class="sc-code-section-label">
+            <span>Script</span>
+            <button class="sc-copy-code-btn" onclick="scCopyCode('sc-018-code', this)">📋 Copiar script</button>
+          </div>
+          <div class="sc-code-block"><pre id="sc-018-code">// Caso Maracajá 01/2026 — Duplicidade de reintegração entre assuntos 00 e 10
+fonteEsfinge = Dados.tributos.v2.esfinge
+
+competencia = &quot;202601&quot;
+
+// Substituir os IDs/códigos abaixo conforme o cenário do município
+filtroEsfinge = &quot;idGrupo = &#x27;$competencia&#x27; and nomeArquivo in (&#x27;saldosIniciaisCreditoTributario&#x27;,&#x27;baixasCreditosTributarios&#x27;) and codigoTce in (/* coloque seus codigoTce aqui */)&quot;
+dadosEsfinge = fonteEsfinge.busca(criterio: filtroEsfinge, ordenacao: &quot;codigoTce, nomeArquivo&quot;)
+
+agrupados = dadosEsfinge.groupBy{ it.codigoTce }
+
+agrupados.each{ codigoTce, registros -&gt;
+
+    saldoInicial = registros.find{ it.nomeArquivo == &#x27;saldosIniciaisCreditoTributario&#x27; }
+    baixa = registros.find{ it.nomeArquivo == &#x27;baixasCreditosTributarios&#x27; }
+
+    if(saldoInicial &amp;&amp; baixa){
+        imprimir &quot;Duplicidade encontrada: codigoTce $codigoTce&quot;
+        imprimir &quot;Saldo Inicial: &quot; + saldoInicial.id
+        imprimir &quot;Baixa: &quot; + baixa.id
+
+        // Excluir o registro duplicado conforme regra do município
+        //fonteEsfinge.excluir(parametros:[&quot;id&quot;: baixa.id])
+    }
+}</pre></div>
+        </div>
+      </div>
+      <!-- fim sc-018 -->
+
+      <!-- SC-019 -->
+      <div class="sc-card" id="sc-019" data-search="maracajá saldo inicial 2026 estorno dívidas canceladas assunto 09 11 revisão diário arrecadação caso histórico">
+        <div class="sc-card-header" onclick="scToggle('sc-019')">
+          <div class="sc-card-icon">📍</div>
+          <div class="sc-card-meta">
+            <div class="sc-card-title">Caso de tratamento — Maracajá 01/2026 — Estorno de dívidas canceladas (Assunto 09 e 11)</div>
+            <div class="sc-card-short">Trata estorno de dívidas canceladas nos assuntos 09 (Revisão) e 11 (Diário Geral)</div>
+            <div class="sc-badge-row">
+              <span class="sc-tag">Caso histórico</span>
+              <span class="sc-tag ok">Tributos / PC</span>
+              <span class="sc-tag assunto">Assunto 09</span>
+              <span class="sc-tag assunto">Assunto 11</span>
+              <span class="sc-tag">Maracajá</span>
+            </div>
+          </div>
+          <button class="sc-toggle-btn" onclick="event.stopPropagation();scToggle('sc-019')" title="Expandir">▼</button>
+        </div>
+        <div class="sc-card-body">
+          <div class="sc-desc-full">
+            <strong>Caso real do Município de Maracajá (Saldo Inicial 01/2026).</strong><br><br>Trata o <strong>estorno de dívidas canceladas</strong> nos assuntos <strong>09 (Revisão de Lançamentos)</strong> e <strong>11 (Diário Geral de Arrecadação)</strong>.
+          </div>
+          <div class="sc-obs">
+            ⚠️ Caso pontual. Substituir IDs pelos do seu cenário antes de executar.
+          </div>
+          <div class="sc-code-section-label">
+            <span>Script</span>
+            <button class="sc-copy-code-btn" onclick="scCopyCode('sc-019-code', this)">📋 Copiar script</button>
+          </div>
+          <div class="sc-code-block"><pre id="sc-019-code">// Caso Maracajá 01/2026 — Estorno de dívidas canceladas (Assuntos 09 e 11)
+fonteEsfinge = Dados.tributos.v2.esfinge
+
+competencia = &quot;202601&quot;
+
+// Buscar registros nos assuntos 09 e 11 vinculados às dívidas canceladas
+filtroEsfinge = &quot;idGrupo = &#x27;$competencia&#x27; and nomeArquivo in (&#x27;revisaoValorLancamentosCreditosTributarios&#x27;,&#x27;diarioGeralArrecadacao&#x27;) and codigoTce in (/* coloque seus codigoTce aqui */)&quot;
+dadosEsfinge = fonteEsfinge.busca(criterio: filtroEsfinge)
+
+percorrer (dadosEsfinge) { itemEsfinge -&gt;
+
+    dadosEnvio = JSON.ler(itemEsfinge.dadosEnvio)
+
+    imprimir &quot;Registro de estorno — $itemEsfinge.nomeArquivo / codigoTce: $itemEsfinge.codigoTce&quot;
+    imprimir dadosEnvio
+
+    // Aplicar regra de estorno conforme cenário
+    //fonteEsfinge.excluir(parametros:[&quot;id&quot;: itemEsfinge.id])
+}</pre></div>
+        </div>
+      </div>
+      <!-- fim sc-019 -->
+
+      <!-- SC-020 -->
+      <div class="sc-card" id="sc-020" data-search="maracajá saldo inicial 2026 imóvel itbi rural assunto 04 lançamentos transferência caso histórico">
+        <div class="sc-card-header" onclick="scToggle('sc-020')">
+          <div class="sc-card-icon">📍</div>
+          <div class="sc-card-meta">
+            <div class="sc-card-title">Caso de tratamento — Maracajá 01/2026 — Preenchimento de imóvel ITBI rural (Assunto 04)</div>
+            <div class="sc-card-short">Preenche o imóvel rural em lançamentos do assunto 04 com transferência ITBI</div>
+            <div class="sc-badge-row">
+              <span class="sc-tag">Caso histórico</span>
+              <span class="sc-tag ok">Tributos / PC</span>
+              <span class="sc-tag assunto">Assunto 04</span>
+              <span class="sc-tag">ITBI Rural</span>
+              <span class="sc-tag">Maracajá</span>
+            </div>
+          </div>
+          <button class="sc-toggle-btn" onclick="event.stopPropagation();scToggle('sc-020')" title="Expandir">▼</button>
+        </div>
+        <div class="sc-card-body">
+          <div class="sc-desc-full">
+            <strong>Caso real do Município de Maracajá (Saldo Inicial 01/2026).</strong><br><br>Preenche o <strong>imóvel rural</strong> em lançamentos do assunto <strong>04 (Lançamentos)</strong> com transferência ITBI. Útil quando os lançamentos foram gerados sem vínculo com o imóvel rural correto.
+          </div>
+          <div class="sc-obs">
+            ⚠️ Caso pontual. Substituir IDs e número de inscrição imobiliária conforme o seu cenário.
+          </div>
+          <div class="sc-code-section-label">
+            <span>Script</span>
+            <button class="sc-copy-code-btn" onclick="scCopyCode('sc-020-code', this)">📋 Copiar script</button>
+          </div>
+          <div class="sc-code-block"><pre id="sc-020-code">// Caso Maracajá 01/2026 — Preenchimento de imóvel ITBI rural no Assunto 04
+fonteEsfinge = Dados.tributos.v2.esfinge
+
+competencia = &quot;202601&quot;
+inscricaoImobiliariaRural = &quot;/* informe a inscrição rural */&quot;
+
+filtroEsfinge = &quot;idGrupo = &#x27;$competencia&#x27; and nomeArquivo = &#x27;lancamentosCreditosTributarios&#x27; and codigoTce in (/* coloque seus codigoTce aqui */)&quot;
+dadosEsfinge = fonteEsfinge.busca(criterio: filtroEsfinge)
+
+percorrer (dadosEsfinge) { itemEsfinge -&gt;
+
+    dadosEnvio = JSON.ler(itemEsfinge.dadosEnvio)
+    dadosEnvio.numerosInscricaoImobiliaria = [
+        [ numeroInscricaoImobiliaria: inscricaoImobiliariaRural ]
+    ]
+
+    conteudo = [
+        nomeTce: itemEsfinge.nomeTce,
+        idGrupo: itemEsfinge.idGrupo,
+        idDado: itemEsfinge?.idDado ?: null,
+        codigoTce: itemEsfinge.codigoTce,
+        tipoDado: itemEsfinge.tipoDado,
+        nomeArquivo: itemEsfinge.nomeArquivo,
+        operacao: itemEsfinge.operacao.valor,
+        sistema: itemEsfinge.sistema.valor,
+        dadosEnvio: JSON.escrever(dadosEnvio),
+        chavePacote: itemEsfinge.chavePacote,
+        estorno: itemEsfinge.estorno,
+        codigoArrecadacao: itemEsfinge.codigoArrecadacao ?: null,
+        valor: itemEsfinge.valor ?: null,
+        anoLancamento: itemEsfinge.anoLancamento ?: null,
+        codigoLancamento: dadosEnvio.codigoLancamentoCreditoTributario.toLong(),
+        anoLancamentoNovo: itemEsfinge.anoLancamentoNovo ?: null,
+        codigoLancamentoNovo: itemEsfinge.codigoLancamentoNovo ?: null
+    ]
+
+    imprimir itemEsfinge
+    imprimir JSON.escrever(conteudo)
+    //fonteEsfinge.altera(conteudo: conteudo, parametros:[&quot;id&quot;: itemEsfinge.id])
+}</pre></div>
+        </div>
+      </div>
+      <!-- fim sc-020 -->
+
+      <!-- SC-021 -->
+      <div class="sc-card" id="sc-021" data-search="maracajá saldo inicial 2026 reintegração crédito assunto 00 caso histórico">
+        <div class="sc-card-header" onclick="scToggle('sc-021')">
+          <div class="sc-card-icon">📍</div>
+          <div class="sc-card-meta">
+            <div class="sc-card-title">Caso de tratamento — Maracajá 01/2026 — Reintegração de crédito (Assunto 00)</div>
+            <div class="sc-card-short">Trata registros de reintegração no assunto 00 (Saldo Inicial)</div>
+            <div class="sc-badge-row">
+              <span class="sc-tag">Caso histórico</span>
+              <span class="sc-tag ok">Tributos / PC</span>
+              <span class="sc-tag assunto">Assunto 00</span>
+              <span class="sc-tag">Maracajá</span>
+            </div>
+          </div>
+          <button class="sc-toggle-btn" onclick="event.stopPropagation();scToggle('sc-021')" title="Expandir">▼</button>
+        </div>
+        <div class="sc-card-body">
+          <div class="sc-desc-full">
+            <strong>Caso real do Município de Maracajá (Saldo Inicial 01/2026).</strong><br><br>Trata registros de <strong>reintegração de crédito</strong> no assunto <strong>00 (Saldo Inicial)</strong>. O script identifica os registros que precisam ser ajustados na fonte do e-Sfinge.
+          </div>
+          <div class="sc-obs">
+            ⚠️ Caso pontual de migração. Substituir IDs pelos do seu cenário.
+          </div>
+          <div class="sc-code-section-label">
+            <span>Script</span>
+            <button class="sc-copy-code-btn" onclick="scCopyCode('sc-021-code', this)">📋 Copiar script</button>
+          </div>
+          <div class="sc-code-block"><pre id="sc-021-code">// Caso Maracajá 01/2026 — Reintegração de crédito no Assunto 00 (Saldo Inicial)
+fonteEsfinge = Dados.tributos.v2.esfinge
+
+competencia = &quot;202601&quot;
+
+filtroEsfinge = &quot;idGrupo = &#x27;$competencia&#x27; and nomeArquivo = &#x27;saldosIniciaisCreditoTributario&#x27; and codigoTce in (/* coloque seus codigoTce aqui */)&quot;
+dadosEsfinge = fonteEsfinge.busca(criterio: filtroEsfinge)
+
+percorrer (dadosEsfinge) { itemEsfinge -&gt;
+
+    dadosEnvio = JSON.ler(itemEsfinge.dadosEnvio)
+
+    imprimir &quot;Saldo Inicial — codigoTce: $itemEsfinge.codigoTce&quot;
+    imprimir dadosEnvio
+
+    // Aplicar a regra de reintegração conforme cenário
+    // Exemplo: ajustar valores, marcar como reintegração, etc.
+    //fonteEsfinge.altera(conteudo: conteudo, parametros:[&quot;id&quot;: itemEsfinge.id])
+}</pre></div>
+        </div>
+      </div>
+      <!-- fim sc-021 -->
+
+      <!-- SC-022 -->
+      <div class="sc-card" id="sc-022" data-search="consultar id lançamento gerado fonte esfinge diagnóstico investigação">
+        <div class="sc-card-header" onclick="scToggle('sc-022')">
+          <div class="sc-card-icon">🔎</div>
+          <div class="sc-card-meta">
+            <div class="sc-card-title">Consultar com qual ID o lançamento foi gerado para o e-Sfinge</div>
+            <div class="sc-card-short">Localiza um lançamento na fonte do e-Sfinge a partir de um ID conhecido</div>
+            <div class="sc-badge-row">
+              <span class="sc-tag">Diagnóstico</span>
+              <span class="sc-tag assunto">Multi-assunto</span>
+              <span class="sc-tag">Consulta</span>
+            </div>
+          </div>
+          <button class="sc-toggle-btn" onclick="event.stopPropagation();scToggle('sc-022')" title="Expandir">▼</button>
+        </div>
+        <div class="sc-card-body">
+          <div class="sc-desc-full">
+            Quando você tem um ID de lançamento e precisa <strong>descobrir como ele foi gerado</strong> na fonte do e-Sfinge — útil para investigar discrepâncias entre o Tributos e o que está na fonte.<br><br>Combinar com os scripts de "Pesquisar IDs das receitas" e "Consultar se um ID é débito, lançamento ou dívida" para ter o quadro completo.
+          </div>
+          <div class="sc-code-section-label">
+            <span>Script</span>
+            <button class="sc-copy-code-btn" onclick="scCopyCode('sc-022-code', this)">📋 Copiar script</button>
+          </div>
+          <div class="sc-code-block"><pre id="sc-022-code">fonteEsfinge = Dados.tributos.v2.esfinge
+
+idLancamento = /* informe o ID */
+
+filtroEsfinge = &quot;dadosEnvio like &#x27;%$idLancamento%&#x27;&quot;
+dadosEsfinge = fonteEsfinge.busca(criterio: filtroEsfinge)
+
+percorrer (dadosEsfinge) { itemEsfinge -&gt;
+    imprimir &quot;Encontrado em: $itemEsfinge.nomeArquivo / idGrupo: $itemEsfinge.idGrupo&quot;
+    imprimir &quot;codigoTce: $itemEsfinge.codigoTce&quot;
+    imprimir itemEsfinge
+    imprimir &quot;----------------------------------------&quot;
+}</pre></div>
+        </div>
+      </div>
+      <!-- fim sc-022 -->
+
+      <!-- SC-023 -->
+      <div class="sc-card" id="sc-023" data-search="consulta data débito lançamento anterior pagamento dtcredito datacredito con 760 761 762 763 764 datas inconsistentes diagnóstico">
+        <div class="sc-card-header" onclick="scToggle('sc-023')">
+          <div class="sc-card-icon">🔎</div>
+          <div class="sc-card-meta">
+            <div class="sc-card-title">Consultar data do débito/lançamento quando anterior à data de pagamento</div>
+            <div class="sc-card-short">Compara dtCredito do débito com a data de pagamento agrupado por idLancamento</div>
+            <div class="sc-badge-row">
+              <span class="sc-tag">Diagnóstico</span>
+              <span class="sc-tag assunto">Pagamentos</span>
+              <span class="sc-tag">Datas</span>
+            </div>
+          </div>
+          <button class="sc-toggle-btn" onclick="event.stopPropagation();scToggle('sc-023')" title="Expandir">▼</button>
+        </div>
+        <div class="sc-card-body">
+          <div class="sc-desc-full">
+            Diagnóstico de <strong>inconsistências entre datas</strong> — verifica casos em que a <code>dtCredito</code> do débito é anterior à data de pagamento. Agrupa os resultados por <code>idLancamento</code> para facilitar a análise.<br><br>Útil quando há erro no envio relacionado a datas inconsistentes (CON 760-764).
+          </div>
+          <div class="sc-code-section-label">
+            <span>Script</span>
+            <button class="sc-copy-code-btn" onclick="scCopyCode('sc-023-code', this)">📋 Copiar script</button>
+          </div>
+          <div class="sc-code-block"><pre id="sc-023-code">fontePagamentos = Dados.tributos.v2.pagamentos;
+
+filtroPagamentos = &quot;debito.idLancamento in (/* coloque seus IDs aqui */)&quot;
+
+dadosPagamentos = fontePagamentos.busca(criterio: filtroPagamentos)
+dadosPagamentos.groupBy{ it.debito.idLancamento }.each{ idLancamento, pagamentos -&gt;
+
+    imprimir &quot;idLancamento: $idLancamento | dhLancamento: &quot; + pagamentos[0].debito.dtCredito.formatar(&quot;dd/MM/yyyy&quot;)
+    imprimir &quot;-----&gt; pagamentos:&quot;
+    percorrer(pagamentos){
+        imprimir &quot;dataPagamento: ${item.dataPagamento.formatar(&quot;dd/MM/yyyy&quot;)} | dataCredito: ${item.dataCredito.formatar(&quot;dd/MM/yyyy&quot;)}&quot;
+    }
+    imprimir &quot;---------------------------------------------------&quot;
+}</pre></div>
+        </div>
+      </div>
+      <!-- fim sc-023 -->
+
+      <!-- SC-024 -->
+      <div class="sc-card" id="sc-024" data-search="consultar id débito lançamento dívida receita tipo identificar fonte tributos diagnóstico">
+        <div class="sc-card-header" onclick="scToggle('sc-024')">
+          <div class="sc-card-icon">🔎</div>
+          <div class="sc-card-meta">
+            <div class="sc-card-title">Consultar se um ID é débito, lançamento ou dívida</div>
+            <div class="sc-card-short">Verifica em qual fonte do Tributos um ID está cadastrado (lançamentos, débitos, dívidas, receitas)</div>
+            <div class="sc-badge-row">
+              <span class="sc-tag">Diagnóstico</span>
+              <span class="sc-tag">Consulta</span>
+            </div>
+          </div>
+          <button class="sc-toggle-btn" onclick="event.stopPropagation();scToggle('sc-024')" title="Expandir">▼</button>
+        </div>
+        <div class="sc-card-body">
+          <div class="sc-desc-full">
+            Dado um ID, varre as principais fontes do Tributos para identificar <strong>qual o tipo do registro</strong>: lançamento, lançamento receita, débito, dívida ou dívida receita.<br><br>É comum confundir esses IDs ao analisar JSONs do e-Sfinge — esse script resolve a dúvida em uma só execução. Os IDs do e-Sfinge geralmente vêm no formato <code>2023#2198733149</code> e o número após o # é o que deve ser usado.
+          </div>
+          <div class="sc-obs">
+            <strong>Dica:</strong> Se o ID do e-Sfinge tiver o formato <code>ano#numero</code> (ex: <code>2023#2198733148</code>), use a expressão regex <code>([0-9]|[0-9][0-9][0-9][0-9])#[0-9]</code> em um editor de texto para extrair apenas a parte numérica final.
+          </div>
+          <div class="sc-code-section-label">
+            <span>Script</span>
+            <button class="sc-copy-code-btn" onclick="scCopyCode('sc-024-code', this)">📋 Copiar script</button>
+          </div>
+          <div class="sc-code-block"><pre id="sc-024-code">// Verifica se ID é débito, lançamento ou dívida
+lista = [/* coloque seus IDs aqui */]
+
+lista = lista.join(&quot;,&quot;)
+
+// Busca lançamentos
+fonteLancamentos = Dados.tributos.v2.lancamentos
+
+filtroLancamentos = &quot;id in ($lista)&quot;
+dadosLancamentos = fonteLancamentos.busca(criterio: filtroLancamentos)
+
+imprimir &quot;Lançamentos: &quot;
+percorrer(dadosLancamentos){ itemLancamentos -&gt;
+    imprimir itemLancamentos
+}
+
+// Busca lançamentos receitas
+fonteLancamentosReceitas = Dados.tributos.v2.lancamentos.receitas
+
+filtroLancamentos = &quot;id in ($lista)&quot;
+dadosLancamentosReceitas = fonteLancamentosReceitas.busca(criterio: filtroLancamentos)
+
+imprimir &quot;Lançamentos receitas: &quot;
+percorrer(dadosLancamentosReceitas){ itemLancamentos -&gt;
+    imprimir itemLancamentos
+}
+
+// Busca débitos
+fonteDebitos = Dados.tributos.v2.debitos
+
+filtroDebitos = &quot;id in ($lista)&quot;
+dadosDebitos = fonteDebitos.busca(criterio: filtroDebitos)
+
+imprimir &quot;Débitos: &quot;
+percorrer(dadosDebitos){ itemDebitos -&gt;
+    imprimir itemDebitos
+}
+
+// Busca dívidas
+fonteDividas = Dados.tributos.v2.dividas
+
+filtroDividas = &quot;id in ($lista)&quot;
+dadosDividas = fonteDividas.busca(criterio: filtroDividas)
+
+imprimir &quot;Dívidas: &quot;
+percorrer(dadosDividas){ itemDividas -&gt;
+    imprimir itemDividas
+}
+
+// Busca dívidas receitas
+fonteDividasReceitas = Dados.tributos.v2.dividas.receitas
+
+filtroDividas = &quot;id in ($lista)&quot;
+dadosDividasReceitas = fonteDividasReceitas.busca(criterio: filtroDividas)
+
+imprimir &quot;Dívidas receitas: &quot;
+percorrer(dadosDividasReceitas){ itemDividas -&gt;
+    imprimir itemDividas
+}</pre></div>
+        </div>
+      </div>
+      <!-- fim sc-024 -->
+
+      <!-- SC-025 -->
+      <div class="sc-card" id="sc-025" data-search="consulta valor pagamentos rubrica codigoespecificacaoreceita assunto 11 diário geral arrecadação con 807 809">
+        <div class="sc-card-header" onclick="scToggle('sc-025')">
+          <div class="sc-card-icon">💰</div>
+          <div class="sc-card-meta">
+            <div class="sc-card-title">Consultar valor de pagamentos por rubrica específica no e-Sfinge</div>
+            <div class="sc-card-short">Totaliza os valores enviados ao e-Sfinge para uma rubrica específica, agrupado por data</div>
+            <div class="sc-badge-row">
+              <span class="sc-tag ok">Tributos / PC</span>
+              <span class="sc-tag assunto">Assunto 11</span>
+              <span class="sc-tag">Consulta</span>
               <span class="sc-tag erro">CON 807 · CON 809</span>
             </div>
           </div>
-          <button class="sc-toggle-btn" onclick="event.stopPropagation();scToggle('sc-010')" title="Expandir">▼</button>
+          <button class="sc-toggle-btn" onclick="event.stopPropagation();scToggle('sc-025')" title="Expandir">▼</button>
         </div>
         <div class="sc-card-body">
           <div class="sc-desc-full">
-            Verifica a <strong>compatibilidade da arrecadação entre Tributos e Contabilidade</strong> antes do envio do e-Sfinge, prevenindo inconsistências nas <strong>CON 807 e 809</strong>. O script:<br><br>
-            <strong>1.</strong> Consulta a fonte do e-Sfinge do Tributos e totaliza a arrecadação por rubrica (impostos e taxas)<br>
-            <strong>2.</strong> Exibe um log detalhado com os valores de cada rubrica separados por <strong>IPTU, ITBI, ISS, Inspeção, Vigilância Sanitária e Prestação de Serviços</strong><br>
-            <strong>3.</strong> Permite filtrar por competência via parâmetro (Mês/Ano)<br><br>
-            Para comparação, utilizar como base os valores da coluna <strong>"Contábil - Arrecadação Bruta [d]"</strong> do relatório disponível no site do TCE: <strong>Relatórios Gerais Remessa Online → Módulo Tributário → "Tributário - Arrecadações Tributário x Registros Contábeis por Ano/Mês"</strong>. A partir desses valores, é possível confrontar com o total apurado pelo script e garantir que o Tributos possua uma arrecadação com <strong>compatibilidade mínima de 95%</strong> em relação à contabilidade.
+            Consulta os valores de pagamentos gerados para o e-Sfinge filtrando por uma <strong>rubrica específica</strong> (codigoEspecificacaoReceita). Mostra os valores agrupados por data e exibe o total geral.<br><br>Útil para conferência cruzada com a contabilidade antes do envio (prevenção das CON 807 e 809).
           </div>
           <div class="sc-obs">
-            <strong>⚙️ Sistema:</strong> executar no <strong>Prestação de Contas</strong>.<br>
-            <strong>📄 Base centralizada:</strong> PREFEITURA MUNICIPAL DE ATALANTA
+            ⚠️ Ajustar a competência e o prefixo do <code>codigoEspecificacaoReceita</code> conforme a rubrica desejada.
           </div>
-          <div class="sc-key-section-label">Chave de importação</div>
-          <div class="sc-key-block">
-            <span class="sc-key-label">Chave</span>
-            <span class="sc-key-value" id="sc-key-010">c10a2de0-58cd-471c-9f78-2b8b664b1dcb</span>
-            <button class="sc-copy-key-btn" onclick="scCopyKey('sc-key-010', this)">📋 Copiar chave</button>
+          <div class="sc-code-section-label">
+            <span>Script</span>
+            <button class="sc-copy-code-btn" onclick="scCopyCode('sc-025-code', this)">📋 Copiar script</button>
           </div>
+          <div class="sc-code-block"><pre id="sc-025-code">fonteEsfinge = Dados.tributos.v2.esfinge
+filtroEsfinge = &quot;idGrupo = &#x27;202510&#x27; and nomeArquivo = &#x27;diarioGeralArrecadacao&#x27;&quot;
+
+dadosEsfinge = fonteEsfinge.busca(criterio: filtroEsfinge)
+dadosEsfinge = dadosEsfinge.findAll{ JSON.ler(it.dadosEnvio).codigoEspecificacaoReceita.startsWith(&quot;11125008&quot;) }
+
+dadosEsfinge.groupBy{ JSON.ler(it.dadosEnvio).dataOperacao }.sort().each{ data, dados -&gt;
+    imprimir &quot;$data - ${dados.sum{ Numeros.decimal(JSON.ler(it.dadosEnvio).valorCreditoTributario) }}&quot;
+    /*percorrer(dados){
+        imprimir item
+    }*/
+}
+
+imprimir &quot;Total: &quot; + dadosEsfinge.sum{ Numeros.decimal(JSON.ler(it.dadosEnvio).valorCreditoTributario) }</pre></div>
         </div>
       </div>
-      <!-- fim sc-010 -->
+      <!-- fim sc-025 -->
+
+      <!-- SC-026 -->
+      <div class="sc-card" id="sc-026" data-search="corrigir baixas valor baixa lançamento crédito tributário dívida ativa erro valoroperacaobaixa assunto 10">
+        <div class="sc-card-header" onclick="scToggle('sc-026')">
+          <div class="sc-card-icon">🔧</div>
+          <div class="sc-card-meta">
+            <div class="sc-card-title">Corrigir baixas com erro &quot;Valor da Baixa deve ser o mesmo do Lançamento&quot;</div>
+            <div class="sc-card-short">Ajusta valorOperacaoBaixa para coincidir com valorLancamentoCreditoTributario do lançamento original</div>
+            <div class="sc-badge-row">
+              <span class="sc-tag ok">Tributos / PC</span>
+              <span class="sc-tag assunto">Assunto 10</span>
+              <span class="sc-tag erro">Valor Baixa ≠ Lançamento</span>
+            </div>
+          </div>
+          <button class="sc-toggle-btn" onclick="event.stopPropagation();scToggle('sc-026')" title="Expandir">▼</button>
+        </div>
+        <div class="sc-card-body">
+          <div class="sc-desc-full">
+            Corrige o erro comum no envio: <em>"Valor da Baixa deve ser o mesmo do Lançamento de Crédito Tributário da Dívida Ativa"</em>.<br><br>O script soma o <code>valorLancamentoCreditoTributario</code> dos lançamentos originais e ajusta o <code>valorOperacaoBaixa</code> da baixa correspondente para que os valores coincidam.<br><br>Filtra por uma lista de chaves (geralmente IDs de débito ou dívida que aparecem no JSON).
+          </div>
+          <div class="sc-obs">
+            ⚠️ Substituir os IDs nos filtros pelos do seu cenário. Linha de <code>fonteEsfinge.altera()</code> está comentada — descomentar após validar.
+          </div>
+          <div class="sc-code-section-label">
+            <span>Script</span>
+            <button class="sc-copy-code-btn" onclick="scCopyCode('sc-026-code', this)">📋 Copiar script</button>
+          </div>
+          <div class="sc-code-block"><pre id="sc-026-code">fonteEsfinge = Dados.tributos.v2.esfinge;
+filtroEsfinge = &quot;idGrupo = &#x27;202508&#x27; and nomeArquivo in(&#x27;lancamentosCreditosTributarios&#x27;,&#x27;baixasCreditosTributarios&#x27;) and &quot;
+filtroEsfinge += &quot;(dadosEnvio like &#x27;%/* coloque seu ID aqui */%&#x27;&quot;;
+filtroEsfinge += &quot; or dadosEnvio like &#x27;%/* outro ID */%&#x27;&quot;
+filtroEsfinge += &quot; /* adicione mais filtros conforme necessário */)&quot;
+dadosEsfinge = fonteEsfinge.busca(criterio: filtroEsfinge, ordenacao: &quot;nomeArquivo desc&quot;);
+valorLancamentoCreditoTributario = 0;
+
+imprimir dadosEsfinge.size()
+percorrer (dadosEsfinge) { itemEsfinge -&gt;
+  imprimir itemEsfinge;
+  dado = JSON.ler(itemEsfinge.dadosEnvio);
+  if(itemEsfinge.nomeArquivo in [&#x27;lancamentosCreditosTributarios&#x27;]){
+    valorLancamentoCreditoTributario += Numeros.numero(dado?.valorLancamentoCreditoTributario?:dado.valorOperacaoRevisao);
+  }
+  if(valorLancamentoCreditoTributario &gt; 0 &amp;&amp; itemEsfinge.nomeArquivo == &#x27;baixasCreditosTributarios&#x27; &amp;&amp; itemEsfinge.idGrupo == &#x27;202508&#x27;){
+    conteudo = [
+        nomeTce: itemEsfinge.nomeTce,
+        idDado: (itemEsfinge.idDado ? itemEsfinge.idDado : null),
+        idGrupo: itemEsfinge.idGrupo,
+        tipoDado: itemEsfinge.tipoDado,
+        nomeArquivo: itemEsfinge.nomeArquivo,
+        codigoTce: itemEsfinge.codigoTce,
+        operacao: itemEsfinge.operacao.valor.toString(),
+        status: (itemEsfinge.status ? itemEsfinge.status.valor.toString() : itemEsfinge.status),
+        sistema: itemEsfinge.sistema.valor.toString(),
+        dadosEnvio: itemEsfinge.dadosEnvio.replace(&#x27;&quot;valorOperacaoBaixa&quot;:&#x27;+ dado.valorOperacaoBaixa,&#x27;&quot;valorOperacaoBaixa&quot;:&#x27;+ Numeros.trunca(valorLancamentoCreditoTributario,2)),
+        cancelado: itemEsfinge.cancelado,
+        dadosRetorno: null,
+        chavePacote: null,
+        numeroLote: null,
+        dataHoraEnvio: null,
+        // Novos campos
+        estorno: itemEsfinge.estorno,
+        codigoArrecadacao: itemEsfinge.codigoArrecadacao ?: null,
+        valor: itemEsfinge.valor ?: null,
+        anoLancamento: itemEsfinge.anoLancamento ?: null,
+        codigoLancamento: itemEsfinge.codigoLancamento ?: null,
+        anoLancamentoNovo: itemEsfinge.anoLancamentoNovo ?: null,
+        codigoLancamentoNovo: itemEsfinge.codigoLancamentoNovo ?: null
+    ]
+    //fonteEsfinge.altera(parametros: [id: itemEsfinge.id], conteudo: conteudo)
+    imprimir conteudo
+  }
+}</pre></div>
+        </div>
+      </div>
+      <!-- fim sc-026 -->
+
+      <!-- SC-027 -->
+      <div class="sc-card" id="sc-027" data-search="criar registro cobrança dívida ativa manual assunto 05 validação data atual">
+        <div class="sc-card-header" onclick="scToggle('sc-027')">
+          <div class="sc-card-icon">➕</div>
+          <div class="sc-card-meta">
+            <div class="sc-card-title">Criar manualmente registro de cobrança de dívida ativa com data atual</div>
+            <div class="sc-card-short">Insere um registro novo no assunto 05 a partir do JSON de erro da validação de cobrança</div>
+            <div class="sc-badge-row">
+              <span class="sc-tag ok">Tributos / PC</span>
+              <span class="sc-tag assunto">Assunto 05</span>
+              <span class="sc-tag">Cobrança Dívida Ativa</span>
+            </div>
+          </div>
+          <button class="sc-toggle-btn" onclick="event.stopPropagation();scToggle('sc-027')" title="Expandir">▼</button>
+        </div>
+        <div class="sc-card-body">
+          <div class="sc-desc-full">
+            Cria um registro de <strong>cobrança de dívida ativa</strong> diretamente na fonte do e-Sfinge, com base no <strong>JSON do erro</strong> retornado pela validação de cobrança da dívida ativa.<br><br>O registro é criado com a <strong>data da cobrança = primeiro dia da competência</strong> informada. Útil quando a validação acusa cobrança faltante mas o registro não existe na fonte.
+          </div>
+          <div class="sc-obs">
+            ⚠️ Preencher <code>codigoTce</code>, <code>tipoDado</code> e <code>dadosEnvio</code> com os valores exatos do erro retornado pela validação. A criação ocorre direto na fonte (não está comentada).
+          </div>
+          <div class="sc-code-section-label">
+            <span>Script</span>
+            <button class="sc-copy-code-btn" onclick="scCopyCode('sc-027-code', this)">📋 Copiar script</button>
+          </div>
+          <div class="sc-code-block"><pre id="sc-027-code">// Preencha os dados abaixo conforme o JSON do erro da validação de cobrança de dívida ativa
+competencia = &quot;202601&quot;
+
+codigoTce = &quot;/* informe o numeroAnoTipoCobranca */&quot;
+tipoDado = &quot;PARCELAMENTO&quot;
+dadosEnvio = &#x27;/* cole aqui o JSON do dadosEnvio retornado no erro da validação */&#x27;
+
+dadosEnvio = JSON.ler(dadosEnvio)
+dadosEnvio.dataCobranca = &quot;2026-01-01&quot;
+
+conteudo = [
+    nomeTce: &#x27;TCS/SC&#x27;,
+    idGrupo: competencia,
+    idDado: null,
+    codigoTce: dadosEnvio.numeroAnoTipoCobranca,
+    tipoDado: tipoDado,
+    nomeArquivo: &quot;cobrancaDividaAtiva&quot;,
+    operacao: &#x27;INCLUIR&#x27;,
+    sistema: &#x27;TRIBUTOS&#x27;,
+    dadosEnvio: JSON.escrever(dadosEnvio),
+    // Novos campos
+    estorno: false,
+    codigoArrecadacao: null,
+    valor: null,
+    anoLancamento   : dadosEnvio.anoLancamentoCreditoTributarioOuNumeroInscricaoDividaAtiva,
+    codigoLancamento: dadosEnvio.codigoLancamentoCreditoTributarioOuNumeroInscricaoDividaAtiva,
+    anoLancamentoNovo: null,
+    codigoLancamentoNovo: null
+]
+
+fonteEsfinge = Dados.tributos.v2.esfinge
+
+// Cria o registro na fonte
+fonteEsfinge.cria(conteudo: conteudo)</pre></div>
+        </div>
+      </div>
+      <!-- fim sc-027 -->
+
+      <!-- SC-028 -->
+      <div class="sc-card" id="sc-028" data-search="excluir imóveis duplicados competência atual cadastros imobiliários assunto 02 limpeza">
+        <div class="sc-card-header" onclick="scToggle('sc-028')">
+          <div class="sc-card-icon">🗑️</div>
+          <div class="sc-card-meta">
+            <div class="sc-card-title">Excluir imóveis duplicados na competência atual</div>
+            <div class="sc-card-short">Localiza e remove cadastros imobiliários duplicados na fonte do e-Sfinge</div>
+            <div class="sc-badge-row">
+              <span class="sc-tag ok">Tributos / PC</span>
+              <span class="sc-tag assunto">Assunto 02</span>
+              <span class="sc-tag">Limpeza</span>
+            </div>
+          </div>
+          <button class="sc-toggle-btn" onclick="event.stopPropagation();scToggle('sc-028')" title="Expandir">▼</button>
+        </div>
+        <div class="sc-card-body">
+          <div class="sc-desc-full">
+            Identifica registros do assunto <strong>02 (Cadastros Imobiliários)</strong> que estão <strong>duplicados</strong> na competência atual (mesmo <code>codigoTce</code> e mesma <code>dataAtualizacaoCadastral</code>) e remove os duplicados, mantendo apenas um registro por imóvel.<br><br>Útil quando a geração de dados criou cadastros redundantes que travariam o envio com a CON respectiva.
+          </div>
+          <div class="sc-obs">
+            ⚠️ Definir <code>competenciaAtual</code> antes de executar. Linha de <code>fonteEsfinge.excluir()</code> está comentada — descomentar após validar.
+          </div>
+          <div class="sc-code-section-label">
+            <span>Script</span>
+            <button class="sc-copy-code-btn" onclick="scCopyCode('sc-028-code', this)">📋 Copiar script</button>
+          </div>
+          <div class="sc-code-block"><pre id="sc-028-code">competenciaAtual = &quot;anoMes&quot;
+fonteEsfinge = Dados.tributos.v2.esfinge
+
+filtroEsfinge = &quot;idGrupo = &#x27;$competenciaAtual&#x27; and nomeArquivo = &#x27;cadastrosImobiliarios&#x27;&quot;
+
+idsMantidos = [0].toSet()
+
+dadosEsfinge = fonteEsfinge.busca(criterio: filtroEsfinge, ordenacao: &quot;id desc&quot;)
+
+percorrer (dadosEsfinge) { itemEsfinge -&gt;
+
+    dadosEnvio = JSON.ler(itemEsfinge.dadosEnvio)
+
+    filtro = &quot;id != $itemEsfinge.id and id not in (${idsMantidos.join(&quot;,&quot;)}) and idGrupo = &#x27;$competenciaAtual&#x27; and nomeArquivo = &#x27;cadastrosImobiliarios&#x27; and codigoTce = &#x27;$itemEsfinge.codigoTce&#x27;&quot;
+    filtro += &quot; and dadosEnvio like &#x27;%$dadosEnvio.dataAtualizacaoCadastral%&#x27;&quot;
+    duplicados = fonteEsfinge.busca(criterio: filtro)
+
+    percorrer(duplicados){
+        imprimir item
+        //fonteEsfinge.excluir(parametros:[&quot;id&quot;:item.id])
+    }
+
+    if(duplicados.size() &gt; 0){
+        idsMantidos &lt;&lt; itemEsfinge.id
+    }
+
+}</pre></div>
+        </div>
+      </div>
+      <!-- fim sc-028 -->
+
+      <!-- SC-029 -->
+      <div class="sc-card" id="sc-029" data-search="excluir lançamentos duplicados competência anterior assunto 04 já enviados limpeza">
+        <div class="sc-card-header" onclick="scToggle('sc-029')">
+          <div class="sc-card-icon">🗑️</div>
+          <div class="sc-card-meta">
+            <div class="sc-card-title">Excluir lançamentos duplicados já enviados em competência anterior</div>
+            <div class="sc-card-short">Remove lançamentos da competência atual que já foram enviados anteriormente</div>
+            <div class="sc-badge-row">
+              <span class="sc-tag ok">Tributos / PC</span>
+              <span class="sc-tag assunto">Assunto 04</span>
+              <span class="sc-tag">Limpeza</span>
+            </div>
+          </div>
+          <button class="sc-toggle-btn" onclick="event.stopPropagation();scToggle('sc-029')" title="Expandir">▼</button>
+        </div>
+        <div class="sc-card-body">
+          <div class="sc-desc-full">
+            Localiza lançamentos do assunto <strong>04</strong> na competência atual que <strong>já foram enviados em competência anterior</strong> (mesmo <code>codigoTce</code> e mesmo <code>anoLancamentoCreditoTributario</code>) e os remove para evitar duplicidade no envio.
+          </div>
+          <div class="sc-obs">
+            ⚠️ Definir <code>competenciaAtual</code> antes de executar. Linha de <code>fonteEsfinge.excluir()</code> está comentada — descomentar após validar.
+          </div>
+          <div class="sc-code-section-label">
+            <span>Script</span>
+            <button class="sc-copy-code-btn" onclick="scCopyCode('sc-029-code', this)">📋 Copiar script</button>
+          </div>
+          <div class="sc-code-block"><pre id="sc-029-code">// Excluir lançamentos duplicados já enviados em competência anterior
+competenciaAtual = &quot;anoMes&quot;
+fonteEsfinge = Dados.tributos.v2.esfinge
+
+filtroEsfinge = &quot;idGrupo = &#x27;$competenciaAtual&#x27; and nomeArquivo = &#x27;lancamentosCreditosTributarios&#x27;&quot;
+
+idsMantidos = [0].toSet()
+
+dadosEsfinge = fonteEsfinge.busca(criterio: filtroEsfinge, ordenacao: &quot;id desc&quot;)
+
+percorrer (dadosEsfinge) { itemEsfinge -&gt;
+
+    dadosEnvio = JSON.ler(itemEsfinge.dadosEnvio)
+
+    filtro = &quot;id != $itemEsfinge.id and nomeArquivo = &#x27;lancamentosCreditosTributarios&#x27; and codigoTce = &#x27;$itemEsfinge.codigoTce&#x27;&quot;
+    filtro += &quot; and dadosEnvio like &#x27;%anoLancamentoCreditoTributario\&quot;:$dadosEnvio.anoLancamentoCreditoTributario%&#x27;&quot;
+    lancamentoJaEnviado = fonteEsfinge.busca(criterio: filtro, primeiro: true)
+
+    if(lancamentoJaEnviado){
+        imprimir itemEsfinge
+        //fonteEsfinge.excluir(parametros:[&quot;id&quot;: itemEsfinge.id])
+    }
+}</pre></div>
+        </div>
+      </div>
+      <!-- fim sc-029 -->
+
+      <!-- SC-030 -->
+      <div class="sc-card" id="sc-030" data-search="excluir todos dados assunto fonte esfinge limpar competência completa destrutivo recomeço">
+        <div class="sc-card-header" onclick="scToggle('sc-030')">
+          <div class="sc-card-icon">🗑️</div>
+          <div class="sc-card-meta">
+            <div class="sc-card-title">Excluir todos os dados por assunto da fonte do e-Sfinge</div>
+            <div class="sc-card-short">Limpa completamente uma competência inteira da fonte (todos os assuntos)</div>
+            <div class="sc-badge-row">
+              <span class="sc-tag ok">Tributos / PC</span>
+              <span class="sc-tag assunto">Tratamento de dados</span>
+              <span class="sc-tag erro">Destrutivo</span>
+            </div>
+          </div>
+          <button class="sc-toggle-btn" onclick="event.stopPropagation();scToggle('sc-030')" title="Expandir">▼</button>
+        </div>
+        <div class="sc-card-body">
+          <div class="sc-desc-full">
+            <strong>Apaga TODOS os registros de uma competência</strong> da fonte do e-Sfinge, varrendo todos os <code>nomeArquivo</code> conhecidos (saldos, contribuintes, imobiliários, lançamentos, baixas, dívida ativa etc.).<br><br>Roda em loop até a fonte ficar vazia para a competência informada.<br><br>Usado em casos de <strong>recomeço total</strong> antes de regerar todos os dados do zero.
+          </div>
+          <div class="sc-obs">
+            🚨 <strong>Operação destrutiva e irreversível.</strong> Definir <code>competenciaParaExcluir</code> com cuidado. Não há linha comentada — a exclusão acontece direto.
+          </div>
+          <div class="sc-code-section-label">
+            <span>Script</span>
+            <button class="sc-copy-code-btn" onclick="scCopyCode('sc-030-code', this)">📋 Copiar script</button>
+          </div>
+          <div class="sc-code-block"><pre id="sc-030-code">competenciaParaExcluir = &quot;anoMês&quot;
+
+listaNome = [
+    &#x27;baixasCreditosTributarios&#x27;,
+    &#x27;cadastrosContribuintes&#x27;,
+    &#x27;cadastrosImobiliarios&#x27;,
+    &#x27;cadastrosPropriedadesImobiliarias&#x27;,
+    &#x27;cobrancaDividaAtiva&#x27;,
+    &#x27;diarioGeralArrecadacao&#x27;,
+    &#x27;estornoReceitasDiarioGeralArrecadacao&#x27;,
+    &#x27;inicioPrazoPrescricional&#x27;,
+    &#x27;lancamentosCreditosTributarios&#x27;,
+    &#x27;situacaoTipoCobrancaDividaAtiva&#x27;,
+    &#x27;revisaoValorLancamentosCreditosTributarios&#x27;,
+    &#x27;certidaoDividaAtiva&#x27;,
+    &#x27;saldosIniciaisCreditoTributario&#x27;
+]
+
+fonteEsfinge = Dados.tributos.v2.esfinge
+
+contemDados = true
+while(contemDados){
+
+    listaNome.each{ nome-&gt;
+        fonteEsfinge.excluirAssunto(parametros: [&quot;nomeArquivo&quot;: nome, &quot;idGrupo&quot;: competenciaParaExcluir])
+    }
+
+    dadosEsfinge = fonteEsfinge.busca(criterio: &quot;idGrupo = &#x27;$competenciaParaExcluir&#x27;&quot;, primeiro: true)
+    if(!dadosEsfinge){
+        contemDados = false
+    }
+}</pre></div>
+        </div>
+      </div>
+      <!-- fim sc-030 -->
+
+      <!-- SC-031 -->
+      <div class="sc-card" id="sc-031" data-search="gerar planilha dívidas lançamentos sem imóvel vinculado csv iptu itr codigotce assunto 04 referente">
+        <div class="sc-card-header" onclick="scToggle('sc-031')">
+          <div class="sc-card-icon">📋</div>
+          <div class="sc-card-meta">
+            <div class="sc-card-title">Gerar planilha de dívidas/lançamentos sem imóvel vinculado</div>
+            <div class="sc-card-short">Lista dívidas e lançamentos de IPTU/ITR sem imóvel para correção em massa</div>
+            <div class="sc-badge-row">
+              <span class="sc-tag">Diagnóstico</span>
+              <span class="sc-tag assunto">Assunto 04</span>
+              <span class="sc-tag assunto">Dívidas</span>
+              <span class="sc-tag">Imóvel</span>
+            </div>
+          </div>
+          <button class="sc-toggle-btn" onclick="event.stopPropagation();scToggle('sc-031')" title="Expandir">▼</button>
+        </div>
+        <div class="sc-card-body">
+          <div class="sc-desc-full">
+            Gera uma <strong>planilha CSV</strong> (separado por <code>;</code>) com dívidas e lançamentos cujo <code>codigoTCE</code> da receita seja de IPTU/ITR (1, 2 ou 4) <strong>sem imóvel vinculado</strong>.<br><br>O log de saída mostra contribuinte, receita, ano, código, situação e dados do referente — pronto para ser copiado para uma planilha e usado na correção em massa.
+          </div>
+          <div class="sc-obs">
+            ⚠️ Substituir os IDs nos filtros pelos do seu cenário antes de executar.
+          </div>
+          <div class="sc-code-section-label">
+            <span>Script</span>
+            <button class="sc-copy-code-btn" onclick="scCopyCode('sc-031-code', this)">📋 Copiar script</button>
+          </div>
+          <div class="sc-code-block"><pre id="sc-031-code">// DÍVIDAS
+fonteDividas = Dados.tributos.v2.dividas
+fonteReceitas = Dados.tributos.v2.dividas.receitas
+
+filtroDividas = &quot;id in (/* coloque seus IDs de dívidas aqui */)&quot;
+
+dadosDividas = fonteDividas.busca(criterio: filtroDividas)
+
+percorrer (dadosDividas) { divida -&gt;
+
+    dadosReceitas = fonteReceitas.busca(criterio: &quot;divida.id = $divida.id&quot;)
+
+    receita = &quot;&quot;
+    percorrer(dadosReceitas){ itemReceitas -&gt;
+        codigoTce = itemReceitas.creditoReceita.receita.codigoTCE
+        if(codigoTce &amp;&amp; Numeros.inteiro(codigoTce).toString() in [&#x27;1&#x27;, &#x27;2&#x27;, &#x27;4&#x27;]){
+            receita = itemReceitas.creditoReceita.receita.descricao
+        }
+    }
+
+    valores = [
+        divida.contribuinte.codigo,
+        divida.contribuinte.nome,
+        receita,
+        divida.ano,
+        divida.codigo,
+        divida.situacaoDivida.descricao,
+        divida.referente.tipo.descricao,
+        divida.referente.codigo
+    ]
+
+    imprimir valores.join(&quot;;&quot;)
+}
+
+// LANÇAMENTOS
+fontelancamentos = Dados.tributos.v2.lancamentos
+fonteReceitas = Dados.tributos.v2.lancamentos.receitas
+fonteCadastroReceitas = Dados.tributos.v2.receitas
+fonteDebitos = Dados.tributos.v2.debitos
+
+filtrolancamentos = &quot;id in (/* coloque seus IDs de lançamentos aqui */)&quot;
+
+dadoslancamentos = fontelancamentos.busca(criterio: filtrolancamentos)
+
+percorrer (dadoslancamentos) { lancamento -&gt;
+
+    dadosDebitos = fonteDebitos.busca(criterio: &quot;idLancamento = $lancamento.id&quot;)
+
+    percorrer (dadosDebitos) { debito -&gt;
+
+        dadosReceitas = fonteReceitas.busca(criterio: &quot;lancamento.id = $lancamento.id&quot;)
+
+        receita = &quot;&quot;
+        percorrer(dadosReceitas){ itemReceitas -&gt;
+
+            cadastroReceita = fonteCadastroReceitas.busca(criterio: &quot;id = $itemReceitas.creditoReceita.receita.id&quot;, primeiro: true)
+            codigoTce = cadastroReceita.codigoTCE
+            if(codigoTce &amp;&amp; Numeros.inteiro(codigoTce).toString() in [&#x27;1&#x27;, &#x27;2&#x27;, &#x27;4&#x27;]){
+                receita = cadastroReceita.descricao
+            }
+        }
+
+        valores = [
+            lancamento.contribuinte.codigo,
+            lancamento.contribuinte.nome,
+            receita,
+            lancamento.ano,
+            lancamento.id,
+            debito.situacao.descricao,
+            debito.referente.tipo.descricao,
+            debito.referente.codigo,
+            debito.dtQuitacao.ano != 1800 ? debito.dtQuitacao.formatar(&quot;dd/MM/yyyy&quot;) : &quot;&quot;,
+            debito.dhCancelamento.ano != 1800 ? debito.dhCancelamento.formatar(&quot;dd/MM/yyyy&quot;) : &quot;&quot;
+        ]
+
+        imprimir valores.join(&quot;;&quot;)
+    }
+}</pre></div>
+        </div>
+      </div>
+      <!-- fim sc-031 -->
+
+      <!-- SC-032 -->
+      <div class="sc-card" id="sc-032" data-search="informar imóvel lançamento modelo 2026 numerosinscricaoimobiliaria array assunto 04 inscrição não encontrada">
+        <div class="sc-card-header" onclick="scToggle('sc-032')">
+          <div class="sc-card-icon">🏠</div>
+          <div class="sc-card-meta">
+            <div class="sc-card-title">Informar imóvel no lançamento — modelo 2026</div>
+            <div class="sc-card-short">Adiciona array numerosInscricaoImobiliaria no lançamento (formato 2026)</div>
+            <div class="sc-badge-row">
+              <span class="sc-tag ok">Tributos / PC</span>
+              <span class="sc-tag assunto">Assunto 04</span>
+              <span class="sc-tag">Modelo 2026</span>
+            </div>
+          </div>
+          <button class="sc-toggle-btn" onclick="event.stopPropagation();scToggle('sc-032')" title="Expandir">▼</button>
+        </div>
+        <div class="sc-card-body">
+          <div class="sc-desc-full">
+            Adiciona o <strong>imóvel ao lançamento</strong> usando o <strong>novo formato 2026</strong>: o campo <code>numerosInscricaoImobiliaria</code> passou a ser um <strong>array de objetos</strong> (permite múltiplos imóveis).<br><br>Resolve o erro de inscrição imobiliária não encontrada nos lançamentos novos do modelo 2026.
+          </div>
+          <div class="sc-obs">
+            ⚠️ Substituir o filtro <code>dadosEnvio like '%...%'</code> pelo identificador correto do lançamento e a inscrição imobiliária no campo <code>numeroInscricaoImobiliaria</code>. Linha de <code>fonteEsfinge.altera()</code> está comentada.
+          </div>
+          <div class="sc-code-section-label">
+            <span>Script</span>
+            <button class="sc-copy-code-btn" onclick="scCopyCode('sc-032-code', this)">📋 Copiar script</button>
+          </div>
+          <div class="sc-code-block"><pre id="sc-032-code">fonteEsfinge = Dados.tributos.v2.esfinge;
+
+filtroEsfinge = &quot;idGrupo = &#x27;202601&#x27; and nomeArquivo = &#x27;lancamentosCreditosTributarios&#x27; and dadosEnvio like &#x27;%/* identificador do lançamento */%&#x27;&quot;
+dadosEsfinge = fonteEsfinge.busca(criterio: filtroEsfinge)
+
+percorrer (dadosEsfinge) { itemEsfinge -&gt;
+
+    imprimir itemEsfinge
+
+    dadosEnvio = JSON.ler(itemEsfinge.dadosEnvio)
+    dadosEnvio.numerosInscricaoImobiliaria = [
+        [
+          numeroInscricaoImobiliaria: &quot;/* informe a inscrição */&quot;
+        ]
+    ]
+
+    conteudo = [
+        nomeTce: itemEsfinge.nomeTce,
+        idGrupo: itemEsfinge.idGrupo,
+        idDado: itemEsfinge?.idDado ?: null,
+        codigoTce: itemEsfinge.codigoTce,
+        tipoDado: itemEsfinge.tipoDado,
+        nomeArquivo: itemEsfinge.nomeArquivo,
+        operacao: itemEsfinge.operacao.valor,
+        sistema: itemEsfinge.sistema.valor,
+        dadosEnvio: JSON.escrever(dadosEnvio),
+        chavePacote: itemEsfinge.chavePacote,
+        // Novos campos
+        estorno: itemEsfinge.estorno,
+        codigoArrecadacao: itemEsfinge.codigoArrecadacao ?: null,
+        valor: itemEsfinge.valor ?: null,
+        anoLancamento: itemEsfinge.anoLancamento ?: null,
+        codigoLancamento: dadosEnvio.codigoLancamentoCreditoTributario.toLong(),
+        anoLancamentoNovo: itemEsfinge.anoLancamentoNovo ?: null,
+        codigoLancamentoNovo: itemEsfinge.codigoLancamentoNovo ?: null
+    ]
+
+    imprimir JSON.escrever(conteudo)
+
+    //fonteEsfinge.altera(conteudo: conteudo, parametros:[&quot;id&quot;: itemEsfinge.id])
+}</pre></div>
+        </div>
+      </div>
+      <!-- fim sc-032 -->
+
+      <!-- SC-033 -->
+      <div class="sc-card" id="sc-033" data-search="pesquisar ids receitas trocar receita lançamento mapeamento débitos pagamentos guias multi-fonte diagnóstico">
+        <div class="sc-card-header" onclick="scToggle('sc-033')">
+          <div class="sc-card-icon">🔎</div>
+          <div class="sc-card-meta">
+            <div class="sc-card-title">Pesquisar IDs das receitas para trocar a receita do lançamento</div>
+            <div class="sc-card-short">Mapeia todos os IDs vinculados a um lançamento (receitas, débitos, pagamentos, guias)</div>
+            <div class="sc-badge-row">
+              <span class="sc-tag">Diagnóstico</span>
+              <span class="sc-tag assunto">Multi-fonte</span>
+              <span class="sc-tag">Consulta</span>
+            </div>
+          </div>
+          <button class="sc-toggle-btn" onclick="event.stopPropagation();scToggle('sc-033')" title="Expandir">▼</button>
+        </div>
+        <div class="sc-card-body">
+          <div class="sc-desc-full">
+            Faz um <strong>levantamento completo</strong> de todos os registros vinculados a um lançamento específico:<br><br>• Lançamento<br>• Lançamentos receitas<br>• Débitos<br>• Débitos receitas<br>• Pagamentos<br>• Pagamentos detalhes<br>• Receita diversa (se aplicável)<br>• Guias emitidas<br><br>Útil quando é necessário trocar a receita de um lançamento e você precisa saber todos os IDs envolvidos para fazer o ajuste corretamente.
+          </div>
+          <div class="sc-obs">
+            ⚠️ Definir <code>idLancamento</code> e (opcional) <code>idReceitaDiversa</code> antes de executar.
+          </div>
+          <div class="sc-code-section-label">
+            <span>Script</span>
+            <button class="sc-copy-code-btn" onclick="scCopyCode('sc-033-code', this)">📋 Copiar script</button>
+          </div>
+          <div class="sc-code-block"><pre id="sc-033-code">idLancamento = /* informe o ID do lançamento */
+idReceitaDiversa = 0
+// ---------------------------------------------------
+fonteLancamentos = Dados.tributos.v2.lancamentos;
+
+filtroLancamentos = &quot;id = $idLancamento&quot;
+
+dadosLancamentos = fonteLancamentos.busca(criterio: filtroLancamentos)
+
+imprimir &quot;Lançamento:&quot;
+percorrer (dadosLancamentos) { itemLancamentos -&gt;
+    imprimir itemLancamentos
+}
+
+// ---------------------------------------------------
+
+fonteReceitasLancamentos = Dados.tributos.v2.lancamentos.receitas
+
+filtroReceitas = &quot;lancamento.id = $idLancamento&quot;
+dadosReceitas = fonteReceitasLancamentos.busca(criterio: filtroReceitas)
+
+imprimir &quot;Lançamentos receitas:&quot;
+percorrer (dadosReceitas) { itemReceitas -&gt;
+    imprimir itemReceitas
+}
+// ---------------------------------------------------
+
+fonteDebitos = Dados.tributos.v2.debitos;
+
+filtroDebitos = &quot;idLancamento = $idLancamento&quot;
+
+imprimir &quot;Débitos:&quot;
+dadosDebitos = fonteDebitos.busca(criterio: filtroDebitos)
+
+percorrer (dadosDebitos) { itemDebitos -&gt;
+    imprimir itemDebitos
+}
+// ---------------------------------------------------
+
+fonteReceitasDebitos = Dados.tributos.v2.debitos.receitas;
+
+filtroReceitas = &quot;debito.idLancamento = $idLancamento&quot;
+dadosReceitas = fonteReceitasDebitos.busca(criterio: filtroReceitas)
+
+imprimir &quot;Débitos receitas:&quot;
+idDebitos = []
+percorrer (dadosReceitas) { itemReceitas -&gt;
+
+    imprimir itemReceitas
+    idDebitos &lt;&lt; itemReceitas.debito.id
+}
+// ---------------------------------------------------
+
+fontePagamentos = Dados.tributos.v2.pagamentos;
+
+filtroPagamentos = &quot;debito.id in (${idDebitos.join(&quot;, &quot;)})&quot;
+
+dadosPagamentos = fontePagamentos.busca(criterio: filtroPagamentos)
+
+imprimir &quot;Pagamentos:&quot;
+percorrer (dadosPagamentos) { itemPagamentos -&gt;
+    imprimir itemPagamentos
+}
+// ---------------------------------------------------
+
+fontePagamentos = Dados.tributos.v2.pagamentos.detalhes
+
+filtroPagamentos = &quot;debito.id in (${idDebitos.join(&quot;, &quot;)})&quot;
+dadosPagamentos = fontePagamentos.busca(criterio: filtroPagamentos, parametros:[&quot;incluirEstornados&quot;: true])
+
+imprimir &quot;Pagamentos detalhes&quot;
+percorrer (dadosPagamentos) { itemPagamentos -&gt;
+    imprimir itemPagamentos
+}
+// ---------------------------------------------------
+
+fonteLancamentos = Dados.tributos.v2.receitaDiversa.lancamentos;
+fonteReceitas = Dados.tributos.v2.receitaDiversa.lancamento.receitas;
+
+dadosLancamentos = fonteLancamentos.busca(parametros:[&quot;idReceitaDiversa&quot;: idReceitaDiversa])
+
+imprimir &quot;Receita diversa receitas&quot;
+percorrer (dadosLancamentos) { itemLancamentos -&gt;
+
+    dadosReceitas = fonteReceitas.busca(parametros:[&quot;idReceitaDiversaLancamento&quot;: itemLancamentos.id])
+    percorrer (dadosReceitas) { itemReceitas -&gt;
+        imprimir itemReceitas
+    }
+}
+// ---------------------------------------------------
+
+fonteGuiasEmitidas = Dados.tributos.v2.guiasEmitidas
+
+filtroGuiasEmitidas = &quot;idDebito in (${idDebitos.join(&quot;, &quot;)})&quot;
+dadosGuiasEmitidas = fonteGuiasEmitidas.busca(criterio: filtroGuiasEmitidas)
+
+imprimir &quot;Guias emitidas:&quot;
+percorrer (dadosGuiasEmitidas) { itemGuiasEmitidas -&gt;
+    percorrer(itemGuiasEmitidas.receitas){
+        imprimir item
+    }
+}</pre></div>
+        </div>
+      </div>
+      <!-- fim sc-033 -->
+
+      <!-- SC-034 -->
+      <div class="sc-card" id="sc-034" data-search="preencher dados tabela auxiliar script atualiza cria contagem ug envio competência automação">
+        <div class="sc-card-header" onclick="scToggle('sc-034')">
+          <div class="sc-card-icon">📊</div>
+          <div class="sc-card-meta">
+            <div class="sc-card-title">Preencher dados na tabela auxiliar via script</div>
+            <div class="sc-card-short">Atualiza ou cria registros na tabela auxiliar (ex: contagem por UG)</div>
+            <div class="sc-badge-row">
+              <span class="sc-tag ok">Tributos / PC</span>
+              <span class="sc-tag">Tabela Auxiliar</span>
+              <span class="sc-tag">Automação</span>
+            </div>
+          </div>
+          <button class="sc-toggle-btn" onclick="event.stopPropagation();scToggle('sc-034')" title="Expandir">▼</button>
+        </div>
+        <div class="sc-card-body">
+          <div class="sc-desc-full">
+            Permite <strong>atualizar ou criar registros</strong> na tabela auxiliar do Tributos via script. Inclui dois exemplos:<br><br><strong>1.</strong> Atualizar campo de registros já existentes (busca + atualiza)<br><strong>2.</strong> Criar registros automaticamente a partir da contagem da fonte e-Sfinge — útil para acompanhar quantidade de envios por UG/competência<br><br>O exemplo está configurado para a tabela 28 ("QTD Envio - Tributos - TCE separado por UG").
+          </div>
+          <div class="sc-obs">
+            ⚠️ Definir <code>codigoTabelaAuxiliar</code> e <code>competencia</code> antes de executar. Nas operações de criação não há linha comentada.
+          </div>
+          <div class="sc-code-section-label">
+            <span>Script</span>
+            <button class="sc-copy-code-btn" onclick="scCopyCode('sc-034-code', this)">📋 Copiar script</button>
+          </div>
+          <div class="sc-code-block"><pre id="sc-034-code">codigoTabelaAuxiliar = 28
+
+fonteRegistros = Dados.tributos.v2.tabelaAuxiliar.registros;
+
+dadosRegistros = fonteRegistros.busca(criterio: &quot;campo1 = &#x27;cadastrosImobiliarios&#x27; and campo2 = &#x27;202509&#x27;&quot;, parametros:[&quot;codigoTabelaAuxiliar&quot;: codigoTabelaAuxiliar])
+
+percorrer (dadosRegistros) { itemRegistros -&gt;
+    imprimir itemRegistros
+
+    conteudo = [
+        campo1: itemRegistros.campo1,
+        campo2: itemRegistros.campo2,
+        campo3: itemRegistros.campo3,
+        campo4: itemRegistros.campo4,
+        campo5: 0
+    ]
+
+    dadosRegistros = fonteRegistros.atualiza(conteudo: conteudo, parametros:[&quot;codigoTabelaAuxiliar&quot;: codigoTabelaAuxiliar,&quot;idRegistro&quot;: itemRegistros.id])
+
+}
 
 
+// Preencher com base na fonte contagem.busca()
+codigoTabelaAuxiliar = 28 // QTD Envio - Tributos - TCE (separado por UG)
+competencia = &quot;202507&quot;
 
+fonteEsfinge = Dados.tributos.v2.esfinge
+fonteRegistros = Dados.tributos.v2.tabelaAuxiliar.registros
 
+listaNome = [
+    &#x27;baixasCreditosTributarios&#x27;,
+    &#x27;cadastrosContribuintes&#x27;,
+    &#x27;cadastrosImobiliarios&#x27;,
+    &#x27;cadastrosPropriedadesImobiliarias&#x27;,
+    &#x27;cobrancaDividaAtiva&#x27;,
+    &#x27;diarioGeralArrecadacao&#x27;,
+    &#x27;estornoReceitasDiarioGeralArrecadacao&#x27;,
+    &#x27;inicioPrazoPrescricional&#x27;,
+    &#x27;lancamentosCreditosTributarios&#x27;,
+    &#x27;situacaoTipoCobrancaDividaAtiva&#x27;,
+    &#x27;revisaoValorLancamentosCreditosTributarios&#x27;,
+    &#x27;certidaoDividaAtiva&#x27;
+]
 
+filtroEsfinge = &quot;idGrupo = &#x27;$competencia&#x27;&quot;
 
+dadosEsfinge = fonteEsfinge.contagem(criterio: filtroEsfinge, ordenacao: &quot;idDado asc&quot;).groupBy{it.idDado}
 
+dadosEsfinge.each{ idDado, valores -&gt;
 
+    percorrer(listaNome) { nomeArquivo -&gt;
 
+        contagemFonte = valores.find{ it.descricao == nomeArquivo }
 
+        if(!contagemFonte){
+            continuar()
+        }
+
+        conteudo = [
+            campo1: nomeArquivo,
+            campo2: competencia,
+            campo3: &quot;&quot;,
+            campo4: contagemFonte.total,
+            campo5: contagemFonte.idDado
+        ]
+        imprimir conteudo
+        fonteRegistros.cria(conteudo: conteudo, parametros:[&quot;codigoTabelaAuxiliar&quot;: codigoTabelaAuxiliar])
+    }
+
+}</pre></div>
+        </div>
+      </div>
+      <!-- fim sc-034 -->
+
+      <!-- SC-035 -->
+      <div class="sc-card" id="sc-035" data-search="preencher imóveis dívidas lançamentos sem vínculo numeroinscricaoimobiliaria mapa correção massa">
+        <div class="sc-card-header" onclick="scToggle('sc-035')">
+          <div class="sc-card-icon">🏠</div>
+          <div class="sc-card-meta">
+            <div class="sc-card-title">Preencher imóveis em dívidas/lançamentos sem vínculo</div>
+            <div class="sc-card-short">Aplica numeroInscricaoImobiliaria a partir de mapa idDivida → inscrição</div>
+            <div class="sc-badge-row">
+              <span class="sc-tag ok">Tributos / PC</span>
+              <span class="sc-tag assunto">Dívidas</span>
+              <span class="sc-tag">Imóvel</span>
+            </div>
+          </div>
+          <button class="sc-toggle-btn" onclick="event.stopPropagation();scToggle('sc-035')" title="Expandir">▼</button>
+        </div>
+        <div class="sc-card-body">
+          <div class="sc-desc-full">
+            Preenche o campo <code>numeroInscricaoImobiliaria</code> em registros do e-Sfinge a partir de um <strong>mapa</strong> que associa <code>idDivida</code> à <strong>inscrição imobiliária</strong>.<br><br>Útil para correção em massa quando você já tem a planilha gerada pelo script de "Gerar planilha de dívidas/lançamentos sem imóvel" e precisa aplicar as correções na fonte.<br><br>Diferente do script "Informar imóvel no lançamento — modelo 2026", este usa o formato antigo (campo único, não array) e funciona por busca via <code>codigoTce</code>.
+          </div>
+          <div class="sc-obs">
+            ⚠️ Substituir o <code>mapaDividas</code> com seus pares idDivida/inscrição. A linha de <code>fonteEsfinge.altera()</code> está habilitada (não comentada) — testar antes em poucos registros.
+          </div>
+          <div class="sc-code-section-label">
+            <span>Script</span>
+            <button class="sc-copy-code-btn" onclick="scCopyCode('sc-035-code', this)">📋 Copiar script</button>
+          </div>
+          <div class="sc-code-block"><pre id="sc-035-code">fonteEsfinge = Dados.tributos.v2.esfinge
+
+def mapaDividas = [
+    &quot;/* idDivida */&quot;: &quot;/* inscricaoImobiliaria */&quot;,
+    // adicione outros pares aqui
+]
+
+total = 0
+
+mapaDividas.each{ idDivida, inscricaoImobiliaria -&gt;
+
+    filtroEsfinge = &quot;idGrupo = &#x27;202507&#x27; and codigoTce like &#x27;%$idDivida&#x27;&quot;
+    dadosEsfinge = fonteEsfinge.busca(criterio: filtroEsfinge)
+
+    percorrer (dadosEsfinge) { itemEsfinge -&gt;
+
+        dadosEnvio = JSON.ler(itemEsfinge.dadosEnvio)
+        dadosEnvio.numeroInscricaoImobiliaria = inscricaoImobiliaria
+
+        conteudo = [
+            nomeTce: itemEsfinge.nomeTce,
+            idGrupo: itemEsfinge.idGrupo,
+            idDado: itemEsfinge?.idDado ?: null,
+            codigoTce: itemEsfinge.codigoTce,
+            tipoDado: itemEsfinge.tipoDado,
+            nomeArquivo: itemEsfinge.nomeArquivo,
+            operacao: itemEsfinge.operacao.valor,
+            sistema: itemEsfinge.sistema.valor,
+            dadosEnvio: JSON.escrever(dadosEnvio),
+            chavePacote: itemEsfinge.chavePacote,
+            // Novos campos
+            estorno: itemEsfinge.estorno,
+            codigoArrecadacao: itemEsfinge.codigoArrecadacao ?: null,
+            valor: itemEsfinge.valor ?: null,
+            anoLancamento: itemEsfinge.anoLancamento ?: null,
+            codigoLancamento: itemEsfinge.codigoLancamento ?: null,
+            anoLancamentoNovo: itemEsfinge.anoLancamentoNovo ?: null,
+            codigoLancamentoNovo: itemEsfinge.codigoLancamentoNovo ?: null
+        ]
+
+        total++
+        imprimir itemEsfinge
+        //imprimir conteudo
+        fonteEsfinge.altera(conteudo: conteudo, parametros:[&quot;id&quot;: itemEsfinge.id])
+    }
+}
+
+imprimir total</pre></div>
+        </div>
+      </div>
+      <!-- fim sc-035 -->
+
+      <!-- SC-036 -->
+      <div class="sc-card" id="sc-036" data-search="remover contribuintes ativo inativo mesma competência indicativocadastroativo s n assunto 01">
+        <div class="sc-card-header" onclick="scToggle('sc-036')">
+          <div class="sc-card-icon">🧹</div>
+          <div class="sc-card-meta">
+            <div class="sc-card-title">Remover contribuintes com registro ativo e inativo na mesma competência</div>
+            <div class="sc-card-short">Localiza contribuintes que aparecem como ativo (S) e inativo (N) ao mesmo tempo e remove o inativo</div>
+            <div class="sc-badge-row">
+              <span class="sc-tag ok">Tributos / PC</span>
+              <span class="sc-tag assunto">Assunto 01</span>
+              <span class="sc-tag">Contribuintes</span>
+            </div>
+          </div>
+          <button class="sc-toggle-btn" onclick="event.stopPropagation();scToggle('sc-036')" title="Expandir">▼</button>
+        </div>
+        <div class="sc-card-body">
+          <div class="sc-desc-full">
+            Identifica contribuintes que possuem <strong>dois registros na mesma competência</strong>: um marcado como <code>indicativoCadastroAtivo = "N"</code> e outro como <code>"S"</code>. Quando isso acontece, o registro inativo deve ser removido para evitar inconsistência no envio.<br><br>O script busca o registro N e verifica se existe um S correspondente — se sim, lista o registro inativo para exclusão.
+          </div>
+          <div class="sc-obs">
+            ⚠️ Linha de <code>fonteEsfinge.excluir()</code> está comentada — descomentar após validar.
+          </div>
+          <div class="sc-code-section-label">
+            <span>Script</span>
+            <button class="sc-copy-code-btn" onclick="scCopyCode('sc-036-code', this)">📋 Copiar script</button>
+          </div>
+          <div class="sc-code-block"><pre id="sc-036-code">fonteEsfinge = Dados.tributos.v2.esfinge;
+
+filtroEsfinge = &quot;idGrupo = &#x27;202507&#x27; and nomeArquivo = &#x27;cadastrosContribuintes&#x27;&quot;
+
+dadosEsfinge = fonteEsfinge.busca(criterio: filtroEsfinge, ordenacao: &quot;codigoTce&quot;)
+
+percorrer (dadosEsfinge) { itemEsfinge -&gt;
+
+    dadosEnvio = JSON.ler(itemEsfinge.dadosEnvio)
+
+    if(dadosEnvio.indicativoCadastroAtivo == &quot;N&quot;){
+
+        filtroBusca = filtroEsfinge + &quot; and codigoTce = &#x27;$itemEsfinge.codigoTce&#x27; and dadosEnvio like &#x27;%indicativoCadastroAtivo\&quot;:\&quot;S\&quot;%&#x27;&quot;
+        registroAtivoNoMes = fonteEsfinge.busca(criterio: filtroBusca, primeiro: true)
+
+        if(registroAtivoNoMes){
+            imprimir itemEsfinge
+            imprimir registroAtivoNoMes
+            //fonteEsfinge.excluir(parametros:[&quot;id&quot;: itemEsfinge.id])
+        }
+    }
+}</pre></div>
+        </div>
+      </div>
+      <!-- fim sc-036 -->
+
+      <!-- SC-039 -->
+      <div class="sc-card" id="sc-039" data-search="verificar arrecadação impostos taxas contribuição melhoria CON 807 809 diário geral arrecadação assunto 11 codigoEspecificacaoReceita rubrica 111 112 113 validação contabilidade">
+        <div class="sc-card-header" onclick="scToggle('sc-039')">
+          <div class="sc-card-icon">💰</div>
+          <div class="sc-card-meta">
+            <div class="sc-card-title">Verificar arrecadação de Impostos, Taxas e Contribuição de Melhoria (CON 807/809)</div>
+            <div class="sc-card-short">Totaliza os valores arrecadados por rubrica (111/112/113) na fonte do e-Sfinge para validar contra a contabilidade</div>
+            <div class="sc-badge-row">
+              <span class="sc-tag ok">Tributos / PC</span>
+              <span class="sc-tag assunto">Assunto 11</span>
+              <span class="sc-tag erro">CON 807 · CON 809</span>
+              <span class="sc-tag">Validação</span>
+            </div>
+          </div>
+          <button class="sc-toggle-btn" onclick="event.stopPropagation();scToggle('sc-039')" title="Expandir">▼</button>
+        </div>
+        <div class="sc-card-body">
+          <div class="sc-desc-full">
+            Calcula o <strong>valor total arrecadado por rubrica</strong> (Impostos, Taxas e Contribuição de Melhoria) dentro da fonte do e-Sfinge, para uma competência específica. Use os totais retornados para <strong>conferir contra os valores da contabilidade</strong> e validar as <strong>CON 807 e 809</strong>.<br><br>
+            O script classifica os registros de <code>diarioGeralArrecadacao</code> pelo prefixo do <code>codigoEspecificacaoReceita</code>:<br>
+            • <strong>111…</strong> → Impostos<br>
+            • <strong>112…</strong> → Taxas<br>
+            • <strong>113…</strong> → Contribuição de Melhoria<br><br>
+            Registros com prefixo <strong>1113 (IRRF)</strong> são ignorados, e registros que possuem estorno correspondente também são ignorados para não inflar os totais.
+          </div>
+          <div class="sc-obs">
+            ⚠️ <strong>Atenção:</strong> caso exista estorno cuja arrecadação original tenha ocorrido em <strong>mês anterior</strong>, os valores finais ficam comprometidos — o script só consegue ignorar estornos referentes à competência atual. Substituir <code>YYYYMM</code> pela competência desejada antes de executar.
+          </div>
+          <div class="sc-code-section-label">
+            <span>Script</span>
+            <button class="sc-copy-code-btn" onclick="scCopyCode('sc-039-code', this)">📋 Copiar script</button>
+          </div>
+          <div class="sc-code-block"><pre id="sc-039-code">//Verifica o valor arrecadado de Impostos, Taxas e Contribuição de Melhoria
+//OBS: Caso exista estorno, onde a arrecadação esteja em mês anterior, os valores finais estarão comprometidos
+fonteEsfinge = Dados.tributos.v2.esfinge;
+competencia = &#x27;YYYYMM&#x27;;
+filtroEsfinge = &quot;idGrupo = &#x27;${competencia}&#x27; and nomeArquivo = &#x27;diarioGeralArrecadacao&#x27;&quot;;
+dadosEsfinge = fonteEsfinge.busca(criterio: filtroEsfinge, ordenacao: &quot;id asc&quot;);
+valorRubricaImpostos = 0;
+valorRubricaTaxas = 0;
+valorRubricaCTMEL = 0;
+
+percorrer (dadosEsfinge) { itemEsfinge -&gt;  
+  dado = JSON.ler(itemEsfinge.dadosEnvio);
+  codigoEspecificacaoReceita = dado.codigoEspecificacaoReceita;
+  
+  //Ignora IRRF
+  se(codigoEspecificacaoReceita.esquerda(4) == &#x27;1113&#x27;){
+    continuar();
+  }
+  
+  //Caso haja estorno para arrecadação, ignora o registro
+  dadosEsfingeEstorno = fonteEsfinge.busca(criterio: &quot;idGrupo = &#x27;${competencia}&#x27; and nomeArquivo = &#x27;estornoReceitasDiarioGeralArrecadacao&#x27; and codigoTce = &#x27;${itemEsfinge.codigoTce}&#x27;&quot;);   
+  se(dadosEsfingeEstorno.size() &gt; 0){
+    continuar();
+  }
+  
+  //Impostos
+  se(codigoEspecificacaoReceita.esquerda(3) == &#x27;111&#x27;){
+    valorRubricaImpostos += Numeros.numero(dado.valorCreditoTributario);
+  }senao{//Taxas
+    se(codigoEspecificacaoReceita.esquerda(3) == &#x27;112&#x27;){
+      valorRubricaTaxas += Numeros.numero(dado.valorCreditoTributario);
+    }senao{//Contribuição de Melhoria
+      se(codigoEspecificacaoReceita.esquerda(3) == &#x27;113&#x27;){
+        valorRubricaCTMEL += Numeros.numero(dado.valorCreditoTributario);
+      }      
+    }
+  }
+}
+
+imprimir &quot;Valor Total / Rubrica Impostos: &quot; + valorRubricaImpostos
+imprimir &quot;Valor Total / Rubrica Taxas: &quot; + valorRubricaTaxas
+imprimir &quot;Valor Total / Rubrica Contribuição de Melhoria: &quot; + valorRubricaCTMEL</pre></div>
+        </div>
+      </div>
+      <!-- fim sc-039 -->
+
+      <!-- SC-037 -->
+      <div class="sc-card" id="sc-037" data-search="verificar lançamento retroativo competência datalancamento diagnóstico assunto 04">
+        <div class="sc-card-header" onclick="scToggle('sc-037')">
+          <div class="sc-card-icon">⏮️</div>
+          <div class="sc-card-meta">
+            <div class="sc-card-title">Verificar se foi gerado lançamento retroativo em uma competência</div>
+            <div class="sc-card-short">Lista lançamentos cuja dataLancamento está fora da competência informada</div>
+            <div class="sc-badge-row">
+              <span class="sc-tag">Diagnóstico</span>
+              <span class="sc-tag assunto">Assunto 04</span>
+              <span class="sc-tag">Lançamentos retroativos</span>
+            </div>
+          </div>
+          <button class="sc-toggle-btn" onclick="event.stopPropagation();scToggle('sc-037')" title="Expandir">▼</button>
+        </div>
+        <div class="sc-card-body">
+          <div class="sc-desc-full">
+            Script de <strong>diagnóstico rápido</strong> — verifica se a fonte do e-Sfinge possui <strong>lançamentos retroativos</strong> em uma competência específica (lançamentos cuja <code>dataLancamento</code> não começa com o ano-mês da competência).<br><br>Útil antes de executar o script "Atualizar data e ano de lançamentos retroativos" para confirmar que há registros a tratar.
+          </div>
+          <div class="sc-code-section-label">
+            <span>Script</span>
+            <button class="sc-copy-code-btn" onclick="scCopyCode('sc-037-code', this)">📋 Copiar script</button>
+          </div>
+          <div class="sc-code-block"><pre id="sc-037-code">fonteEsfinge = Dados.tributos.v2.esfinge
+filtroEsfinge = &quot;idGrupo = &#x27;202508&#x27; and nomeArquivo = &#x27;lancamentosCreditosTributarios&#x27;&quot;
+
+dadosEsfinge = fonteEsfinge.busca(criterio: filtroEsfinge)
+
+percorrer (dadosEsfinge) { itemEsfinge -&gt;
+
+    dadosEnvio = JSON.ler(itemEsfinge.dadosEnvio)
+
+    if(!dadosEnvio.dataLancamento.startsWith(&quot;2025-08&quot;)){
+        imprimir itemEsfinge
+    }
+}</pre></div>
+        </div>
+      </div>
+      <!-- fim sc-037 -->
+
+      <!-- SC-038 -->
+      <div class="sc-card" id="sc-038" data-search="verificar estornos meses anteriores competência distinta pagamentos datahoraestorno datacredito baixa automática diagnóstico">
+        <div class="sc-card-header" onclick="scToggle('sc-038')">
+          <div class="sc-card-icon">↩️</div>
+          <div class="sc-card-meta">
+            <div class="sc-card-title">Verificar se houve estornos de meses anteriores em competência distinta</div>
+            <div class="sc-card-short">Localiza pagamentos estornados num mês cujo crédito é de meses anteriores</div>
+            <div class="sc-badge-row">
+              <span class="sc-tag">Diagnóstico</span>
+              <span class="sc-tag assunto">Pagamentos</span>
+              <span class="sc-tag">Estornos</span>
+            </div>
+          </div>
+          <button class="sc-toggle-btn" onclick="event.stopPropagation();scToggle('sc-038')" title="Expandir">▼</button>
+        </div>
+        <div class="sc-card-body">
+          <div class="sc-desc-full">
+            Identifica situações em que <strong>um pagamento foi estornado</strong> em uma competência (<code>dataHoraEstorno</code>) mas o <strong>crédito original</strong> aconteceu em <strong>competência anterior</strong> (<code>dataCredito</code>).<br><br>Lista também os <strong>arquivos de baixa automática</strong> envolvidos e o <strong>valor total estornado</strong>. Útil para investigar inconsistências de competência em estornos.
+          </div>
+          <div class="sc-obs">
+            ⚠️ Ajustar as datas no <code>filtroPagamentos</code> conforme o período a investigar.
+          </div>
+          <div class="sc-code-section-label">
+            <span>Script</span>
+            <button class="sc-copy-code-btn" onclick="scCopyCode('sc-038-code', this)">📋 Copiar script</button>
+          </div>
+          <div class="sc-code-block"><pre id="sc-038-code">fontePagamentos = Dados.tributos.v2.pagamentos
+fonteBaixas = Dados.tributos.v2.baixasAutomaticasHomologadasEstornadas
+
+filtroPagamentos = &quot;dataHoraEstorno &gt;= &#x27;2025-08-01&#x27; and dataHoraEstorno &lt;= &#x27;2025-08-31&#x27; and dataCredito &lt;= &#x27;2025-07-30&#x27;&quot;
+dadosPagamentos = fontePagamentos.busca(criterio: filtroPagamentos)
+
+valorTotal = 0
+arquivosBaixaAutomatica = [].toSet()
+
+percorrer (dadosPagamentos) { itemPagamentos -&gt;
+    imprimir itemPagamentos
+    valorTotal += itemPagamentos.valorPago
+    arquivosBaixaAutomatica &lt;&lt; itemPagamentos.idBaixaAutomatica
+}
+
+imprimir &quot;Arquivos:&quot;
+percorrer(arquivosBaixaAutomatica){
+
+    arquivos = fonteBaixas.busca(criterio: &quot;id = $item&quot;)
+
+    percorrer(arquivos){ itemBaixa -&gt;
+        imprimir itemBaixa.nomeArquivo
+    }
+}
+
+imprimir &quot;Valor total (todas as receitas): R\$ &quot; + valorTotal</pre></div>
+        </div>
+      </div>
+      <!-- fim sc-038 -->
 
     </div>
     <!-- fim sc-grid -->
@@ -7954,8 +10473,6 @@ percorrer (dadosEsfinge) { itemEsfinge -&gt;
         </div>
       </div>
 
-</div>
-
       <!-- Tabela 109 -->
       
     </div>
@@ -7969,6 +10486,7 @@ percorrer (dadosEsfinge) { itemEsfinge -&gt;
       <button onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ voltar ao topo</button>
     </div>
 
+  </div>
   <!-- fim novidades -->
 
 
@@ -8567,6 +11085,21 @@ percorrer (dadosEsfinge) { itemEsfinge -&gt;
     var card = document.getElementById(id);
     if (!card) return;
     card.classList.toggle('open');
+  }
+
+  function scCopyCode(id, btn) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    var text = el.textContent || el.innerText;
+    navigator.clipboard.writeText(text).then(function() {
+      var orig = btn.innerHTML;
+      btn.innerHTML = '✓ Copiado!';
+      btn.classList.add('copied');
+      setTimeout(function() {
+        btn.innerHTML = orig;
+        btn.classList.remove('copied');
+      }, 1500);
+    });
   }
 
   function scCopyKey(valueId, btn) {
