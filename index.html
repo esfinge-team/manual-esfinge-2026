@@ -1131,6 +1131,9 @@
       <a class="sidebar-sub-item" data-section="gs-tabela" onclick="showGuiaSection(this)">
         <span class="sidebar-sub-icon">📊</span>Tabela de códigos
       </a>
+      <a class="sidebar-sub-item" data-section="gs-tabelas-config" onclick="showGuiaSection(this)">
+        <span class="sidebar-sub-icon">⚙️</span>Tabelas de Configuração
+      </a>
       <a class="sidebar-sub-item" data-section="gs-tabelas-tce" onclick="showGuiaSection(this)">
         <span class="sidebar-sub-icon">🏛️</span>Tabelas do TCE
       </a>
@@ -3213,6 +3216,547 @@
     </div>
 
   </div>
+
+<div class="guia-section" id="gs-tabelas-config">
+    <p class="section-label">Tabelas de Configuração · e-Sfinge 2026</p>
+
+<style>
+  /* ── TABELAS DE CONFIGURAÇÃO ── */
+  .tc-intro {
+    background: var(--accent-bg);
+    border: 1px solid var(--accent-border);
+    border-left: 3px solid var(--accent);
+    border-radius: var(--radius-lg);
+    padding: 14px 18px;
+    margin-bottom: 1.5rem;
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.65;
+  }
+  .tc-intro strong { color: var(--text); }
+  .tc-intro a { color: var(--accent); text-decoration: underline; font-weight: 500; }
+
+  .tc-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    margin-bottom: 1.25rem;
+    overflow: hidden;
+  }
+  .tc-section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 18px;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+  }
+  .tc-section-icon {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    background: var(--accent-bg);
+    border: 1px solid var(--accent-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    flex-shrink: 0;
+  }
+  .tc-section-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.3;
+  }
+  .tc-section-sub {
+    font-size: 11.5px;
+    color: var(--text3);
+    margin-top: 2px;
+    line-height: 1.4;
+  }
+  .tc-section-body {
+    padding: 14px 18px;
+    font-size: 12.5px;
+    color: var(--text2);
+    line-height: 1.7;
+  }
+  .tc-path {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 11px;
+    background: var(--tag-bg);
+    color: var(--text);
+    padding: 2px 8px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    margin: 2px 0;
+  }
+  .tc-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0;
+    font-size: 12px;
+  }
+  .tc-table th {
+    text-align: left;
+    background: var(--surface2);
+    padding: 8px 11px;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: .07em;
+    border-bottom: 1px solid var(--border);
+  }
+  .tc-table td {
+    padding: 8px 11px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .tc-table tr:last-child td { border-bottom: none; }
+  .tc-table .tc-field-name {
+    font-weight: 600;
+    color: var(--text);
+  }
+  .tc-table code {
+    font-family: var(--mono);
+    font-size: 11px;
+    background: var(--tag-bg);
+    padding: 1px 6px;
+    border-radius: 3px;
+    color: var(--text);
+  }
+  .tc-tag-tipo {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+  }
+  .tc-tag-tipo.lista { background: #e3eef9; color: #2e5c8a; border: 1px solid #c5dbef; }
+  .tc-tag-tipo.numerico { background: #fef4e6; color: #8a5a1f; border: 1px solid #f0d9a8; }
+  .tc-tag-cod {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 700;
+    background: var(--accent-bg);
+    color: var(--accent);
+    border: 1px solid var(--accent-border);
+    padding: 2px 8px;
+    border-radius: 3px;
+  }
+  .tc-callout {
+    background: var(--warn-bg);
+    border: 1px solid var(--warn-border);
+    border-left: 3px solid var(--warn);
+    border-radius: 6px;
+    padding: 9px 13px;
+    margin: 10px 0;
+    font-size: 12px;
+    color: var(--text2);
+    line-height: 1.6;
+  }
+  .tc-callout-title {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--warn);
+    text-transform: uppercase;
+    letter-spacing: .07em;
+    margin-bottom: 4px;
+  }
+  .tc-callout.danger {
+    background: var(--danger-bg);
+    border-color: var(--danger-border);
+    border-left-color: var(--danger);
+  }
+  .tc-callout.danger .tc-callout-title { color: var(--danger); }
+  .tc-callout.info {
+    background: var(--accent-bg);
+    border-color: var(--accent-border);
+    border-left-color: var(--accent);
+  }
+  .tc-callout.info .tc-callout-title { color: var(--accent); }
+  .tc-list {
+    margin: 8px 0 8px 18px;
+    padding: 0;
+  }
+  .tc-list li {
+    margin-bottom: 4px;
+    line-height: 1.65;
+  }
+  .tc-link-betha {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--accent);
+    text-decoration: none;
+    padding: 6px 12px;
+    border: 1px solid var(--accent-border);
+    border-radius: 5px;
+    background: var(--accent-bg);
+    margin-top: 10px;
+    font-weight: 500;
+    transition: background .12s, border-color .12s;
+  }
+  .tc-link-betha:hover {
+    background: var(--surface);
+    border-color: var(--accent);
+  }
+</style>
+
+<div class="tc-intro">
+  <strong>Configurações iniciais obrigatórias para o e-Sfinge 2026.</strong> Antes de gerar dados pela primeira vez, todas as configurações abaixo precisam estar feitas. Cada bloco mostra <em>onde configurar no sistema</em>, <em>quais campos preencher</em> e <em>os Códigos TCE</em> a usar. Conteúdo baseado na <a href="https://arrecadacao.ajuda.betha.cloud/tributos/prestacaodecontas/esfinge/esfinge2026" target="_blank" rel="noopener">documentação oficial Betha</a>.
+</div>
+
+<!-- 1. CADASTRO CONTRIBUINTE -->
+<div class="tc-section">
+  <div class="tc-section-header">
+    <div class="tc-section-icon">👤</div>
+    <div>
+      <div class="tc-section-title">Cadastro Contribuinte — Representante Legal</div>
+      <div class="tc-section-sub">Necessário para gerar Nome, CPF e Tipo de Representante no Assunto 01</div>
+    </div>
+  </div>
+  <div class="tc-section-body">
+    <div>Onde configurar: <span class="tc-path">Administrando &gt; Pessoas &gt; Contribuintes</span></div>
+
+    <table class="tc-table" style="margin-top:12px">
+      <thead>
+        <tr>
+          <th style="width:200px">Campo</th>
+          <th>Regra</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="tc-field-name">Tipo de representante legal</td>
+          <td>Habilita-se quando <strong>Data de óbito</strong> está preenchida. Para contribuintes falecidos, preencher com <code>1 - Administrador provisório</code> ou <code>2 - Inventariante</code>. <strong>Obrigatório</strong> quando há data de óbito (referência: Tabela 133).</td>
+        </tr>
+        <tr>
+          <td class="tc-field-name">Representante legal</td>
+          <td>Habilita-se quando <strong>Tipo de representante</strong> = 1 ou 2. Listar o contribuinte que será o representante. <strong>Obrigatório</strong> nesse cenário.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="tc-callout">
+      <div class="tc-callout-title">⚠ Cadastros legados</div>
+      Para contribuintes que <strong>já tinham data de óbito</strong> antes da atualização, o campo Tipo de Representante foi preenchido automaticamente com <code>3 - Não identificado</code>. Revisar manualmente quando o tipo correto for conhecido.
+    </div>
+  </div>
+</div>
+
+<!-- 2. CADASTRO IMOBILIÁRIO -->
+<div class="tc-section">
+  <div class="tc-section-header">
+    <div class="tc-section-icon">🏠</div>
+    <div>
+      <div class="tc-section-title">Cadastro Imobiliário — Campos Adicionais</div>
+      <div class="tc-section-sub">Configuração obrigatória para gerar dados do Assunto 02</div>
+    </div>
+  </div>
+  <div class="tc-section-body">
+    <div>Onde configurar: <span class="tc-path">Configurando &gt; Base cadastral &gt; Campos adicionais</span></div>
+
+    <div class="tc-callout danger">
+      <div class="tc-callout-title">🚨 Mudança importante em 2026</div>
+      A partir de 2026 <strong>não serão mais consideradas as tabelas auxiliares</strong> para gerar esses campos. Os <strong>campos adicionais precisam estar configurados corretamente</strong>, ou os registros do Cadastro Imobiliário <strong>não serão gerados</strong>.
+    </div>
+
+    <table class="tc-table">
+      <thead>
+        <tr>
+          <th>Campo adicional a criar</th>
+          <th style="width:130px">Tipo do campo</th>
+          <th style="width:90px;text-align:center">Código TCE</th>
+          <th>Tabela de referência</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="tc-field-name">Tipo de Imóvel</td>
+          <td><span class="tc-tag-tipo lista">Lista de seleção</span></td>
+          <td style="text-align:center"><span class="tc-tag-cod">91</span></td>
+          <td>Tabela 91 — Tipo de Imóvel (Cadastro Imobiliário)</td>
+        </tr>
+        <tr>
+          <td class="tc-field-name">Tipo de Utilização do Imóvel</td>
+          <td><span class="tc-tag-tipo lista">Lista de seleção</span></td>
+          <td style="text-align:center"><span class="tc-tag-cod">90</span></td>
+          <td>Tabela 90 — Tipo de Utilização do Imóvel</td>
+        </tr>
+        <tr>
+          <td class="tc-field-name">Fração Ideal</td>
+          <td><span class="tc-tag-tipo numerico">Numérico</span></td>
+          <td style="text-align:center"><span class="tc-tag-cod">1001</span></td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td class="tc-field-name">Área Territorial Total do Imóvel</td>
+          <td><span class="tc-tag-tipo numerico">Numérico</span></td>
+          <td style="text-align:center"><span class="tc-tag-cod">1002</span></td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td class="tc-field-name">Área Edificada do Imóvel</td>
+          <td><span class="tc-tag-tipo numerico">Numérico</span></td>
+          <td style="text-align:center"><span class="tc-tag-cod">1003</span></td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td class="tc-field-name">Valor Venal do Imóvel</td>
+          <td><span class="tc-tag-tipo numerico">Numérico</span></td>
+          <td style="text-align:center"><span class="tc-tag-cod">1004</span></td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td class="tc-field-name">Frequência de Coleta de Lixo Domiciliar</td>
+          <td><span class="tc-tag-tipo lista">Lista de seleção</span></td>
+          <td style="text-align:center"><span class="tc-tag-cod">1341</span></td>
+          <td>Tabela 134 — Tipo de Frequência de Coleta</td>
+        </tr>
+        <tr>
+          <td class="tc-field-name">Frequência de Coleta de Lixo Seletiva</td>
+          <td><span class="tc-tag-tipo lista">Lista de seleção</span></td>
+          <td style="text-align:center"><span class="tc-tag-cod">1342</span></td>
+          <td>Tabela 134 — Tipo de Frequência de Coleta</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="tc-callout info">
+      <div class="tc-callout-title">💡 Para os campos do tipo Lista de seleção</div>
+      Na <strong>formatação do campo adicional</strong>, é necessário cadastrar <strong>todas as opções</strong> da tabela TCE correspondente (91, 90 ou 134). Sem todas as opções listadas, registros que usem qualquer item ausente travam a geração.
+    </div>
+  </div>
+</div>
+
+<!-- 3. IMÓVEL RURAL / ITBI -->
+<div class="tc-section">
+  <div class="tc-section-header">
+    <div class="tc-section-icon">🌾</div>
+    <div>
+      <div class="tc-section-title">Imóvel Rural — Inscrição INCRA e ITBI Rural</div>
+      <div class="tc-section-sub">Inscrição imobiliária agora obrigatória para Tipos de Crédito 11, 12 e 13</div>
+    </div>
+  </div>
+  <div class="tc-section-body">
+    <div class="tc-callout danger">
+      <div class="tc-callout-title">🚨 Nova obrigatoriedade em 2026</div>
+      O campo <strong>Inscrição Imobiliária</strong> passou a ser obrigatório também para registros de <strong>Lançamento de Créditos Tributários</strong> e <strong>Inscrição em Dívida Ativa</strong> com:
+      <ul class="tc-list">
+        <li><strong>Tipo Crédito 11</strong> — ITBI RURAL</li>
+        <li><strong>Tipo Crédito 12</strong> — ITBI SOBRE PARTILHA</li>
+        <li><strong>Tipo Crédito 13</strong> — IPTU DECORRENTE DE LEILÃO</li>
+      </ul>
+      Até 2025 era obrigatório apenas para Tipos 01 (IPTU), 02 (ITBI Urbano) e 04 (Contribuição de Melhoria).
+    </div>
+
+    <strong>O que precisa ser feito:</strong>
+    <ul class="tc-list">
+      <li>Imóveis do tipo <strong>Rural</strong> precisam ter o campo <strong>Inscrição INCRA</strong> preenchido — fazer um <em>saneamento da base</em> antes da próxima geração para evitar erros.</li>
+      <li>Em <span class="tc-path">Central de Configurações &gt; Transferência de imóveis</span>, marcar a opção <strong>"Cadastrar imóveis rurais"</strong> — a partir de 2026 lançamentos de ITBI Rural exigem o cadastro do imóvel.</li>
+    </ul>
+
+    <div class="tc-callout">
+      <div class="tc-callout-title">⏰ Antes de qualquer lançamento</div>
+      Recomendado realizar esse ajuste <strong>antes de efetuar qualquer lançamento de ITBI Rural com competência a partir de 01/2026</strong>. Lançamentos já feitos sem a configuração precisarão ser corrigidos depois.
+    </div>
+  </div>
+</div>
+
+<!-- 4. CADASTRO PROPRIEDADE IMOBILIÁRIA -->
+<div class="tc-section">
+  <div class="tc-section-header">
+    <div class="tc-section-icon">📜</div>
+    <div>
+      <div class="tc-section-title">Cadastro de Propriedade Imobiliária — Benefícios Fiscais</div>
+      <div class="tc-section-sub">Configura o campo Condição do Imóvel/Proprietário no Assunto 03</div>
+    </div>
+  </div>
+  <div class="tc-section-body">
+    <div>Onde configurar: <span class="tc-path">Administrando &gt; Cadastros auxiliares &gt; Benefícios fiscais</span></div>
+
+    <p style="margin-top:10px">No campo <strong>Código TCE</strong> do quadro <em>Configurações Gerais</em> de cada benefício fiscal vinculado a imóveis, informar o respectivo código da <strong>Tabela 92 — Situação Fiscal</strong>.</p>
+
+    <div class="tc-callout danger">
+      <div class="tc-callout-title">🚨 Atenção — informe o código do ITEM, não da tabela</div>
+      No campo deve ser informado o <strong>código do item</strong> da Tabela 92 (ex: <code>05</code>, <code>06</code>, <code>07</code>) — <strong>não</strong> o número da tabela (92).
+    </div>
+
+    <strong>Mudança importante — opção 02 não é mais válida desde 2025:</strong>
+    <p style="margin-top:6px">A opção <code>02 - Imune (Outras Imunidades)</code> foi <strong>excluída</strong> da Tabela 92. Para benefícios fiscais do tipo <em>Imunidade</em>, usar uma das novas opções:</p>
+
+    <table class="tc-table">
+      <thead>
+        <tr>
+          <th style="width:90px;text-align:center">Código</th>
+          <th>Tipo de imunidade</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="text-align:center"><span class="tc-tag-cod">05</span></td>
+          <td>Imunidade Recíproca <span style="color:var(--text3)">(CF/1988, art. 150, VI, a)</span></td>
+        </tr>
+        <tr>
+          <td style="text-align:center"><span class="tc-tag-cod">06</span></td>
+          <td>Imunidade Religiosa <span style="color:var(--text3)">(CF/1988, art. 150, VI, b)</span></td>
+        </tr>
+        <tr>
+          <td style="text-align:center"><span class="tc-tag-cod">07</span></td>
+          <td>Imunidade de Entidades <span style="color:var(--text3)">(CF/1988, art. 150, VI, c)</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- 5. COBRANÇA DE DÍVIDA ATIVA -->
+<div class="tc-section">
+  <div class="tc-section-header">
+    <div class="tc-section-icon">💼</div>
+    <div>
+      <div class="tc-section-title">Cobrança de Dívida Ativa — Legislação do Parcelamento</div>
+      <div class="tc-section-sub">Necessário para gerar o campo Legislação do Parcelamento no Assunto 05</div>
+    </div>
+  </div>
+  <div class="tc-section-body">
+    <div>Onde configurar: <span class="tc-path">Configurando &gt; Condições de parcelamento &gt; Parcelamento de créditos</span></div>
+
+    <p style="margin-top:10px">Editar cada condição de parcelamento e preencher o campo <strong>Ato/lei</strong>. Esse valor é o que vai ser enviado ao TCE como <em>Legislação do Parcelamento</em>.</p>
+  </div>
+</div>
+
+<!-- 6. VARIÁVEIS DE AMBIENTE -->
+<div class="tc-section">
+  <div class="tc-section-header">
+    <div class="tc-section-icon">🔐</div>
+    <div>
+      <div class="tc-section-title">Variáveis de Ambiente</div>
+      <div class="tc-section-sub">Identificam o responsável e controlam o tamanho dos lotes de envio</div>
+    </div>
+  </div>
+  <div class="tc-section-body">
+    <div>Onde configurar: <span class="tc-path">Gerenciador de Scripts &gt; Configurando &gt; Variáveis de ambiente</span> (botão no canto superior direito)</div>
+
+    <table class="tc-table" style="margin-top:12px">
+      <thead>
+        <tr>
+          <th style="width:280px">Chave</th>
+          <th>Conteúdo / regra</th>
+          <th style="width:100px;text-align:center">Obrigatória?</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>CPF_RESPONSAVEL_SETOR_TRIBUTOS</code></td>
+          <td>CPF válido do responsável pelas operações automatizadas (cálculos em massa, geração automática). Usado nos campos <em>CPF do Responsável pela Operação</em> dos assuntos 04, 09 e 10.</td>
+          <td style="text-align:center"><strong style="color:var(--danger)">Sim</strong></td>
+        </tr>
+        <tr>
+          <td><code>QUANTIDADE_REGISTROS_POR_ENVIO</code></td>
+          <td>Quantidade de registros enviados por lote. Padrão (se não configurada): <code>10000</code> (dez mil registros).</td>
+          <td style="text-align:center" style="color:var(--text3)">Não</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="tc-callout danger">
+      <div class="tc-callout-title">🚨 Atenção</div>
+      A <code>CPF_RESPONSAVEL_SETOR_TRIBUTOS</code> é <strong>extremamente importante</strong> — o campo <em>CPF do Responsável pela Operação</em> é <strong>obrigatório no leiaute 2026</strong>. Sem ela, lançamentos automatizados não conseguem ser gerados/enviados.
+    </div>
+  </div>
+</div>
+
+<!-- 7. CENTRAL DO USUÁRIO -->
+<div class="tc-section">
+  <div class="tc-section-header">
+    <div class="tc-section-icon">🪪</div>
+    <div>
+      <div class="tc-section-title">Central do Usuário — CPF dos usuários</div>
+      <div class="tc-section-sub">Necessário para gerar o CPF do Responsável pela Operação</div>
+    </div>
+  </div>
+  <div class="tc-section-body">
+    <p>Todos os usuários dos sistemas <strong>Tributos</strong>, <strong>Procuradoria</strong> e <strong>Prestação de Contas</strong> precisam acessar a <strong>Central do Usuário</strong> e preencher o campo <strong>CPF</strong> no próprio cadastro.</p>
+
+    <p style="margin-top:10px">Esse CPF é usado nos campos <em>CPF do Responsável pela Operação</em> dos assuntos:</p>
+    <ul class="tc-list">
+      <li><strong>04</strong> — Lançamento de Créditos Tributários / Inscrição em Dívida Ativa</li>
+      <li><strong>09</strong> — Revisão de Valor de Lançamento</li>
+      <li><strong>10</strong> — Baixa dos Créditos Tributários</li>
+    </ul>
+
+    <div class="tc-callout danger">
+      <div class="tc-callout-title">🚨 Importante</div>
+      Configuração de <strong>extrema importância</strong> — campo obrigatório no leiaute 2026. Operações feitas manualmente por usuários sem CPF cadastrado <strong>não geram registros válidos</strong>.
+    </div>
+  </div>
+</div>
+
+<!-- 8. NATUREZA DA RECEITA -->
+<div class="tc-section">
+  <div class="tc-section-header">
+    <div class="tc-section-icon">💰</div>
+    <div>
+      <div class="tc-section-title">Natureza da Receita — Vínculo PCASPSC</div>
+      <div class="tc-section-sub">Configura Natureza da Receita nos assuntos 04 (Lançamento) e 11 (Diário Geral)</div>
+    </div>
+  </div>
+  <div class="tc-section-body">
+    <strong>Onde configurar (ordem de preferência):</strong>
+    <ul class="tc-list">
+      <li><strong>Entidades que usam o sistema Contábil:</strong> <span class="tc-path">Contábil &gt; Executando &gt; Arrecadações &gt; Configurar</span> — informar a Natureza da Receita conforme o <strong>PCASPSC</strong> para cada receita.</li>
+      <li><strong>Entidades que NÃO usam o Contábil:</strong> configurar nos <span class="tc-path">Cadastros Gerais &gt; Tabela Rubricas</span>.</li>
+    </ul>
+
+    <div class="tc-callout info">
+      <div class="tc-callout-title">📐 Compatibilidade obrigatória</div>
+      O relacionamento entre Natureza da Receita e Tipo de Crédito/Arrecadação precisa respeitar dois quadros oficiais do TCE/SC:
+      <ul class="tc-list" style="margin-top:6px">
+        <li><strong>Quadro 7</strong> — Natureza de Receita × Tipo de Crédito</li>
+        <li><strong>Quadro 8</strong> — Tipo da Natureza de Receita × Tipo de Arrecadação</li>
+      </ul>
+    </div>
+
+    <strong>CONs que validam essa compatibilidade:</strong>
+    <table class="tc-table" style="margin-top:8px">
+      <thead>
+        <tr>
+          <th style="width:90px">CON</th>
+          <th>O que valida</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="tc-tag-cod">CON732</span></td>
+          <td>Tipo da Natureza da Receita compatível com o Tipo de Arrecadação no Diário Geral de Arrecadação</td>
+        </tr>
+        <tr>
+          <td><span class="tc-tag-cod">CON733</span></td>
+          <td>Natureza da Receita do Diário Geral compatível com o Tipo de Crédito do Lançamento</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <a href="https://jira-tcesc.atlassian.net/wiki/spaces/SD/pages/1744341072/v6.04+-+Quadro+7+-+Natureza+de+Receita+x+Tipo+de+Cr+dito" target="_blank" rel="noopener" class="tc-link-betha">📐 Quadro 7 oficial — TCE/SC</a>
+    &nbsp;
+    <a href="https://jira-tcesc.atlassian.net/wiki/spaces/SD/pages/1744341087/v6.04+-+Quadro+8+-+Tipo+da+Natureza+de+Receita+x+Tipo+de+Arrecada+o" target="_blank" rel="noopener" class="tc-link-betha">📐 Quadro 8 oficial — TCE/SC</a>
+  </div>
+</div>
+
+<!-- LINK FONTE -->
+<div class="tc-callout info" style="margin-top:1.5rem">
+  <div class="tc-callout-title">📖 Documentação oficial completa</div>
+  Conteúdo desta página foi montado com base na <strong>central de ajuda da Betha</strong>. Para ler a versão integral, com prints das telas: <a href="https://arrecadacao.ajuda.betha.cloud/tributos/prestacaodecontas/esfinge/esfinge2026" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:underline">arrecadacao.ajuda.betha.cloud — e-Sfinge 2026</a>.
+</div>
+
+</div><!-- /gs-tabelas-config -->
 
 <div class="guia-section" id="gs-tabelas-tce">
   <p class="section-label">Tabelas do TCE · Layout v6.04 Tributário</p>
