@@ -4363,6 +4363,57 @@
     .sc-copy-key-btn { width: 100%; text-align: center; }
   }
 
+  /* Bloco de código-fonte (alternativa à chave de importação) */
+  .sc-code-block {
+    background: #1e1c18;
+    border-radius: var(--radius);
+    padding: 12px 14px;
+    position: relative;
+  }
+  .sc-code-block-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  .sc-code-block-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 600;
+    color: #7a756c;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .sc-code-block pre {
+    margin: 0;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: #b8e8a0;
+    line-height: 1.55;
+    white-space: pre;
+    overflow-x: auto;
+    max-height: 360px;
+    overflow-y: auto;
+  }
+  .sc-code-block pre::-webkit-scrollbar { height: 8px; width: 8px; }
+  .sc-code-block pre::-webkit-scrollbar-thumb { background: #3a3a3a; border-radius: 4px; }
+  .sc-code-block pre::-webkit-scrollbar-track { background: #1e1c18; }
+  .sc-copy-code-btn {
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: var(--radius);
+    border: 1px solid #3a3a3a;
+    background: #2a2a2a;
+    color: #b8e8a0;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .sc-copy-code-btn:hover { background: #333; border-color: #b8e8a0; }
+  .sc-copy-code-btn.copied { background: #1a5c35; border-color: #a0d9b8; color: #fff; }
+
   /* ── CATEGORY FILTERS ── */
   .sc-filters {
     display: flex;
@@ -4665,7 +4716,7 @@
           <div class="sc-key-section-label">Chave de importação</div>
           <div class="sc-key-block">
             <span class="sc-key-label">Chave</span>
-            <span class="sc-key-value" id="sc-key-005">cbadd5ca-c6a4-484f-b614-8a161d5089a7</span>
+            <span class="sc-key-value" id="sc-key-005">df01dfd0-d64a-4c63-9dbf-043c3b07293a</span>
             <button class="sc-copy-key-btn" onclick="scCopyKey('sc-key-005', this)">📋 Copiar chave</button>
           </div>
         </div>
@@ -4846,6 +4897,89 @@
         </div>
       </div>
       <!-- fim sc-010 -->
+
+      <!-- SCRIPT 011 -->
+      <div class="sc-card" id="sc-011" data-cat="tratamento" data-search="adicional valor venal imovel imoveis campo adicional preencher 1,00 tributos vvi camposAdicionais codTCE 1004 tratamento dados">
+        <div class="sc-card-header" onclick="scToggle('sc-011')">
+          <div class="sc-card-icon">🏠</div>
+          <div class="sc-card-meta">
+            <span class="sc-cat-badge cat-tratamento">🔧 Tratamento</span>
+            <div class="sc-card-title">Tratamento de dados — Adicional Valor Venal (1,00) em imóveis sem preenchimento</div>
+            <div class="sc-card-short">Preenche o campo adicional de Valor Venal com 1,00 nos imóveis listados que estão sem essa informação</div>
+            <div class="sc-badge-row">
+              <span class="sc-tag assunto">Imóveis</span>
+              <span class="sc-tag ok">Tributos</span>
+              <span class="sc-tag">Campo Adicional</span>
+              <span class="sc-tag">Tratamento de dados</span>
+            </div>
+          </div>
+          <button class="sc-toggle-btn" onclick="event.stopPropagation();scToggle('sc-011')" title="Expandir">▼</button>
+        </div>
+        <div class="sc-card-body">
+          <div class="sc-desc-full">
+            Percorre uma lista de imóveis (informados em <strong>codigosImoveis</strong>) e, para cada um, lê o valor atual do campo adicional vinculado ao <strong>codTCE 1004</strong> (Valor Venal do Imóvel). Caso o valor esteja vazio ou zerado, o script preenche automaticamente com <strong>1,00</strong>, evitando inconsistências no envio ao e-Sfinge. Imóveis que já possuem valor preenchido têm seu conteúdo mantido (reescrito com o mesmo valor).<br><br>
+            <strong>Como usar:</strong> editar a variável <code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">codigosImoveis</code> no início do script, substituindo <code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">'X,Y,Z'</code> pela lista de códigos dos imóveis que precisam ser tratados (separados por vírgula).
+          </div>
+          <div class="sc-obs">
+            <strong>&#9888; Sistema:</strong> executar no <strong>Tributos</strong>.<br>
+            <strong>&#128203; Atenção:</strong> revisar a lista de códigos de imóveis antes da execução. O ano-base é capturado automaticamente da data atual.
+          </div>
+          <div class="sc-key-section-label">Código-fonte do script</div>
+          <div class="sc-code-block">
+            <div class="sc-code-block-header">
+              <span class="sc-code-block-label">Groovy</span>
+              <button class="sc-copy-code-btn" onclick="scCopyCode('sc-code-011', this)">📋 Copiar código</button>
+            </div>
+<pre id="sc-code-011">//Adicional Valor Venal - 1,00
+codigosImoveis = 'X,Y,Z'
+fonteCamposAdicionais = Dados.tributos.v2.camposAdicionais;
+dadosCamposAdicionais = fonteCamposAdicionais.busca(criterio: "codTCE = 1004", primeiro: true);
+dataBase = Datas.hoje().formatar("yyyy-MM-dd");
+anoBase = dataBase.esquerda(4);
+FonteTributos = Dados.tributos.v2;
+fonteImoveis = Dados.tributos.v2.imoveis;
+filtroImoveis = "codigo in (${codigosImoveis})"
+dadosImoveis = fonteImoveis.busca(criterio: filtroImoveis)
+percorrer (dadosImoveis) { itemImoveis -&gt;    
+  vvi = lerDadoAdicinalImovel(item.id, anoBase, dadosCamposAdicionais.titulo);
+  
+  se(vvi == 0){
+    conteudo = [        
+      idImovel: itemImoveis.id,
+      nomeCampo: dadosCamposAdicionais.titulo,
+      valor: 1,
+      ano: anoBase
+    ];        
+  }senao{
+    conteudo = [        
+      idImovel: itemImoveis.id,
+      nomeCampo: dadosCamposAdicionais.titulo,
+      valor: vvi,
+      ano: anoBase
+    ];      
+  }
+  imprimir conteudo
+  retorno = FonteTributos.imovel.campoAdicional.preenche(conteudo: conteudo, primeiro: true);  
+}
+def lerDadoAdicinalImovel(idImovel, exercicio, nomeCampo){
+  valorCampo = nulo;
+  tentar {
+    params = [ idImovel: idImovel, ano: exercicio];  
+    buscaCA = Dados.tributos.v2.imovel.camposAdicionais.busca(parametros: params)
+    .find { c -&gt; c.campoAdicional.titulo.equals(nomeCampo) };
+      valorCampo =  buscaCA ? buscaCA.vlCampo : nulo;
+    if(valorCampo == null){
+      valorCampo = 0;
+    }
+  } tratar {
+    imprimir "Erro na leitura dos campos adicionais do imóvel de id $idImovel no ano $exercicio";    
+  }  
+  retornar valorCampo;
+}</pre>
+          </div>
+        </div>
+      </div>
+      <!-- fim sc-011 -->
 
 
 
@@ -6074,8 +6208,6 @@ percorrer (dadosEsfinge) { itemEsfinge -&gt;
         </div>
       </div>
 
-</div>
-
       <!-- Tabela 109 -->
       
     </div>
@@ -6089,6 +6221,7 @@ percorrer (dadosEsfinge) { itemEsfinge -&gt;
       <button onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ voltar ao topo</button>
     </div>
 
+  </div>
   <!-- fim novidades -->
 
 
@@ -6847,6 +6980,17 @@ percorrer (dadosEsfinge) { itemEsfinge -&gt;
     var val = document.getElementById(valueId);
     if (!val) return;
     navigator.clipboard.writeText(val.textContent.trim()).then(function() {
+      var orig = btn.textContent;
+      btn.textContent = '✓ Copiado!';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = orig; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+
+  function scCopyCode(codeId, btn) {
+    var el = document.getElementById(codeId);
+    if (!el) return;
+    navigator.clipboard.writeText(el.textContent).then(function() {
       var orig = btn.textContent;
       btn.textContent = '✓ Copiado!';
       btn.classList.add('copied');
