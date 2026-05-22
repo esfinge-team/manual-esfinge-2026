@@ -5978,6 +5978,378 @@ def lerDadoAdicinalImovel(idImovel, exercicio, nomeCampo){
       </div>
       <!-- fim sc-011 -->
 
+      <!-- SCRIPT 012 -->
+      <div class="sc-card" id="sc-012" data-cat="tratamento" data-search="equiparar tributos contábil rubrica valor diário geral arrecadação codigoEspecificacaoReceita 11125301 12415001 idGrupo competência conciliação ajuste tratamento dados esfinge mover registros divergência diferença CON 807 809">
+        <div class="sc-card-header" onclick="scToggle('sc-012')">
+          <div class="sc-card-icon">⚖️</div>
+          <div class="sc-card-meta">
+            <span class="sc-cat-badge cat-tratamento">🔧 Tratamento</span>
+            <div class="sc-card-title">Tratamento de dados — Equipara valor do Tributário com o Contábil (rubrica específica)</div>
+            <div class="sc-card-short">Move registros do Diário Geral de Arrecadação para reduzir o valor de uma rubrica no Tributos até igualar ao valor da contabilidade</div>
+            <div class="sc-badge-row">
+              <span class="sc-tag ok">Tributos</span>
+              <span class="sc-tag assunto">Diário Geral Arrecadação</span>
+              <span class="sc-tag">Conciliação</span>
+              <span class="sc-tag">Tratamento de dados</span>
+            </div>
+          </div>
+          <button class="sc-toggle-btn" onclick="event.stopPropagation();scToggle('sc-012')" title="Expandir">▼</button>
+        </div>
+        <div class="sc-card-body">
+          <div class="sc-desc-full">
+            Quando o valor arrecadado de uma rubrica específica no Tributos está <strong>maior</strong> que o valor registrado na contabilidade, este script reduz a diferença movendo registros do Diário Geral de Arrecadação para outra rubrica (alterando o <code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">codigoEspecificacaoReceita</code>). O usuário informa o valor contábil-alvo e o script percorre os registros da competência somando até atingir a diferença a ser removida.<br><br>
+            <strong>Funcionamento em 2 passos:</strong><br>
+            1. Calcula a soma total da rubrica no Tributos e a diferença em relação ao valor contábil.<br>
+            2. Percorre os registros e altera o <code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">codigoEspecificacaoReceita</code> para a rubrica destino (no exemplo, <code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">12415001</code>) até a soma movida atingir o valor a remover, sem ultrapassá-lo.<br><br>
+            <strong>Variáveis a configurar antes de executar:</strong><br>
+            • <code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">competencia</code> — competência de origem dos registros (formato AAAAMM)<br>
+            • <code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">competenciaAlteracao</code> — competência de destino (geralmente igual à de origem)<br>
+            • <code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">valorRubricaContabil</code> — valor do contábil que deve ser igualado<br>
+            • <code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">rubricaTributos</code> — primeiros 8 dígitos do <code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">codigoEspecificacaoReceita</code> da rubrica a reduzir<br>
+            • Dentro do <code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">.replace()</code> — substituir <code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">'12415001'</code> pela rubrica de destino, se diferente
+          </div>
+          <div class="sc-obs">
+            <strong>&#9888; Sistema:</strong> executar no <strong>Tributos</strong>.<br>
+            <strong>&#128683; Pré-condição:</strong> usar apenas quando o valor no <strong>Tributos &gt; Contábil</strong>. Se for o oposto, este script não se aplica.<br>
+            <strong>&#128203; Atenção:</strong> a função <code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">altera</code> grava as mudanças direto na base. Recomendado conferir os <code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">imprimir</code> do log antes de executar em produção.
+          </div>
+          <div class="sc-key-section-label">Código-fonte do script</div>
+          <div class="sc-code-block">
+            <div class="sc-code-block-header">
+              <span class="sc-code-block-label">Groovy</span>
+              <button class="sc-copy-code-btn" onclick="scCopyCode('sc-code-012', this)">📋 Copiar código</button>
+            </div>
+<pre id="sc-code-012">fonteEsfinge = Dados.tributos.v2.esfinge;
+competencia = '202604';
+competenciaAlteracao = '202604';
+filtroEsfinge = "idGrupo = '${competencia}' and nomeArquivo = 'diarioGeralArrecadacao'";
+dadosEsfinge = fonteEsfinge.busca(criterio: filtroEsfinge, ordenacao: "id asc");
+valorRubricaContabil = 171573.97;
+rubricaTributos = '11125301';
+// PASSO 1: Calcular soma total da rubrica
+somaTotal = 0.00;
+percorrer (dadosEsfinge) { itemEsfinge -&gt;
+  dado = JSON.ler(itemEsfinge.dadosEnvio);
+  codigoEspecificacaoReceita = dado.codigoEspecificacaoReceita;
+  se (codigoEspecificacaoReceita.esquerda(8) == rubricaTributos) {
+    somaTotal += Numeros.numero(dado.valorCreditoTributario);
+  }
+}
+valorRemover = somaTotal - valorRubricaContabil;
+imprimir "Soma total: $somaTotal";
+imprimir "Valor contábil alvo: $valorRubricaContabil";
+imprimir "Valor a remover: $valorRemover";
+// PASSO 2: Mover registros até atingir o valor a remover
+somaRemovida = 0.00;
+percorrer (dadosEsfinge) { itemEsfinge -&gt;
+  dado = JSON.ler(itemEsfinge.dadosEnvio);
+  codigoEspecificacaoReceita = dado.codigoEspecificacaoReceita;
+  se (codigoEspecificacaoReceita.esquerda(8) == rubricaTributos) {
+    valorItem = Numeros.numero(dado.valorCreditoTributario);
+    se (somaRemovida + valorItem &lt;= valorRemover) {
+      somaRemovida += valorItem;
+      imprimir "Movendo: ID=${itemEsfinge.id} | Valor=$valorItem | Codigo=$codigoEspecificacaoReceita";
+      conteudo = [
+        nomeTce: itemEsfinge.nomeTce,
+        idGrupo: competenciaAlteracao,
+        idDado: nulo,
+        tipoDado: itemEsfinge.tipoDado,
+        nomeArquivo: itemEsfinge.nomeArquivo,
+        operacao: itemEsfinge.operacao.valor.toString(),
+        sistema: itemEsfinge.sistema.valor.toString(),
+        dadosEnvio: itemEsfinge.dadosEnvio.replace('"codigoEspecificacaoReceita":"' + codigoEspecificacaoReceita + '"', '"codigoEspecificacaoReceita":"12415001"'),
+        codigoTce: itemEsfinge.codigoTce,
+        cancelado: itemEsfinge.cancelado,
+        dadosRetorno: nulo,
+        chavePacote: itemEsfinge.chavePacote
+      ];
+      fonteEsfinge.altera(parametros:[id: itemEsfinge.id], conteudo: conteudo);
+    }
+  }
+}
+imprimir "=== RESULTADO ===";
+imprimir "Valor removido: $somaRemovida";
+imprimir "Valor que ficou na rubrica: ${somaTotal - somaRemovida}";
+imprimir "Diferença do alvo: ${valorRubricaContabil - (somaTotal - somaRemovida)}";</pre>
+          </div>
+        </div>
+      </div>
+      <!-- fim sc-012 -->
+
+      <!-- SCRIPT 013 -->
+      <div class="sc-card" id="sc-013" data-cat="consulta" data-search="consulta arrecadação impostos taxas contribuição melhoria CTMEL rubrica 111 112 113 diário geral codigoEspecificacaoReceita IRRF 1113 estorno competência total valorCreditoTributario esfinge somar valores">
+        <div class="sc-card-header" onclick="scToggle('sc-013')">
+          <div class="sc-card-icon">📊</div>
+          <div class="sc-card-meta">
+            <span class="sc-cat-badge cat-consulta">🔍 Consulta</span>
+            <div class="sc-card-title">Consulta — Valor arrecadado por categoria (Impostos, Taxas e Contribuição de Melhoria)</div>
+            <div class="sc-card-short">Soma o valor arrecadado por categoria de rubrica (111, 112 e 113) no Diário Geral de Arrecadação, ignorando IRRF e registros com estorno</div>
+            <div class="sc-badge-row">
+              <span class="sc-tag ok">Tributos</span>
+              <span class="sc-tag assunto">Diário Geral Arrecadação</span>
+              <span class="sc-tag">Consulta</span>
+              <span class="sc-tag">Diagnóstico</span>
+            </div>
+          </div>
+          <button class="sc-toggle-btn" onclick="event.stopPropagation();scToggle('sc-013')" title="Expandir">▼</button>
+        </div>
+        <div class="sc-card-body">
+          <div class="sc-desc-full">
+            Percorre os registros do Diário Geral de Arrecadação de uma competência e totaliza o valor arrecadado em três grupos, com base nos primeiros 3 dígitos do <code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">codigoEspecificacaoReceita</code>:<br>
+            • <strong>111</strong> — Impostos<br>
+            • <strong>112</strong> — Taxas<br>
+            • <strong>113</strong> — Contribuição de Melhoria<br><br>
+            <strong>Filtros aplicados automaticamente:</strong><br>
+            • Ignora registros de <strong>IRRF</strong> (códigos iniciados em <code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">1113</code>).<br>
+            • Ignora registros que tenham <strong>estorno</strong> correspondente em <code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">estornoReceitasDiarioGeralArrecadacao</code> na mesma competência.<br><br>
+            <strong>Variável a configurar antes de executar:</strong><br>
+            • <code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">competencia</code> — informar no formato <code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">'YYYYMM'</code> (ex.: <code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">'202604'</code>)
+          </div>
+          <div class="sc-obs">
+            <strong>&#9888; Sistema:</strong> executar no <strong>Tributos</strong>.<br>
+            <strong>&#128203; Observação importante:</strong> caso exista <strong>estorno em mês anterior</strong> (arrecadação numa competência e estorno em outra), os totais finais ficam comprometidos — o script só identifica estornos da mesma competência da arrecadação.
+          </div>
+          <div class="sc-key-section-label">Código-fonte do script</div>
+          <div class="sc-code-block">
+            <div class="sc-code-block-header">
+              <span class="sc-code-block-label">Groovy</span>
+              <button class="sc-copy-code-btn" onclick="scCopyCode('sc-code-013', this)">📋 Copiar código</button>
+            </div>
+<pre id="sc-code-013">fonteEsfinge = Dados.tributos.v2.esfinge;
+competencia = 'YYYYMM';
+filtroEsfinge = "idGrupo = '${competencia}' and nomeArquivo = 'diarioGeralArrecadacao'";
+dadosEsfinge = fonteEsfinge.busca(criterio: filtroEsfinge, ordenacao: "id asc");
+valorRubricaImpostos = 0;
+valorRubricaTaxas = 0;
+valorRubricaCTMEL = 0;
+
+percorrer (dadosEsfinge) { itemEsfinge -&gt;  
+  dado = JSON.ler(itemEsfinge.dadosEnvio);
+  codigoEspecificacaoReceita = dado.codigoEspecificacaoReceita;
+  
+  //Ignora IRRF
+  se(codigoEspecificacaoReceita.esquerda(4) == '1113'){
+    continuar();
+  }
+  
+  //Caso haja estorno para arrecadação, ignora o registro
+  dadosEsfingeEstorno = fonteEsfinge.busca(criterio: "idGrupo = '${competencia}' and nomeArquivo = 'estornoReceitasDiarioGeralArrecadacao' and codigoTce = '${itemEsfinge.codigoTce}'");   
+  se(dadosEsfingeEstorno.size() &gt; 0){
+    continuar();
+  }
+  
+  //Impostos
+  se(codigoEspecificacaoReceita.esquerda(3) == '111'){
+    valorRubricaImpostos += Numeros.numero(dado.valorCreditoTributario);
+  }senao{//Taxas
+    se(codigoEspecificacaoReceita.esquerda(3) == '112'){
+      valorRubricaTaxas += Numeros.numero(dado.valorCreditoTributario);
+    }senao{//Contribuição de Melhoria
+      se(codigoEspecificacaoReceita.esquerda(3) == '113'){
+        valorRubricaCTMEL += Numeros.numero(dado.valorCreditoTributario);
+      }      
+    }
+  }
+}
+
+imprimir "Valor Total / Rubrica Impostos: " + valorRubricaImpostos
+imprimir "Valor Total / Rubrica Taxas: " + valorRubricaTaxas
+imprimir "Valor Total / Rubrica Contribuição de Melhoria: " + valorRubricaCTMEL</pre>
+          </div>
+        </div>
+      </div>
+      <!-- fim sc-013 -->
+
+      <!-- SCRIPT 014 -->
+      <div class="sc-card" id="sc-014" data-cat="exclusao" data-search="exclusão excluir lotes batch dadosEnvio busca múltiplos códigos esfinge tributos remover apagar deletar lote tamanho processar massa filtro like">
+        <div class="sc-card-header" onclick="scToggle('sc-014')">
+          <div class="sc-card-icon">🗑️</div>
+          <div class="sc-card-meta">
+            <span class="sc-cat-badge cat-exclusao">🗑️ Exclusão</span>
+            <div class="sc-card-title">Exclusão em lotes — Busca registros do e-Sfinge pelo conteúdo do dadosEnvio</div>
+            <div class="sc-card-short">Recebe uma lista de códigos/valores, divide em lotes e busca os registros do e-Sfinge cujo dadosEnvio contenha cada valor (com chamada de exclusão comentada por segurança)</div>
+            <div class="sc-badge-row">
+              <span class="sc-tag ok">Tributos</span>
+              <span class="sc-tag assunto">e-Sfinge</span>
+              <span class="sc-tag">Exclusão em lote</span>
+              <span class="sc-tag">Busca por dadosEnvio</span>
+            </div>
+          </div>
+          <button class="sc-toggle-btn" onclick="event.stopPropagation();scToggle('sc-014')" title="Expandir">▼</button>
+        </div>
+        <div class="sc-card-body">
+          <div class="sc-desc-full">
+            Útil quando você tem uma lista grande de códigos (notas, lançamentos, etc.) que aparecem dentro do JSON do <code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">dadosEnvio</code> e precisa localizar e (opcionalmente) excluir todos os registros do e-Sfinge correspondentes. Como o filtro usa <code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">dadosEnvio like '%valor%'</code>, processar tudo de uma vez quebraria a consulta — por isso o script divide a lista em <strong>lotes</strong> (padrão: 10 códigos por lote) e roda uma busca por vez, montando o filtro com várias cláusulas <code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">like ... or like ... or like ...</code>.<br><br>
+            <strong>Como usar:</strong><br>
+            • Editar a lista <code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">valores</code> com os códigos que serão buscados dentro do <code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">dadosEnvio</code>.<br>
+            • Ajustar <code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">tamanhoLote</code> se necessário (10 costuma ser estável).<br>
+            • Por padrão, a linha que faz a exclusão (<code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">fonteEsfinge.excluir(...)</code>) vem <strong>comentada</strong>: rode primeiro só com o <code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">imprimir</code> para conferir os registros, e depois descomente a linha para efetivar a exclusão.
+          </div>
+          <div class="sc-obs">
+            <strong>&#9888; Sistema:</strong> executar no <strong>Tributos</strong>.<br>
+            <strong>&#128683; Atenção:</strong> a exclusão é <strong>irreversível</strong>. Sempre rode primeiro com a linha de exclusão comentada para validar quais registros serão atingidos.<br>
+            <strong>&#128203; Dica:</strong> se algum lote retornar muitos registros (ex.: 1000+), reduza <code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">tamanhoLote</code> para evitar timeout.
+          </div>
+          <div class="sc-key-section-label">Código-fonte do script</div>
+          <div class="sc-code-block">
+            <div class="sc-code-block-header">
+              <span class="sc-code-block-label">Groovy</span>
+              <button class="sc-copy-code-btn" onclick="scCopyCode('sc-code-014', this)">📋 Copiar código</button>
+            </div>
+<pre id="sc-code-014">fonteEsfinge = Dados.tributos.v2.esfinge;
+
+valores = [
+  '2202270656','2202270655','2202270658','2202270657','2202270659',
+  '2202270661','2202270660','2201943757','2201943756','2202265911',
+  '2202265910','2202265913','2201903503','2201903668','2202265912',
+  '2201896128','2201896129','2201896126','2202270647','2201896127',
+  '2201896124','2202270649','2201896125','2202270648','2202270650',
+  '2202270652','2201882327','2202270651','2201882326','2202270654',
+  '2201882325','2202270653','2201882324','2201882323','2201903667',
+  '2201903666','2201903665','2201903664','2201965201','2201965200',
+  '2277711842','2277711843','2202265914','2201965197','2201995343',
+  '2201965196','2201995342','2201965199','2201995624','2201965198',
+  '2277712024','2201898207','2201898206','2201995626','2277712026',
+  '2201898205','2201995625','2277712025','2201898204','2277712027',
+  '2201898083','2201898082','2201995341'
+]
+
+tamanhoLote = 10
+totalLotes = (valores.size() / tamanhoLote).toInteger() + (valores.size() % tamanhoLote == 0 ? 0 : 1)
+
+(0..&lt;totalLotes).each { indiceLote -&gt;
+  inicio = indiceLote * tamanhoLote
+  fim = Math.min(inicio + tamanhoLote, valores.size())
+  loteAtual = valores.subList(inicio, fim)
+
+  imprimir "===== Processando lote ${indiceLote + 1} de ${totalLotes} (${loteAtual.size()} códigos) ====="
+
+  filtroEsfinge = loteAtual.collect { "dadosEnvio like '%${it}%'" }.join(' or ')
+  dadosEsfinge = fonteEsfinge.busca(criterio: filtroEsfinge)
+
+  percorrer (dadosEsfinge) { itemEsfinge -&gt;
+    imprimir itemEsfinge
+    //DadosEsfinge = fonteEsfinge.excluir(parametros:["id": itemEsfinge.id])
+  }
+}</pre>
+          </div>
+        </div>
+      </div>
+      <!-- fim sc-014 -->
+
+      <!-- SCRIPT 015 -->
+      <div class="sc-card" id="sc-015" data-cat="tratamento" data-search="tratamento dados campo adicional imóvel imoveis tipo construção sem construção preenche preencher inserir valor texto camposAdicionais ano código">
+        <div class="sc-card-header" onclick="scToggle('sc-015')">
+          <div class="sc-card-icon">🏗️</div>
+          <div class="sc-card-meta">
+            <span class="sc-cat-badge cat-tratamento">🔧 Tratamento</span>
+            <div class="sc-card-title">Tratamento de dados — Preenche campo adicional de imóvel</div>
+            <div class="sc-card-short">Preenche um campo adicional de imóvel com um valor fixo para uma lista de imóveis (no exemplo: 'TIPO DE CONSTRUÇÃO' = 'SEM CONSTRUÇÃO')</div>
+            <div class="sc-badge-row">
+              <span class="sc-tag ok">Tributos</span>
+              <span class="sc-tag assunto">Imóveis</span>
+              <span class="sc-tag">Campo Adicional</span>
+              <span class="sc-tag">Tratamento de dados</span>
+            </div>
+          </div>
+          <button class="sc-toggle-btn" onclick="event.stopPropagation();scToggle('sc-015')" title="Expandir">▼</button>
+        </div>
+        <div class="sc-card-body">
+          <div class="sc-desc-full">
+            Percorre uma lista de códigos de imóveis e preenche um campo adicional específico (no exemplo, <strong>'TIPO DE CONSTRUÇÃO'</strong>) com um valor fixo (no exemplo, <strong>'SEM CONSTRUÇÃO'</strong>) para o ano informado. Diferente do sc-011 (que trata especificamente o Valor Venal por <code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">codTCE 1004</code>), este aceita qualquer nome de campo adicional textual ou numérico.<br><br>
+            <strong>Como usar — variáveis a configurar:</strong><br>
+            • <code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">filtroImoveis</code> — lista dos códigos de imóvel entre parênteses<br>
+            • <code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">val</code> — o valor que será gravado (string ou número)<br>
+            • Dentro do <code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">conteudo</code>: <code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">nomeCampo</code> com o título exato do campo adicional e <code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">ano</code> com o exercício de referência
+          </div>
+          <div class="sc-obs">
+            <strong>&#9888; Sistema:</strong> executar no <strong>Tributos</strong>.<br>
+            <strong>&#128203; Atenção:</strong> o <code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">nomeCampo</code> precisa bater <strong>exatamente</strong> com o título do campo adicional cadastrado (maiúsculas, acentuação, espaços). Se não bater, o script roda sem erro mas não grava nada.<br>
+            <strong>&#128172; Dica:</strong> para preencher vários campos diferentes na mesma rodada, duplique o bloco <code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">conteudo / preenche</code> dentro do <code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">percorrer</code>, ajustando <code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">nomeCampo</code> e <code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">valor</code> em cada um.
+          </div>
+          <div class="sc-key-section-label">Código-fonte do script</div>
+          <div class="sc-code-block">
+            <div class="sc-code-block-header">
+              <span class="sc-code-block-label">Groovy</span>
+              <button class="sc-copy-code-btn" onclick="scCopyCode('sc-code-015', this)">📋 Copiar código</button>
+            </div>
+<pre id="sc-code-015">fonteImoveis = Dados.tributos.v2.imoveis;
+FonteTributos = Dados.tributos.v2;
+fonteCamposAdicionais = Dados.tributos.v2.imovel.camposAdicionais;
+
+//FILTROS
+filtroImoveis = "codigo in (6161, 6163, 6162, 6164, 6160, 6167, 6165, 6166, 6168)"
+
+//BUSCA DADOS
+dadosImoveis = fonteImoveis.busca(criterio: filtroImoveis)
+
+val = 'SEM CONSTRUÇÃO'
+
+percorrer (dadosImoveis) { itemImoveis -&gt;
+  //imprimir item
+
+  conteudo = [
+    idImovel: itemImoveis.id,
+    nomeCampo: 'TIPO DE CONSTRUÇÃO',
+    valor: val,
+    ano: 2026
+  ];
+
+  imprimir itemImoveis.codigo + ' - ' + conteudo
+
+  retorno = FonteTributos.imovel.campoAdicional.preenche(conteudo: conteudo, primeiro: true);
+}</pre>
+          </div>
+        </div>
+      </div>
+      <!-- fim sc-015 -->
+
+      <!-- SCRIPT 016 -->
+      <div class="sc-card" id="sc-016" data-cat="exclusao" data-search="exclusão excluir massa ids lista esfinge tributos remover apagar deletar identificadores percorrer">
+        <div class="sc-card-header" onclick="scToggle('sc-016')">
+          <div class="sc-card-icon">🗑️</div>
+          <div class="sc-card-meta">
+            <span class="sc-cat-badge cat-exclusao">🗑️ Exclusão</span>
+            <div class="sc-card-title">Exclusão em massa — Remove registros do e-Sfinge por uma lista de IDs</div>
+            <div class="sc-card-short">Recebe uma lista de IDs e exclui cada registro correspondente da fonte do e-Sfinge</div>
+            <div class="sc-badge-row">
+              <span class="sc-tag ok">Tributos</span>
+              <span class="sc-tag assunto">e-Sfinge</span>
+              <span class="sc-tag">Exclusão por ID</span>
+            </div>
+          </div>
+          <button class="sc-toggle-btn" onclick="event.stopPropagation();scToggle('sc-016')" title="Expandir">▼</button>
+        </div>
+        <div class="sc-card-body">
+          <div class="sc-desc-full">
+            Versão direta de exclusão: você já tem em mãos os IDs internos dos registros do e-Sfinge (obtidos por consulta prévia, log ou pelo sc-014) e quer removê-los em sequência. O script percorre a lista e chama <code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">fonteEsfinge.excluir</code> para cada ID.<br><br>
+            <strong>Como usar:</strong><br>
+            • Substituir os IDs dentro de <code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">listaIds</code> pelos identificadores que se deseja excluir.<br>
+            • Os IDs são valores numéricos (Long), separados por vírgula.
+          </div>
+          <div class="sc-obs">
+            <strong>&#9888; Sistema:</strong> executar no <strong>Tributos</strong>.<br>
+            <strong>&#128683; Atenção:</strong> a exclusão é <strong>irreversível</strong> e <strong>imediata</strong> — diferente do sc-014, este script não tem etapa de validação por <code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">imprimir</code>. Confira a lista de IDs antes de executar.<br>
+            <strong>&#128172; Dica:</strong> para revisar o que vai ser excluído antes, adicione <code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">imprimir fonteEsfinge.busca(criterio: "id = ${idItem}")</code> antes da linha de exclusão.
+          </div>
+          <div class="sc-key-section-label">Código-fonte do script</div>
+          <div class="sc-code-block">
+            <div class="sc-code-block-header">
+              <span class="sc-code-block-label">Groovy</span>
+              <button class="sc-copy-code-btn" onclick="scCopyCode('sc-code-016', this)">📋 Copiar código</button>
+            </div>
+<pre id="sc-code-016">fonteEsfinge = Dados.tributos.v2.esfinge;
+
+listaIds = [1051148343258, 1051148343259, 1051148343260]
+
+percorrer (listaIds) { idItem -&gt;
+  fonteEsfinge.excluir(parametros: ["id": idItem])
+}</pre>
+          </div>
+        </div>
+      </div>
+      <!-- fim sc-016 -->
+
 
 
 
