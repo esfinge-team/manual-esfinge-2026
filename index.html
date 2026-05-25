@@ -6350,6 +6350,150 @@ percorrer (listaIds) { idItem -&gt;
       </div>
       <!-- fim sc-016 -->
 
+      <!-- SCRIPT 017 -->
+      <div class="sc-card" id="sc-017" data-cat="tratamento" data-search="tratamento alterar nome arquivo assunto nomeArquivo ajuste lancamentosCreditosTributarios esfinge tributos competência idGrupo codigoLancamento renomear sufixo">
+        <div class="sc-card-header" onclick="scToggle('sc-017')">
+          <div class="sc-card-icon">✏️</div>
+          <div class="sc-card-meta">
+            <span class="sc-cat-badge cat-tratamento">🔧 Tratamento</span>
+            <div class="sc-card-title">Tratamento de dados — Altera o nome do arquivo (assunto) dos lançamentos no e-Sfinge</div>
+            <div class="sc-card-short">Adiciona o sufixo '_ajuste' ao nomeArquivo dos registros filtrados (assunto + competência + códigos), preservando os demais campos</div>
+            <div class="sc-badge-row">
+              <span class="sc-tag ok">Tributos</span>
+              <span class="sc-tag assunto">e-Sfinge</span>
+              <span class="sc-tag">Lançamentos Créditos Tributários</span>
+              <span class="sc-tag">Renomear assunto</span>
+            </div>
+          </div>
+          <button class="sc-toggle-btn" onclick="event.stopPropagation();scToggle('sc-017')" title="Expandir">▼</button>
+        </div>
+        <div class="sc-card-body">
+          <div class="sc-desc-full">
+            Renomeia o <code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">nomeArquivo</code> (assunto) dos registros do e-Sfinge, adicionando o sufixo <code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">_ajuste</code> — por exemplo, transformando <code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">lancamentosCreditosTributarios</code> em <code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">lancamentosCreditosTributarios_ajuste</code>. Útil quando se quer "isolar" registros indevidamente classificados sem precisar excluí-los, deixando-os fora dos pacotes oficiais do TCE.<br><br>
+            <strong>Como usar — preencher antes de executar:</strong><br>
+            • <code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">nomeArquivo</code> — o assunto a ser alterado<br>
+            • <code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">idGrupo</code> — competência no formato <code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">yyyymm</code> (no exemplo, o filtro pega tudo <strong>antes</strong> da competência informada)<br>
+            • <code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">codigoLancamento in ( )</code> — códigos a alterar, separados por vírgula
+          </div>
+          <div class="sc-obs">
+            <strong>&#9888; Sistema:</strong> executar no <strong>Tributos</strong>.<br>
+            <strong>&#128683; Atenção:</strong> a alteração é <strong>direta na base</strong>. Sempre conferir os <code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">imprimir conteudo</code> antes de executar em produção.<br>
+            <strong>&#128203; Importante ao copiar:</strong> o snippet termina sem o <code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">}</code> de fechamento do <code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">percorrer</code> — lembre-se de adicionar a chave de fechamento ao colar no editor.
+          </div>
+          <div class="sc-key-section-label">Código-fonte do script</div>
+          <div class="sc-code-block">
+            <div class="sc-code-block-header">
+              <span class="sc-code-block-label">Groovy</span>
+              <button class="sc-copy-code-btn" onclick="scCopyCode('sc-code-017', this)">📋 Copiar código</button>
+            </div>
+<pre id="sc-code-017">//Alterar nome do assunto
+//------
+fonteEsfinge = Dados.tributos.v2.esfinge;
+filtroEsfinge = "nomeArquivo = 'lancamentosCreditosTributarios' and idGrupo &lt; 'yyyymm' and codigoLancamento in ( )"
+//nomeArquivo: é o assunto a ser alterado || idGrupo: é a competência no formato ano/mês || codigoTce: é o codigoSequencialOperacaoArrecadacao
+dadosEsfinge = fonteEsfinge.busca(criterio: filtroEsfinge)
+dados = ''
+percorrer (dadosEsfinge) { itemEsfinge -&gt;
+  dados = JSON.ler(itemEsfinge.dadosEnvio)
+  conteudo = [
+    nomeTce: itemEsfinge.nomeTce,
+    idGrupo: itemEsfinge.idGrupo,
+    idDado: itemEsfinge?.idDado ?: null,
+    codigoTce: itemEsfinge.codigoTce,
+    tipoDado: itemEsfinge.tipoDado,
+    nomeArquivo: itemEsfinge.nomeArquivo + '_ajuste',
+    operacao: itemEsfinge.operacao.valor,
+    sistema: itemEsfinge.sistema.valor,
+    dadosEnvio: JSON.escrever(dados),
+    chavePacote: itemEsfinge.chavePacote,
+    estorno: itemEsfinge.estorno,
+    codigoArrecadacao: itemEsfinge.codigoArrecadacao,
+    valor: itemEsfinge.valor,
+    anoLancamento: itemEsfinge.anoLancamento,
+    codigoLancamento: dados.codigoLancamentoCreditoTributario?.toLong(),
+    anoLancamentoNovo: itemEsfinge.anoLancamentoNovo,
+    codigoLancamentoNovo: itemEsfinge.codigoLancamentoNovo
+  ]
+  dadosEsfinge = fonteEsfinge.altera(parametros:["id":itemEsfinge.id], conteudo: conteudo)
+  imprimir conteudo</pre>
+          </div>
+        </div>
+      </div>
+      <!-- fim sc-017 -->
+
+      <!-- SCRIPT 018 -->
+      <div class="sc-card" id="sc-018" data-cat="consulta" data-search="consulta identificar receita codigoTce vazio nulo NULL falha esfinge cria-lista lancamento credito tributario erro 1NULL diagnóstico Tributos descrição">
+        <div class="sc-card-header" onclick="scToggle('sc-018')">
+          <div class="sc-card-icon">🔎</div>
+          <div class="sc-card-meta">
+            <span class="sc-cat-badge cat-consulta">🔍 Consulta</span>
+            <div class="sc-card-title">Consulta — Identifica receitas sem codigoTCE preenchido a partir de um lançamento</div>
+            <div class="sc-card-short">A partir do ID de um lançamento, lista as receitas associadas e imprime descrição + codigoTCE — útil para diagnosticar o erro de envio com valor '1NULL...'</div>
+            <div class="sc-badge-row">
+              <span class="sc-tag ok">Tributos</span>
+              <span class="sc-tag assunto">Lançamentos</span>
+              <span class="sc-tag">Receitas</span>
+              <span class="sc-tag">Diagnóstico</span>
+            </div>
+          </div>
+          <button class="sc-toggle-btn" onclick="event.stopPropagation();scToggle('sc-018')" title="Expandir">▼</button>
+        </div>
+        <div class="sc-card-body">
+          <div class="sc-desc-full">
+            A partir do ID de um lançamento problemático, o script navega pelas três fontes (<code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">lancamentos</code> → <code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">lancamentos.receitas</code> → <code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">receitas</code>) e imprime, para cada receita vinculada, a sua descrição e o <code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">codigoTCE</code>. Receitas com <code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">null</code>/vazio no codigoTCE são exatamente as que travam o envio ao e-Sfinge.<br><br>
+            <strong>Quando usar:</strong> quando aparece a mensagem de erro<br>
+            <em style="display:block;background:var(--surface2);border-left:3px solid #c44;border-radius:4px;padding:8px 12px;margin:8px 0;font-size:12px;color:var(--text2);">
+              Falha na execução do Script [Tributos] e-Sfinge Online 2026 - 01 - Gerar dados.<br>
+              Detalhes: Ocorreu uma falha na fonte de dados <code>tributos.v2.esfinge.cria-lista</code> ao executar a operação de atualização, motivo: O valor <strong>"1NULL1184857483"</strong> é inválido para o campo <strong>"esfinges"</strong>
+            </em>
+            O prefixo <strong>1NULL</strong> indica que o codigoTCE veio nulo de alguma receita vinculada — este script identifica quais.<br><br>
+            <strong>Como usar:</strong><br>
+            • Substituir os <code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">******</code> em <code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">codigoLancamento</code> pelo ID do lançamento problemático (geralmente extraído do log do erro).<br>
+            • Verificar no log quais receitas vieram com <code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">Codigo TCE: null</code> e corrigir o cadastro delas.
+          </div>
+          <div class="sc-obs">
+            <strong>&#9888; Sistema:</strong> executar no <strong>Tributos</strong>.<br>
+            <strong>&#9989; Operação somente de leitura:</strong> este script apenas imprime — não altera nem exclui nada.<br>
+            <strong>&#128172; Próximo passo após identificar:</strong> ir até o cadastro de Receitas e preencher o <code style="font-family:var(--mono);background:var(--tag-bg);padding:1px 5px;border-radius:3px;">codigoTCE</code> em cada receita listada com null, depois rodar novamente o envio ao e-Sfinge.
+          </div>
+          <div class="sc-key-section-label">Código-fonte do script</div>
+          <div class="sc-code-block">
+            <div class="sc-code-block-header">
+              <span class="sc-code-block-label">Groovy</span>
+              <button class="sc-copy-code-btn" onclick="scCopyCode('sc-code-018', this)">📋 Copiar código</button>
+            </div>
+<pre id="sc-code-018">fonteLancamentos = Dados.tributos.v2.lancamentos;
+fonteReceitas = Dados.tributos.v2.lancamentos.receitas;
+fonteReceitas2 = Dados.tributos.v2.receitas;
+
+codigoLancamento = ******
+
+filtroLancamentos = "id = ${codigoLancamento}"
+
+dadosLancamentos = fonteLancamentos.busca(criterio: filtroLancamentos)
+
+percorrer (dadosLancamentos) { itemLancamentos -&gt;
+  
+  filtroReceitas = "lancamento.id = ${itemLancamentos.id}"
+  
+  dadosReceitas = fonteReceitas.busca(criterio: filtroReceitas)
+  
+  percorrer (dadosReceitas) { itemReceitas -&gt;
+    
+    filtroReceitas2 = "id = ${itemReceitas.creditoReceita.receita.id}"
+    
+    dadosReceitas2 = fonteReceitas2.busca(criterio: filtroReceitas2)
+    
+    percorrer (dadosReceitas2) { itemReceitas2 -&gt;
+      imprimir 'Nome Receita: ' + itemReceitas2.descricao + ' || Codigo TCE: ' + itemReceitas2.codigoTCE
+    }
+  }
+}</pre>
+          </div>
+        </div>
+      </div>
+      <!-- fim sc-018 -->
+
 
 
 
